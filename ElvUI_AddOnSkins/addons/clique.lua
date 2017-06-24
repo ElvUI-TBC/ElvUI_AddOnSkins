@@ -59,7 +59,6 @@ local function LoadSkin()
 		for i = 1, 12 do
 			local entry = _G["CliqueTextList"..i];
 			S:HandleCheckBox(entry);
-			entry.backdrop:Kill()
 			entry.backdrop:Point("TOPLEFT", 6, -4);
 			entry.backdrop:Point("BOTTOMRIGHT", -4, 3);
 			entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0);
