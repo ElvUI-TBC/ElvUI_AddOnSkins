@@ -6,31 +6,27 @@ local function LoadSkin()
 
 	local SPACING = 1 + (E.Spacing*2);
 
-	-- for i = 1, 20 do
-	-- 	_G["ResizingNudger" .. "Backdrop"]:SetTemplate("Transparent", nil, nil, true);
-	-- 	_G["ResizingNudger"]:HookScript("OnShow", function(self)
-	-- 		_G[self:GetName() .. "Backdrop"]:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor));
-	-- 	end);
-	-- 	_G["ResizingNudger"]:SetScript("OnEnter", function(self)
-	-- 		_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(1, 1, 1);
-	-- 	end);
-	-- 	_G["ResizingNudger"]:SetScript("OnLeave", function(self)
-	-- 		_G[self:GetName() .. "BackdropMovingFrameName"]:SetTextColor(unpack(E["media"].rgbvaluecolor));
-	-- 	end);
-	-- end
+	for i = 1, 20 do
+		_G["MoveAnything"..i.."Backdrop"]:SetTemplate("Transparent", nil, nil, true);
+		_G["MoveAnything"..i]:HookScript2("OnShow", function()
+			_G[this:GetName()..i.."Backdrop"]:SetBackdropBorderColor(unpack(E["media"].rgbvaluecolor));
+		end);
+		_G["MoveAnything"..i]:SetScript("OnEnter", function()
+			_G[this:GetName()..i.."BackdropMovingFrameName"]:SetTextColor(1, 1, 1);
+		end);
+		_G["MoveAnything"..i]:SetScript("OnLeave", function()
+			_G[this:GetName()..i.."BackdropMovingFrameName"]:SetTextColor(unpack(E["media"].rgbvaluecolor));
+		end);
+	end
 
 	MAOptions:StripTextures();
 	MAOptions:SetTemplate("Transparent");
 	MAOptions:Size(420, 500 + (16*SPACING));
 
 	S:HandleCheckBox(MAOptionsCharacterSpecific);
-	-- S:HandleCheckBox(MAOptionsToggleTooltips);
-	-- S:HandleCheckBox(MAOptionsToggleModifiedFramesOnly);
-	-- S:HandleCheckBox(MAOptionsToggleCategories);
 
 	S:HandleButton(MAOptionsResetAll);
 	S:HandleButton(MAOptionsClose);
-	-- S:HandleButton(MAOptionsSync);
 
 	for i = 1, 10 do
 		_G["MAMove" .. i .. "Backdrop"]:SetTemplate("Default");
