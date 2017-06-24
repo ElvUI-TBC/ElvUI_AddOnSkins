@@ -4,15 +4,15 @@ local S = E:GetModule("Skins");
 local function LoadSkin()
 	if(not E.private.addOnSkins.AtlasLoot) then return; end
 
-	AtlasLootTooltip:HookScript("OnShow", function(self)
-		self:SetTemplate("Transparent");
+	AtlasLootTooltip:HookScript2("OnShow", function()
+		this:SetTemplate("Transparent");
 
-		local iLink = select(2, self:GetItem());
+		local iLink = select(2, this:GetItem());
 		local quality = iLink and select(3, GetItemInfo(iLink));
 		if(quality and quality >= 2) then
-			self:SetBackdropBorderColor(GetItemQualityColor(quality));
+			this:SetBackdropBorderColor(GetItemQualityColor(quality));
 		else
-			self:SetBackdropBorderColor(unpack(E["media"].bordercolor));
+			this:SetBackdropBorderColor(unpack(E["media"].bordercolor));
 		end
 	end);
 
@@ -59,16 +59,17 @@ local function LoadSkin()
 		_G["AtlasLootMenuItem_" .. i].backdrop:SetOutside(_G["AtlasLootMenuItem_" .. i .. "_Icon"]);
 	end
 
-	S:HandleButton(AtlasLoot10Man25ManSwitch);
 	S:HandleCheckBox(AtlasLootItemsFrame_Heroic);
 	S:HandleButton(AtlasLootItemsFrame_BACK);
 	S:HandleNextPrevButton(AtlasLootItemsFrame_NEXT);
 	S:HandleButton(AtlasLootServerQueryButton);
 	S:HandleNextPrevButton(AtlasLootQuickLooksButton);
-	S:HandleCheckBox(AtlasLootFilterCheck);
 	S:HandleNextPrevButton(AtlasLootItemsFrame_PREV);
 
 	AtlasLootItemsFrame_Back:SetTexture(0, 0, 0, 0);
+
+	AtlasLootOptionsFrame:StripTextures();
+	AtlasLootOptionsFrame:SetTemplate("Transparent");
 
 	S:HandleCheckBox(AtlasLootOptionsFrameDefaultTT);
 	S:HandleCheckBox(AtlasLootOptionsFrameLootlinkTT);
@@ -77,20 +78,14 @@ local function LoadSkin()
 	S:HandleCheckBox(AtlasLootOptionsFrameItemID);
 	S:HandleCheckBox(AtlasLootOptionsFrameLoDStartup);
 	S:HandleCheckBox(AtlasLootOptionsFrameSafeLinks);
+	S:HandleCheckBox(AtlasLootOptionsFrameAllLinks);
 	S:HandleCheckBox(AtlasLootOptionsFrameEquipCompare);
 	S:HandleCheckBox(AtlasLootOptionsFrameItemSpam);
+	S:HandleCheckBox(AtlasLootOptionsFrameMinimap);
+	S:HandleCheckBox(AtlasLootOptionsFrameLoDSpam);
 	S:HandleCheckBox(AtlasLootOptionsFrameHidePanel);
 
-	S:HandleDropDownBox(AtlasLoot_SelectLootBrowserStyle);
-	S:HandleDropDownBox(AtlasLoot_CraftingLink);
-
-	S:HandleSliderFrame(AtlasLootOptionsFrameLootBrowserScale);
-
-	S:HandleButton(AtlasLootOptionsFrame_ResetWishlist);
-	S:HandleButton(AtlasLootOptionsFrame_ResetAtlasLoot);
-	S:HandleButton(AtlasLootOptionsFrame_ResetQuicklooks);
-	S:HandleButton(AtlasLootOptionsFrame_FuBarShow);
-	S:HandleButton(AtlasLootOptionsFrame_FuBarHide);
+	S:HandleButton(AtlasLootOptionsFrameDone);
 
 	AtlasLootPanel:StripTextures();
 	AtlasLootPanel:SetTemplate("Transparent");

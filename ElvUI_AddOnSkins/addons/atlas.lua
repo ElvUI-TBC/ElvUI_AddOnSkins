@@ -7,6 +7,9 @@ local function LoadSkin()
 	AtlasFrame:StripTextures();
 	AtlasFrame:SetTemplate("Transparent");
 
+	AtlasOptionsFrame:StripTextures();
+	AtlasOptionsFrame:SetTemplate("Transparent");
+
 	AtlasMap:SetDrawLayer("BORDER")
 
 	AtlasFrameCloseButton:Point("TOPRIGHT", AtlasFrame, "TOPRIGHT", -5, -7);
@@ -49,6 +52,7 @@ local function LoadSkin()
 	S:HandleCheckBox(AtlasOptionsFrameAcronyms);
 	S:HandleCheckBox(AtlasOptionsFrameClamped);
 	S:HandleCheckBox(AtlasOptionsFrameCtrl);
+	S:HandleCheckBox(AtlasOptionsFrameCoords);
 
 	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonPos);
 	S:HandleSliderFrame(AtlasOptionsFrameSliderButtonRad);
@@ -58,6 +62,7 @@ local function LoadSkin()
 	S:HandleDropDownBox(AtlasOptionsFrameDropDownCats);
 
 	S:HandleButton(AtlasOptionsFrameResetPosition);
+	S:HandleButton(AtlasOptionsFrameDone);
 end
 
 S:AddCallbackForAddon("Atlas", "Atlas", LoadSkin);
