@@ -13,10 +13,14 @@ local function LoadSkin()
 	S:HandleButton(ACP_AddonListDisableAll);
 	S:HandleButton(ACP_AddonListEnableAll);
 	S:HandleButton(ACP_AddonList_ReloadUI);
+	ACP_AddonList_ReloadUI:ClearAllPoints();
+	ACP_AddonList_ReloadUI:HookScript2("OnShow", function()
+		this:Point("BOTTOMRIGHT", ACP_AddonList, "BOTTOMRIGHT", -7, 7)
+	end);
 	S:HandleButton(ACP_AddonListSetButton);
-	S:HandleButton(ACP_AddonListBottomClose);
 	S:HandleCloseButton(ACP_AddonListCloseButton);
 	S:HandleScrollBar(ACP_AddonList_ScrollFrameScrollBar);
+	S:HandleCheckBox(ACP_AddonList_NoChildren);
 	S:HandleCheckBox(ACP_AddonList_NoRecurse);
 	S:HandleDropDownBox(ACP_AddonListSortDropDown, 130);
 
@@ -35,7 +39,6 @@ local function LoadSkin()
 	ACP_AddonListDisableAll:Point("BOTTOMLEFT", ACP_AddonList, "BOTTOMLEFT", 90, 8);
 	ACP_AddonListEnableAll:Point("BOTTOMLEFT", ACP_AddonList, "BOTTOMLEFT", 175, 8);
 	ACP_AddonList_ReloadUI:Point("BOTTOMRIGHT", ACP_AddonList, "BOTTOMRIGHT", -160, 8);
-	ACP_AddonListBottomClose:Point("BOTTOMRIGHT", ACP_AddonList, "BOTTOMRIGHT", -50, 8);
 	ACP_AddonList:SetScale(UIParent:GetScale());
 end
 
