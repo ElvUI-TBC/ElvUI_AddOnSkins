@@ -2,7 +2,7 @@ local E, L, V, P, G, _ = unpack(ElvUI);
 local EP = LibStub("LibElvUIPlugin-1.0", true);
 local AS = E:NewModule("AddOnSkins");
 
-local AddOnName = ...;
+local AddOnName = "ElvUI_AddOnSkins";
 
 local find, lower, match, trim = string.find, string.lower, string.match, string.trim
 

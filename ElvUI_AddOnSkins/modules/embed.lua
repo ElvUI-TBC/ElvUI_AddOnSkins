@@ -1,4 +1,4 @@
-local addonName = ...;
+local addonName = "ElvUI_AddOnSkins";
 local E, L, V, P, G = unpack(ElvUI);
 local addon = E:GetModule("AddOnSkins");
 local module = E:NewModule("EmbedSystem");
@@ -160,7 +160,7 @@ if(addon:CheckAddOn("Recount")) then
 		Recount.db.profile.Scaling = 1;
 		Recount.db.profile.ClampToScreen = true;
 		Recount.db.profile.FrameStrata = "2-LOW";
-		Recount:SetStrataAndClamp();
+		-- Recount:SetStrataAndClamp();
 		Recount:LockWindows(true);
 
 		Recount_MainWindow:StartSizing("BOTTOMLEFT");
@@ -448,9 +448,9 @@ function module:Init()
 
 		self:Hooks();
 
-		hooksecurefunc("FCF_SavePositionAndDimensions", function()
-			module:UpdateSwitchButton();
-		end);
+		-- hooksecurefunc("FCF_SavePositionAndDimensions", function()
+		-- 	module:UpdateSwitchButton();
+		-- end);
 		hooksecurefunc(E:GetModule("Chat"), "PositionChat", function(self, override)
 			if(override) then
 				module:Check();
