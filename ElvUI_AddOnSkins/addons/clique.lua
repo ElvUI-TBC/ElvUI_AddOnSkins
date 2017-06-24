@@ -59,6 +59,7 @@ local function LoadSkin()
 		for i = 1, 12 do
 			local entry = _G["CliqueTextList"..i];
 			S:HandleCheckBox(entry);
+			entry.backdrop:Kill()
 			entry.backdrop:Point("TOPLEFT", 6, -4);
 			entry.backdrop:Point("BOTTOMRIGHT", -4, 3);
 			entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0);
@@ -75,7 +76,7 @@ local function LoadSkin()
 		CliqueButtonClose:SetPoint("TOPRIGHT", 5, 5);
 
 		S:HandleButton(CliqueButtonCustom);
-		S:HandleButton(CliqueButtonFrames);
+		S:HandleButton(CliqueButtonMax);
 		S:HandleButton(CliqueButtonProfiles);
 		S:HandleButton(CliqueButtonOptions);
 		S:HandleButton(CliqueButtonDelete);
@@ -88,32 +89,6 @@ local function LoadSkin()
 		S:HandleButton(CliqueButtonDeleteProfile);
 		S:HandleButton(CliqueButtonSetProfile);
 		S:HandleButton(CliqueButtonNewProfile);
-
-		SkinFrame(CliqueOptionsFrame);
-		CliqueOptionsFrame:SetHeight(125)
-		CliqueOptionsFrame:SetPoint("TOPLEFT", CliqueFrame, "TOPRIGHT", 0, 0)
-
-		S:HandleCloseButton(CliqueOptionsButtonClose);
-		CliqueOptionsButtonClose:SetSize(32, 32);
-		CliqueOptionsButtonClose:SetPoint("TOPRIGHT", 5, 5);
-
-		if CliqueOptionsAnyDown then
-			S:HandleCheckBox(CliqueOptionsAnyDown);
-			CliqueOptionsAnyDown.backdrop:Point("TOPLEFT", 6, -4);
-			CliqueOptionsAnyDown.backdrop:Point("BOTTOMRIGHT", -4, 3);
-			CliqueOptionsAnyDown.backdrop:Point("TOPRIGHT", CliqueOptionsAnyDown.name, "TOPLEFT", -3, 0);
-		end
-		S:HandleCheckBox(CliqueOptionsSpecSwitch);
-		CliqueOptionsSpecSwitch.backdrop:Point("TOPLEFT", 6, -4);
-		CliqueOptionsSpecSwitch.backdrop:Point("BOTTOMRIGHT", -4, 3);
-		CliqueOptionsSpecSwitch.backdrop:Point("TOPRIGHT", CliqueOptionsSpecSwitch.name, "TOPLEFT", -3, 0);
-
-		S:HandleDropDownBox(CliquePriSpecDropDown);
-		S:HandleDropDownBox(CliqueSecSpecDropDown);
-		CliquePriSpecDropDown:SetWidth(225);
-		CliqueSecSpecDropDown:SetWidth(225);
-		CliquePriSpecDropDownButton:SetSize(20, 20);
-		CliqueSecSpecDropDownButton:SetSize(20, 20);
 
 		SkinFrame(CliqueCustomFrame);
 
