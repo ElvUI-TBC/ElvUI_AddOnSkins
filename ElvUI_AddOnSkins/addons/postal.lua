@@ -42,19 +42,19 @@ local function LoadSkin()
 		S:HandleNextPrevButton(Postal_BlackBookButton, true);
 	end
 
-	hooksecurefunc(Postal, "CreateAboutFrame", function()
-		if PostalAboutFrame then
-			PostalAboutFrame:StripTextures();
-			PostalAboutFrame:SetTemplate("Transparent");
-			if PostalAboutScroll then
-				S:HandleScrollBar(PostalAboutScrollScrollBar);
-			end
-			local closeButton = select(2, PostalAboutFrame:GetChildren());
-			if closeButton then
-				S:HandleCloseButton(closeButton);
-			end
-		end
-	end);
+	-- hooksecurefunc(Postal, "CreateAboutFrame", function()
+	-- 	if PostalAboutFrame then
+	-- 		PostalAboutFrame:StripTextures();
+	-- 		PostalAboutFrame:SetTemplate("Transparent");
+	-- 		if PostalAboutScroll then
+	-- 			S:HandleScrollBar(PostalAboutScrollScrollBar);
+	-- 		end
+	-- 		local closeButton = select(2, PostalAboutFrame:GetChildren());
+	-- 		if closeButton then
+	-- 			S:HandleCloseButton(closeButton);
+	-- 		end
+	-- 	end
+	-- end);
 end
 
 S:AddCallbackForAddon("Postal", "Postal", LoadSkin);
