@@ -12,11 +12,6 @@ local function LoadSkin()
 
 	FlightMapTimesText:ClearAllPoints();
 	FlightMapTimesText:Point("CENTER", FlightMapTimesFrame, "CENTER", 0, 0);
-
-	local base = "InterfaceOptionsFlightMapPanel";
-	for optid, option in pairs(FLIGHTMAP_OPTIONS) do
-		S:HandleCheckBox(_G[base .. "Option" .. optid]);
-	end
 end
 
 S:AddCallbackForAddon("FlightMap", "FlightMap", LoadSkin);
