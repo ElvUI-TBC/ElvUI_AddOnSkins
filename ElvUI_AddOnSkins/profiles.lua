@@ -88,6 +88,7 @@ V.addOnSkins = {
 	EPGP = true,
 	EPGP_LootMaster = true,
 	RaidRoll = true,
+	Talented = true,
 
 	Blizzard_WorldStateFrame = true,
 };

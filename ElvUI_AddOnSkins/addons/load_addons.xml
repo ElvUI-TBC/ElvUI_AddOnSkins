@@ -54,4 +54,5 @@
 	<Script file="epgp.lua"/>
 	<Script file="epgp_lootmaster.lua"/>
 	<Script file="raidRoll.lua"/>
+	<Script file="talented.lua"/>
 </Ui>
