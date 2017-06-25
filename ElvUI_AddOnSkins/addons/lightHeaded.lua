@@ -3,8 +3,6 @@ local S = E:GetModule("Skins")
 
 local cos, pi = math.cos, math.pi
 
--- LightHeaded r310
-
 local function LoadSkin()
 	if(not E.private.addOnSkins.LightHeaded) then return end
 
@@ -17,11 +15,8 @@ local function LoadSkin()
 	LightHeadedFrame.handle:SetTemplate("Default")
 	LightHeadedFrame.handle:Point("LEFT", LightHeadedFrame, "RIGHT", -1, 0)
 
-	LightHeadedSearchBox:Width(281)
-	LightHeadedSearchBox:Point("TOP", LightHeadedFrame, "TOP", 0, -30)
-	S:HandleEditBox(LightHeadedSearchBox)
-
-	S:HandleCloseButton(LightHeadedFrame.close)
+	S:HandleCloseButton(LightHeadedFrame.close, LightHeadedFrame)
+	LightHeadedFrame.close:SetFrameStrata("HIGH")
 
 	LightHeadedFrameSub.scroll:SetTemplate("Default")
 	LightHeadedFrameSub.scroll:Size(260, 300)
@@ -110,7 +105,7 @@ local function LoadSkin()
 				LightHeadedFrameSub.justclosed = true
 			else
 				LightHeadedFrameSub:Show()
-				LightHeaded:SelectQuestLogEntry()
+				-- LightHeaded:SelectQuestLogEntry()
 			end
 		end
 
