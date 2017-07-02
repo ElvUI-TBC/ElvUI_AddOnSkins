@@ -129,54 +129,8 @@ local function LoadSkin()
 		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2);
 	end);
 
-	local function SkinDewdrop()
-		local frame
-		local i = 1
-
-		while _G["Dewdrop20Level" .. i] do
-			frame = _G["Dewdrop20Level" .. i]
-
-			if not frame.isSkinned then
-				frame:SetTemplate("Transparent")
-
-				select(1, frame:GetChildren()):Hide()
-				frame.SetBackdropColor = E.noop
-				frame.SetBackdropBorderColor = E.noop
-
-				frame.isSkinned = true
-			end
-
-			i = i + 1
-		end
-
-		i = 1
-		while _G["Dewdrop20Button"..i] do
-			if not _G["Dewdrop20Button" .. i].isHook then
-				_G["Dewdrop20Button" .. i]:HookScript("OnEnter", function(self)
-					if not self.disabled and self.hasArrow then
-						SkinDewdrop()
-					end
-				end)
-				_G["Dewdrop20Button" .. i].isHook = true
-			end
-
-			i = i + 1
-		end
-	end
-
-	local Dewdrop = LibStub("Dewdrop-2.0", true)
-	if Dewdrop and not S:IsHooked(Dewdrop, "Open") then
-		S:SecureHook(Dewdrop, "Open", SkinDewdrop)
-	end
-
-	if(E:GetModule("AddOnSkins"):CheckAddOn("AtlasLootFu")) then
-		local Tablet = LibStub("Tablet-2.0", true)
-		if Tablet and not S:IsHooked(Tablet, "Open") then
-			S:SecureHook(Tablet, "Open", function()
-				_G["Tablet20Frame"]:SetTemplate("Transparent")
-			end)
-		end
-	end
+	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 end
 
 S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", LoadSkin);
