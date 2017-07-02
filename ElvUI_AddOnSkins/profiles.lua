@@ -77,6 +77,7 @@ V.addOnSkins = {
 	Carbonite = true,
 	Enchantrix = true,
 	FishingBuddy = true,
+	Talented = true,
 	ZOMGBuffs = true,
 	BuyEmAll = true,
 	Doom_CooldownPulse = true,
@@ -88,7 +89,6 @@ V.addOnSkins = {
 	EPGP = true,
 	EPGP_LootMaster = true,
 	RaidRoll = true,
-	Talented = true,
 
 	Blizzard_WorldStateFrame = true,
 };

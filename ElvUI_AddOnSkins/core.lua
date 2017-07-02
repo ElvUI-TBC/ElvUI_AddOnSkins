@@ -2,8 +2,6 @@ local E, L, V, P, G, _ = unpack(ElvUI);
 local EP = LibStub("LibElvUIPlugin-1.0", true);
 local AS = E:NewModule("AddOnSkins");
 
-local AddOnName = "ElvUI_AddOnSkins";
-
 local find, lower, match, trim = string.find, string.lower, string.match, string.trim
 
 local GetAddOnInfo = GetAddOnInfo
@@ -378,7 +376,7 @@ local function getOptions()
 end
 
 function AS:Initialize()
-	EP:RegisterPlugin(AddOnName, getOptions);
+	EP:RegisterPlugin("ElvUI_AddOnSkins", getOptions);
 end
 
 local function InitializeCallback()

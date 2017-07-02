@@ -1,9 +1,10 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
-local AB = E:GetModule("ActionBars");
 local S = E:GetModule("Skins");
 
 local function LoadSkin()
 	if(not E.private.addOnSkins.FloTotemBar) then return; end
+
+	local AB = E:GetModule("ActionBars")
 
 	FloBarTRAP:SetTemplate("Default");
 	for i = 1, 10 do
