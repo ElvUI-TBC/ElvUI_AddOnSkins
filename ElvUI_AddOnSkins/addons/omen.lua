@@ -1,28 +1,48 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G, _ = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+-- Omen 2.0.4
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Omen) then return; end
+	if not E.private.addOnSkins.Omen then return end
 
-	hooksecurefunc(Omen, "UpdateBars", function(self)
-		self.TitleText:Width(self.Title:GetWidth() - 16);
-		self.TitleText:Height(16);
-	end);
+	hooksecurefunc(Omen, "UpdateDisplay", function(self)
+		self.Title:SetTemplate("Default")
+		self.BarList:SetTemplate("Default")
+		self.ModuleList:SetTemplate("Default")
 
-	hooksecurefunc(Omen, "UpdateBackdrop", function(self)
-		self.Title:SetTemplate("Default", true);
-		self.BarList:SetTemplate("Default");
-	end);
-
-	hooksecurefunc(Omen, "UpdateTitleBar", function(self)
-		self.BarList:ClearAllPoints();
-		if(not Omen.db.profile.TitleBar.ShowTitleBar) then
-			self.BarList:Point("TOPLEFT", self.Title, "BOTTOMLEFT", 0, 0);
+		self.BarList:ClearAllPoints()
+		if Omen.Options["Skin.Title.Hide"] then
+			self.BarList:Point("TOPLEFT", self.Title, "TOPLEFT")
+			self.BarList:Point("TOPRIGHT", self.Title, "TOPRIGHT")
 		else
-			self.BarList:Point("TOPLEFT", self.Title, "BOTTOMLEFT", 0, -(E.PixelMode and 1 or 3));
+			self.BarList:Point("TOPLEFT", self.Title, "BOTTOMLEFT", 0, (E.PixelMode and 1 or 3))
+			self.BarList:Point("TOPRIGHT", self.Title, "BOTTOMRIGHT", 0, (E.PixelMode and 1 or 3))
 		end
-		self.BarList:Point("BOTTOMRIGHT", self.Anchor, "BOTTOMRIGHT", 0, 0);
-	end);
+		if Omen.Options["Skin.Modules.Hide"] then
+			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "BOTTOMRIGHT")
+		else
+			self.BarList:Point("BOTTOMLEFT", self.ModuleList, "TOPLEFT", 0, -(E.PixelMode and 1 or 3))
+			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "TOPRIGHT", 0, -(E.PixelMode and 1 or 3))
+		end
+
+		if self.activeModule then
+			self.activeModule:UpdateLayout()
+		end
+		self:ResizeBars()
+	end)
+
+	Omen:UpdateDisplay()
+
+	for i = 1, OmenModuleButtons:GetNumChildren() do
+		local child = select(i, OmenModuleButtons:GetChildren())
+		if child and child:IsObjectType("Button") then
+			child:SetTemplate("Default")
+			child:StyleButton(nil, true)
+			child:GetNormalTexture():SetTexCoord(unpack(E.TexCoords))
+			child:GetNormalTexture():SetInside()
+		end
+	end
 end
 
-S:AddCallbackForAddon("Omen", "Omen", LoadSkin);
+S:AddCallbackForAddon("Omen", "Omen", LoadSkin)

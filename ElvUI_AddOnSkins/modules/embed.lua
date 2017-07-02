@@ -176,27 +176,25 @@ if(addon:CheckAddOn("Omen")) then
 		end
 		parent.frameName = "OmenAnchor";
 
-		local db = Omen.db;
-		db.profile.Scale = 1;
-		db.profile.Bar.Spacing = 1;
-		db.profile.Background.EdgeSize = 1;
-		db.profile.Background.BarInset = 2;
-		db.profile.TitleBar.UseSameBG = true;
-		db.profile.ShowWith.UseShowWith = false;
-		db.profile.Locked = true;
-		db.profile.TitleBar.ShowTitleBar = true;
-		db.profile.FrameStrata = "2-LOW";
+		local db = Omen.Options
+		db["Skin.Scale"] = 100
+		db["Lock"] = true
 
-		OmenAnchor:SetParent(parent);
-		OmenAnchor:ClearAllPoints();
-		OmenAnchor:SetAllPoints();
+		OmenAnchor:SetParent(parent)
+		OmenAnchor:ClearAllPoints()
+		OmenAnchor:SetAllPoints()
+
+		Omen:UpdateDisplay()
 
 		hooksecurefunc(Omen, "SetAnchors", function(self, useDB)
-			if(useDB) then
-				self.Anchor:SetParent(parent);
-				self.Anchor:SetInside(parent, 0, 0);
+			self.Anchor:SetParent(parent)
+			self.Anchor:SetInside(parent, 0, 0)
+
+			if Omen.activeModule then
+				Omen.activeModule:UpdateLayout()
 			end
-		end);
+			Omen:ResizeBars()
+		end)
 	end
 end
 
