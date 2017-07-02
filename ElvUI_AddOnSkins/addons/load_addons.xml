@@ -43,6 +43,7 @@
 	<Script file="carbonite.lua"/>
 	<Script file="enchantrix.lua"/>
 	<Script file="fishingBuddy.lua"/>
+	<Script file="talented.lua"/>
 	<Script file="ZOMGBuffs.lua"/>
 	<Script file="buyEmAll.lua"/>
 	<Script file="doom_CooldownPulse.lua"/>
@@ -54,5 +55,4 @@
 	<Script file="epgp.lua"/>
 	<Script file="epgp_lootmaster.lua"/>
 	<Script file="raidRoll.lua"/>
-	<Script file="talented.lua"/>
 </Ui>
