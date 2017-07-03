@@ -53,9 +53,13 @@ local function LoadSkin()
 	S:RawHook(Talented, "GetButtonTarget", function(self, button)
 		local target = S.hooks[self].GetButtonTarget(self, button)
 
-		button.target:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
-		button.target:Point("CENTER", button, "TOPRIGHT", 2, 0)
-		button.target.texture:Kill()
+		if not target.isSkinned then
+			target:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			target:Point("CENTER", button, "TOPRIGHT", 2, 0)
+			target.texture:Kill()
+
+			target.isSkinned = true
+		end
 
 		return target
 	end)
