@@ -67,6 +67,7 @@ local addonList = {
 	"EPGP",
 	"EPGP_LootMaster",
 	"RaidRoll",
+	"Cartographer",
 }
 
 AS.addOns = {};
@@ -78,6 +79,10 @@ end
 
 function AS:CheckAddOn(addon)
 	return self.addOns[lower(addon)] or false;
+end
+
+function AS:IsAddonExist(addon)
+	return self.addOns[lower(addon)] ~= nil
 end
 
 function AS:RegisterAddonOption(AddonName, options)
