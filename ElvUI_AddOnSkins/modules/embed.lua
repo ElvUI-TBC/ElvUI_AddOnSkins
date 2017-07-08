@@ -72,7 +72,10 @@ function module:Hide()
 	end
 	module:ToggleChatFrame(false);
 	module.switchButton:SetAlpha(0.6);
-	E.db.addOnSkins.embed.isShow = false;
+
+	if not E.global.afkEnabled then
+		E.db.addOnSkins.embed.isShow = false
+	end
 end
 
 function module:CheckAddOn(addOn)
@@ -149,21 +152,19 @@ if(addon:CheckAddOn("Recount")) then
 		end
 		parent.frameName = "Recount_MainWindow";
 
+		Recount.db.profile.Locked = true
+		Recount.db.profile.Scaling = 1
+		Recount:LockWindows(true)
+		Recount:ScaleWindows(1)
+
 		Recount_MainWindow:SetParent(parent);
 		Recount_MainWindow:ClearAllPoints();
 		Recount_MainWindow:SetPoint("TOPLEFT", parent, "TOPLEFT", E.PixelMode and -1 or 0, E.PixelMode and 8 or 7);
 		Recount_MainWindow:SetPoint("BOTTOMRIGHT", parent, "BOTTOMRIGHT", E.PixelMode and 1 or 0, E.PixelMode and -1 or 0);
 
-		Recount.db.profile.Locked = true;
-		Recount.db.profile.Scaling = 1;
-		Recount.db.profile.ClampToScreen = true;
-		Recount.db.profile.FrameStrata = "2-LOW";
-	--	Recount:SetStrataAndClamp();
-		Recount:LockWindows(true);
-
-		Recount_MainWindow:StartSizing("BOTTOMLEFT");
-		Recount_MainWindow:StopMovingOrSizing();
-	--	Recount:ResizeMainWindow()
+		Recount_MainWindow:StartSizing("BOTTOMLEFT")
+		Recount_MainWindow:StopMovingOrSizing()
+		Recount:ResizeMainWindow()
 	end
 end
 
