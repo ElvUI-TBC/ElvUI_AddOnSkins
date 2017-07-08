@@ -129,6 +129,7 @@ local function LoadSkin()
 		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2);
 	end);
 
+	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 end
