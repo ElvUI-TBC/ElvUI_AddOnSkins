@@ -93,7 +93,6 @@ function module:Check()
 	self:WindowResize();
 
 	if(self:CheckAddOn("Omen")) then self:Omen(); end
-	if(self:CheckAddOn("Skada")) then self:Skada(); end
 	if(self:CheckAddOn("Recount")) then self:Recount(); end
 end
 
@@ -103,14 +102,14 @@ function module:Toggle()
 
 	if(E.db.addOnSkins.embed.embedType == "SINGLE") then
 		local left = lower(E.db.addOnSkins.embed.left);
-		if(left ~= "skada" and left ~= "omen" and left ~= "recount") then
+		if(left ~= "omen" and left ~= "recount") then
 			self.left.frameName = self.db.left;
 		end
 	end
 
 	if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
 		local right = lower(E.db.addOnSkins.embed.right);
-		if(right ~= "skada" and right ~= "omen" and right ~= "recount") then
+		if(right ~= "omen" and right ~= "recount") then
 			self.right.frameName = self.db.right;
 		end
 	end
@@ -195,64 +194,6 @@ if(addon:CheckAddOn("Omen")) then
 			end
 			Omen:ResizeBars()
 		end)
-	end
-end
-
-if(addon:CheckAddOn("Skada")) then
-	module["skadaWindows"] = {};
-	function module:Skada()
-		wipe(self["skadaWindows"]);
-		for k, window in pairs(Skada:GetWindows()) do
-			tinsert(self.skadaWindows, window);
-		end
-
-		local numberToEmbed = 0;
-		if(E.db.addOnSkins.embed.embedType == "SINGLE") then
-			numberToEmbed = 1;
-		end
-		if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
-			if(self.db.right == "Skada") then numberToEmbed = numberToEmbed + 1; end
-			if(self.db.left == "Skada") then numberToEmbed = numberToEmbed + 1; end
-		end
-
-		local function EmbedWindow(window, width, height, point, relativeFrame, relativePoint, ofsx, ofsy)
-			if(not window) then return; end
-			local barmod = Skada.displays["bar"];
-
-			window.db.barwidth = width;
-			window.db.background.height = height - (window.db.enabletitle and window.db.barheight or -(E.Border + E.Spacing)) - (E.Border + E.Spacing);
-
-			window.db.spark = false;
-			window.db.barslocked = true;
-			window.db.enablebackground = true;
-
-			window.bargroup:SetParent(relativeFrame);
-			window.bargroup:ClearAllPoints();
-			window.bargroup:SetPoint(point, relativeFrame, relativePoint, ofsx, window.db.reversegrowth and ofsy or -ofsy);
-
-			window.bargroup:SetFrameStrata("LOW");
-
-			barmod.ApplySettings(barmod, window);
-
-			window.bargroup.bgframe:SetFrameStrata("LOW");
-			window.bargroup.bgframe:SetFrameLevel(window.bargroup:GetFrameLevel() - 1);
-		end
-
-		local point;
-		if(numberToEmbed == 1) then
-			local parent = self.left;
-			if(E.db.addOnSkins.embed.embedType == "DOUBLE") then
-				parent = self.db.right == "Skada" and self.right or self.left;
-			end
-			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
-			EmbedWindow(self.skadaWindows[1], parent:GetWidth() -(E.Border*2), parent:GetHeight(), point, parent, point, E.Border, E.Border);
-		elseif(numberToEmbed == 2) then
-			point = self.skadaWindows[1].db.reversegrowth and "BOTTOMLEFT" or "TOPLEFT";
-			EmbedWindow(self.skadaWindows[1], self.left:GetWidth() -(E.Border*2), self.left:GetHeight(), point, self.left, point, E.Border, E.Border);
-			if(not self.skadaWindows[2]) then E:Print("Please Create Skada Windows 2"); return; end
-			point = self.skadaWindows[2].db.reversegrowth and "BOTTOMRIGHT" or "TOPRIGHT";
-			EmbedWindow(self.skadaWindows[2], self.right:GetWidth() -(E.Border*2), self.right:GetHeight(), point, self.right, point, -E.Border, E.Border);
-		end
 	end
 end
 

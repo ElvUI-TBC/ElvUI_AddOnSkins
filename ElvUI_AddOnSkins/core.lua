@@ -11,7 +11,6 @@ local addonList = {
 	"Recount",
 	"SexyCooldown",
 	"DBM",
-	"Skada",
 	"Auctionator",
 	"BugSack",
 	"CallToArms",
@@ -140,55 +139,8 @@ local function getOptions()
 				name = L["Misc Options"],
 				guiInline = true,
 				args = {
-					skadaGroup = {
-						order = 1,
-						type = "group",
-						name = L["Skada"],
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; Skada:ApplySettings(); end,
-						disabled = function() return not AS:CheckAddOn("Skada"); end,
-						args = {
-							skadaTemplate = {
-								order = 1,
-								type = "select",
-								name = L["Template"],
-								values = {
-									["Default"] = L["Default"],
-									["Transparent"] = L["Transparent"],
-									["NoBackdrop"] = NONE
-								}
-							},
-							skadaTemplateGloss = {
-								order = 2,
-								type = "toggle",
-								name = L["Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTemplate ~= "Default" or not AS:CheckAddOn("Skada"); end
-							},
-							spacer = {
-								order = 3,
-								type = "description",
-								name = ""
-							},
-							skadaTitleTemplate = {
-								order = 4,
-								type = "select",
-								name = L["Title Template"],
-								values = {
-									["Default"] = L["Default"],
-									["Transparent"] = L["Transparent"],
-									["NoBackdrop"] = NONE
-								}
-							},
-							skadaTitleTemplateGloss = {
-								order = 5,
-								type = "toggle",
-								name = L["Title Template Gloss"],
-								disabled = function() return E.db.addOnSkins.skadaTitleTemplate ~= "Default" or not AS:CheckAddOn("Skada"); end
-							}
-						}
-					},
 					dbmGroup = {
-						order = 2,
+						order = 1,
 						type = "group",
 						name = L["DBM"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -229,7 +181,7 @@ local function getOptions()
 						}
 					},
 					waGroup = {
-						order = 3,
+						order = 2,
 						type = "group",
 						name = L["WeakAuras"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -249,7 +201,7 @@ local function getOptions()
 						}
 					},
 					chatBarGroup = {
-						order = 4,
+						order = 3,
 						type = "group",
 						name = L["ChatBar"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -304,7 +256,7 @@ local function getOptions()
 					desc = {
 						order = 1,
 						type = "description",
-						name = "Settings to control Embedded AddOns: Available Embeds: Omen | Skada | Recount ",
+						name = "Settings to control Embedded AddOns: Available Embeds: Recount | Omen",
 					},
 					embedType = {
 						order = 2,
@@ -322,8 +274,7 @@ local function getOptions()
 						name = L["Left Panel"],
 						values = {
 							["Recount"] = "Recount",
-							["Omen"] = "Omen",
-							["Skada"] = "Skada"
+							["Omen"] = "Omen"
 						},
 						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end,
 					},
@@ -333,8 +284,7 @@ local function getOptions()
 						name = L["Right Panel"],
 						values = {
 							["Recount"] = "Recount",
-							["Omen"] = "Omen",
-							["Skada"] = "Skada"
+							["Omen"] = "Omen"
 						},
 						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end,
 					},

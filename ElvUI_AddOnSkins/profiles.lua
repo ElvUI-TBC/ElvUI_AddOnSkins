@@ -1,11 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI);
 
 P.addOnSkins = {
-	skadaTemplate = "Default",
-	skadaTemplateGloss = false,
-	skadaTitleTemplate = "Default",
-	skadaTitleTemplateGloss = true,
-
 	dbmBarHeight = 22,
 	dbmFont = "PT Sans Narrow",
 	dbmFontSize = 12,
@@ -22,8 +17,8 @@ P.addOnSkins = {
 
 	embed = {
 		embedType = "DISABLE",
-		left = "Skada",
-		right = "Skada",
+		left = "Omen",
+		right = "Recount",
 		rightChat = true,
 		leftWidth = 200,
 		belowTop = false,
@@ -37,7 +32,6 @@ V.addOnSkins = {
 	Recount = true,
 	SexyCooldown = true,
 	DBM = true,
-	Skada = true,
 	Auctionator = true,
 	BugSack = true,
 	CallToArms = true,
