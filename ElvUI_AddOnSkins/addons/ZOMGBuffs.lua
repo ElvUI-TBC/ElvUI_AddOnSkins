@@ -1,14 +1,14 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 local pairs = pairs
 local select = select
 local unpack = unpack
 
--- ZOMGBuffs r156
+-- ZOMGBuffs r18
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return; end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	if ZOMGBuffsButton then
 		ZOMGBuffsButton:SetNormalTexture(nil)
@@ -46,7 +46,7 @@ local function LoadSkin()
 end
 
 local function LoadSkinBM()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return; end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZBM = ZOMGBuffs:GetModule("ZOMGBlessingsManager")
 	if not ZBM then return end
@@ -75,7 +75,6 @@ local function LoadSkinBM()
 		S:HandleButton(frame.generate)
 		S:HandleButton(frame.broadcast)
 		S:HandleButton(frame.groups)
-		S:HandleButton(frame.autoroles)
 
 		for _, button in pairs(frame.classTitle.cell) do
 			button.highlightTex:SetTexture(1, 1, 1, 0.3)
@@ -110,8 +109,6 @@ local function LoadSkinBM()
 	end)
 
 	S:SecureHook(ZBM, "DrawAll", function(self)
-		if not self.configuring then return end
-
 		local f = self.frame
 
 		for i = 1, #f.row do
@@ -120,12 +117,14 @@ local function LoadSkinBM()
 			end
 		end
 
-		S:Unhook(ZBM, "DrawAll")
+		if self.configuring then
+			S:Unhook(ZBM, "DrawAll")
+		end
 	end)
 end
 
 local function LoadSkinLog()
-	if(not E.private.addOnSkins.ZOMGBuffs) then return; end
+	if not E.private.addOnSkins.ZOMGBuffs then return end
 
 	local ZL = ZOMGBuffs:GetModule("ZOMGLog")
 	if not ZL then return end
@@ -140,6 +139,6 @@ local function LoadSkinLog()
 	end, true)
 end
 
-S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", LoadSkin);
-S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", LoadSkinBM);
-S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", LoadSkinLog);
+S:AddCallbackForAddon("ZOMGBuffs", "ZOMGBuffs", LoadSkin)
+S:AddCallbackForAddon("ZOMGBuffs_BlessingsManager", "ZOMGBuffs_BlessingsManager", LoadSkinBM)
+S:AddCallbackForAddon("ZOMGBuffs_Log", "ZOMGBuffs_Log", LoadSkinLog)
