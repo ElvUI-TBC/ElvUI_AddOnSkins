@@ -24,8 +24,6 @@ local addonList = {
 	"Atlas",
 	"FlightMap",
 	"WeakAuras",
-	"Overachiever",
-	"OpenGF",
 	"KHunterTimers",
 	"TellMeWhen",
 	"GearScore",

@@ -15,7 +15,6 @@
 	<Script file="atlas.lua"/>
 	<Script file="flightMap.lua"/>
 	<Script file="weakAuras.lua"/>
-	<Script file="openGF.lua"/>
 	<Script file="kHunterTimers.lua"/>
 	<Script file="tellMeWhen.lua"/>
 	<Script file="gearScore.lua"/>

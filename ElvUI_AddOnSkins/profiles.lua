@@ -44,7 +44,6 @@ V.addOnSkins = {
 	Atlas = true,
 	FlightMap = true,
 	WeakAuras = true,
-	OpenGF = true,
 	KHunterTimers = true,
 	TellMeWhen = true,
 	GearScore = true,
