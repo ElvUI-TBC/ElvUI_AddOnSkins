@@ -136,9 +136,9 @@ function module:Toggle()
 	end
 
 	if(E.db.addOnSkins.embed.isShow) then
---		self.left:Show();
+		self.left:Show();
 	else
---		self.left:Hide();
+		self.left:Hide();
 	end
 end
 
