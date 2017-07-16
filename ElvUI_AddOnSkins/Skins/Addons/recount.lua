@@ -16,7 +16,11 @@ local function LoadSkin()
 		backdrop:SetFrameLevel(frame:GetFrameLevel() - 1)
 		backdrop:Point("BOTTOMLEFT", frame, E.PixelMode and 1 or 0, E.PixelMode and 1 or 0)
 		backdrop:Point("TOPRIGHT", frame, E.PixelMode and -1 or 0, -(E.PixelMode and 31 or 30))
-		backdrop:SetTemplate("Transparent")
+		if frame == Recount.MainWindow then
+			backdrop:SetTemplate("Default")
+		else
+			backdrop:SetTemplate("Transparent")
+		end
 		frame.backdrop = backdrop
 
 		local header = CreateFrame("Frame", nil, backdrop)
