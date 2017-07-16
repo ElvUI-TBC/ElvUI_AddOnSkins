@@ -6,10 +6,9 @@
 ## RequiredDeps: ElvUI
 
 locales\load_locales.xml
-profiles.lua
+Settings\Load_Settings.xml
 core.lua
-utils.lua
-libs.lua
-addons\load_addons.xml
-blizzard\load_blizzard.xml
-modules\load_modules.xml
+Skins\Load_Skins.xml
+Addons\load_addons.xml
+Blizzard\load_blizzard.xml
+Modules\load_modules.xml

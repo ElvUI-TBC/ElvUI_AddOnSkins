@@ -86,12 +86,16 @@ end
 function AS:RegisterAddonOption(AddonName, options)
 	if select(6, GetAddOnInfo(AddonName)) == "MISSING" then return end
 
-	options.args.addOns.args[AddonName] = {
+	options.args.skins.args.addOns.args[AddonName] = {
 		type = "toggle",
 		name = AddonName,
 		desc = L["TOGGLESKIN_DESC"],
 		hidden = function() return not self:CheckAddOn(AddonName) end
 	}
+end
+
+local function ColorizeSettingName(settingName)
+	return format("|cff1784d1%s|r", settingName)
 end
 
 local positionValues = {
@@ -110,40 +114,68 @@ local function getOptions()
 	local options = {
 		order = 50,
 		type = "group",
-		name = L["AddOn Skins"],
+		name = ColorizeSettingName(L["AddOn Skins"]),
+		childGroups = "tab",
 		args = {
-			addOns = {
+			skins = {
 				order = 1,
 				type = "group",
-				name = L["AddOn Skins"],
-				guiInline = true,
-				get = function(info) return E.private.addOnSkins[info[#info]]; end,
-				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-				args = {}
-			},
-			blizzard = {
-				order = 2,
-				type = "group",
-				name = L["Blizzard Skins"],
-				guiInline = true,
-				get = function(info) return E.private.addOnSkins[info[#info]]; end,
-				set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+				name = L["Skins"],
+				childGroups = "tab",
 				args = {
-					Blizzard_WorldStateFrame = {
-						type = "toggle",
-						name = "WorldStateFrame",
-						desc = L["TOGGLESKIN_DESC"],
+					header = {
+						order = 1,
+						type = "header",
+						name = L["Skins"]
 					},
-				},
+					addOns = {
+						order = 1,
+						type = "group",
+						name = L["AddOn Skins"],
+						get = function(info) return E.private.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						args = {
+							header = {
+								order = 1,
+								type = "header",
+								name = L["AddOn Skins"]
+							}
+						}
+					},
+					blizzard = {
+						order = 2,
+						type = "group",
+						name = L["Blizzard Skins"],
+						get = function(info) return E.private.addOnSkins[info[#info]]; end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						args = {
+							header = {
+								order = 1,
+								type = "header",
+								name = L["Blizzard Skins"]
+							},
+							Blizzard_WorldStateFrame = {
+								type = "toggle",
+								name = "WorldStateFrame",
+								desc = L["TOGGLESKIN_DESC"],
+							}
+						}
+					}
+				}
 			},
 			misc = {
 				order = 3,
 				type = "group",
 				name = L["Misc Options"],
-				guiInline = true,
+				childGroups = "tab",
 				args = {
-					dbmGroup = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Misc Options"],
+					},
+					dbmGroup = {
+						order = 2,
 						type = "group",
 						name = L["DBM"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -184,7 +216,7 @@ local function getOptions()
 						}
 					},
 					waGroup = {
-						order = 2,
+						order = 3,
 						type = "group",
 						name = L["WeakAuras"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
@@ -204,7 +236,7 @@ local function getOptions()
 						}
 					},
 					chatBarGroup = {
-						order = 3,
+						order = 4,
 						type = "group",
 						name = L["ChatBar"],
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,

@@ -17,7 +17,7 @@ local function LoadSkin()
 		_G["WorldStateCaptureBar"..id.."LeftBar"]:SetVertexColor(0, .44, .87);
 
 		bar.leftBarIcon = bar:CreateTexture("$parentLeftBarIcon", "ARTWORK");
-		bar.leftBarIcon:SetTexture("Interface\\AddOns\\ElvUI_AddOnSkins\\media\\alliance");
+		bar.leftBarIcon:SetTexture("Interface\\AddOns\\ElvUI_AddOnSkins\\Media\\alliance");
 		bar.leftBarIcon:SetPoint("RIGHT", bar, "LEFT", 0, 0);
 		bar.leftBarIcon:SetSize(32, 32);
 
@@ -28,7 +28,7 @@ local function LoadSkin()
 		_G["WorldStateCaptureBar"..id.."RightBar"]:SetVertexColor(.77, .12, .23);
 
 		bar.rightBarIcon = bar:CreateTexture("$parentRightBarIcon", "ARTWORK");
-		bar.rightBarIcon:SetTexture("Interface\\AddOns\\ElvUI_AddOnSkins\\media\\horde");
+		bar.rightBarIcon:SetTexture("Interface\\AddOns\\ElvUI_AddOnSkins\\Media\\horde");
 		bar.rightBarIcon:SetPoint("LEFT", bar, "RIGHT", 0, 0);
 		bar.rightBarIcon:SetSize(32, 32);
 
