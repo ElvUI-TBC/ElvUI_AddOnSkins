@@ -66,6 +66,7 @@ local addonList = {
 	"EPGP_LootMaster",
 	"RaidRoll",
 	"Cartographer",
+	"EnergyWatch_v2",
 }
 
 AS.addOns = {};
