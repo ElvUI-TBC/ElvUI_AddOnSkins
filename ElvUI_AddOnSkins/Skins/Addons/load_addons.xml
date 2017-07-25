@@ -55,4 +55,5 @@
 	<Script file="raidRoll.lua"/>
 	<Script file="cartographer.lua"/>
 	<Script file="EnergyWatch_v2.lua"/>
+	<Script file="cartographer3.lua"/>
 </Ui>

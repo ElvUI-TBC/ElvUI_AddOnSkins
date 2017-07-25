@@ -67,6 +67,7 @@ local addonList = {
 	"RaidRoll",
 	"Cartographer",
 	"EnergyWatch_v2",
+	"Cartographer3",
 }
 
 AS.addOns = {};
