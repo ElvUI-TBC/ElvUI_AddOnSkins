@@ -5,6 +5,7 @@ local AS = E:GetModule("AddOnSkins")
 -- Cartographer 2.2
 
 local function LockButtonSkin()
+	if not E.private.addOnSkins.Cartographer then return end
 	if not Cartographer_LookNFeel then return end
 
 	local function SkinLockButton(button)
@@ -104,6 +105,7 @@ local function LockButtonSkin()
 end
 
 local function NoteFrameSkin()
+	if not E.private.addOnSkins.Cartographer then return end
 	if not Cartographer_Notes then return end
 
 	local function SkinNoteFrame()
@@ -136,20 +138,18 @@ local function NoteFrameSkin()
 		frame.isSkinned = true
 	end
 
-	if Cartographer_Notes then
-		S:SecureHook(Cartographer_Notes, "OpenNewNoteFrame", function(self)
-			SkinNoteFrame()
+	S:SecureHook(Cartographer_Notes, "OpenNewNoteFrame", function(self)
+		SkinNoteFrame()
 
-			S:Unhook(self, "OpenNewNoteFrame")
-			S:Unhook(self, "ShowEditDialog")
-		end)
-		S:SecureHook(Cartographer_Notes, "ShowEditDialog", function(self)
-			SkinNoteFrame()
+		S:Unhook(self, "OpenNewNoteFrame")
+		S:Unhook(self, "ShowEditDialog")
+	end)
+	S:SecureHook(Cartographer_Notes, "ShowEditDialog", function(self)
+		SkinNoteFrame()
 
-			S:Unhook(self, "OpenNewNoteFrame")
-			S:Unhook(self, "ShowEditDialog")
-		end)
-	end
+		S:Unhook(self, "OpenNewNoteFrame")
+		S:Unhook(self, "ShowEditDialog")
+	end)
 end
 
 local function LoadSkin()
@@ -162,10 +162,10 @@ local function LoadSkin()
 	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
 	E:GetModule("AddOnSkins"):SkinLibrary("LibRockConfig-1.0")
 
-	if not AS:IsAddonExist("Cartographer_Notes") then
+	if not AS:IsAddonExist("Cartographer_LookNFeel") then
 		LockButtonSkin()
 	end
-	if not AS:IsAddonExist("Cartographer_LookNFeel") then
+	if not AS:IsAddonExist("Cartographer_Notes") then
 		NoteFrameSkin()
 	end
 end
