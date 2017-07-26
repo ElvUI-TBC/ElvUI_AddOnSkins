@@ -12,8 +12,10 @@ local function LoadSkin()
 	for i = 1, 6 do
 		_G["DBMOptionsFramePage" .. i]:StripTextures()
 	end
+
 	DBMOptionsFrame:StripTextures()
 	DBMOptionsFrame:CreateBackdrop("Transparent")
+	DBMOptionsFrame:Point("TOPLEFT", DBMBossModFrame, "TOPRIGHT", -29, -12)
 
 	DBM_StatusBarTimerDragBar:SetStatusBarTexture(E.media.glossTex)
 	E:RegisterStatusBar(DBM_StatusBarTimerDragBar)
@@ -147,6 +149,7 @@ local function LoadSkin()
 
 	for i = 1, 6 do
 		S:HandleTab(_G["DBMOptionsFrameTab" .. i])
+		S:HandleTab(_G["DBMBossModFrameTab" .. i])
 	end
 end
 
