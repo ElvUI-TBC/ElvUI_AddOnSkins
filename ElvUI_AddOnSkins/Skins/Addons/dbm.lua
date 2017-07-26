@@ -11,9 +11,9 @@ local function LoadSkin()
 
 	for i = 1, 6 do
 		_G["DBMOptionsFramePage" .. i]:StripTextures()
-		_G["DBMOptionsFramePage" .. i]:SetTemplate("Transparent")
-		DBMOptionsFrame:StripTextures()
 	end
+	DBMOptionsFrame:StripTextures()
+	DBMOptionsFrame:CreateBackdrop("Transparent")
 
 	DBM_StatusBarTimerDragBar:SetStatusBarTexture(E.media.glossTex)
 	E:RegisterStatusBar(DBM_StatusBarTimerDragBar)
