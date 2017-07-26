@@ -1,165 +1,153 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G, _ = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.DBM) then return; end
+	if not E.private.addOnSkins.DBM then return end
 
-	local db = E.db.addOnSkins;
-	local function SkinBars(self)
-		if(not db) then return; end
-		for bar in self:GetBarIterator() do
-			if(not bar.injected) then
-				hooksecurefunc(bar, "ApplyStyle", function()
-					local frame = bar.frame;
-					local tbar = _G[frame:GetName() .. "Bar"];
-					local icon1 = _G[frame:GetName() .. "BarIcon1"];
-					local icon2 = _G[frame:GetName() .. "BarIcon2"];
-					local name = _G[frame:GetName() .. "BarName"];
-					local timer = _G[frame:GetName() .. "BarTimer"];
-					local spark = _G[frame:GetName() .. "BarSpark"];
+	DBMBossModFrame:StripTextures()
+	DBMBossModFrame:CreateBackdrop("Transparent")
+	DBMBossModFrame.backdrop:Point("TOPLEFT", 10, -12)
+	DBMBossModFrame.backdrop:Point("BOTTOMRIGHT", -31, 75)
 
-					spark:Kill()
-
-					if(not icon1.overlay) then
-						icon1.overlay = CreateFrame("Frame", "$parentIcon1Overlay", tbar);
-						icon1.overlay:SetTemplate("Default");
-						icon1.overlay:SetFrameLevel(1);
-						icon1.overlay:Point("BOTTOMRIGHT", frame, "BOTTOMLEFT", -(E.Border + E.Spacing), 0);
-
-						local backdroptex = icon1.overlay:CreateTexture(nil, "BORDER");
-						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
-						backdroptex:SetInside(icon1.overlay);
-						backdroptex:SetTexCoord(unpack(E.TexCoords));
-					end
-
-					if(not icon2.overlay) then
-						icon2.overlay = CreateFrame("Frame", "$parentIcon2Overlay", tbar);
-						icon2.overlay:SetTemplate("Default");
-						icon2.overlay:SetFrameLevel(1);
-						icon2.overlay:Point("BOTTOMLEFT", frame, "BOTTOMRIGHT", (E.Border + E.Spacing), 0);
-
-						local backdroptex = icon2.overlay:CreateTexture(nil, "BORDER");
-						backdroptex:SetTexture([=[Interface\Icons\Spell_Nature_WispSplode]=]);
-						backdroptex:SetInside(icon2.overlay);
-						backdroptex:SetTexCoord(unpack(E.TexCoords));
-					end
-
-					if(icon1.overlay) then
-						icon1.overlay:Size(db.dbmBarHeight);
-						icon1:SetTexCoord(unpack(E.TexCoords));
-						icon1:ClearAllPoints();
-						icon1:SetInside(icon1.overlay);
-					end
-
-					if(icon2.overlay) then
-						icon2.overlay:Size(db.dbmBarHeight);
-						icon2:SetTexCoord(unpack(E.TexCoords));
-						icon2:ClearAllPoints();
-						icon2:SetInside(icon2.overlay);
-					end
-
-					tbar:SetInside(frame);
-
-					frame:Height(db.dbmBarHeight);
-					frame:SetTemplate("Default");
-
-					name:ClearAllPoints();
-					name:Point("LEFT", frame, "LEFT", 4, 0.5);
-					name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-
-					timer:ClearAllPoints();
-					timer:Point("RIGHT", frame, "RIGHT", -4, 0.5);
-					timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
-
-					if(bar.owner.options.IconLeft) then icon1.overlay:Show(); else icon1.overlay:Hide(); end
-					if(bar.owner.options.IconRight) then icon2.overlay:Show(); else icon2.overlay:Hide(); end
-
-					bar.injected = true;
-				end);
-				bar:ApplyStyle();
-			end
-		end
+	for i = 1, 6 do
+		_G["DBMOptionsFramePage" .. i]:StripTextures()
+		_G["DBMOptionsFramePage" .. i]:SetTemplate("Transparent")
+		DBMOptionsFrame:StripTextures()
 	end
 
-	local SkinBoss = function()
-		local count = 1;
-		while (_G[format("DBM_BossHealth_Bar_%d", count)]) do
-			local bar = _G[format("DBM_BossHealth_Bar_%d", count)];
-			local barname = bar:GetName();
-			local background = _G[barname .. "BarBorder"];
-			local progress = _G[barname .. "Bar"];
-			local name = _G[barname .. "BarName"];
-			local timer = _G[barname .. "BarTimer"];
-			local pointa, anchor, pointb, _, _ = bar:GetPoint();
+	DBM_StatusBarTimerDragBar:SetStatusBarTexture(E.media.glossTex)
+	E:RegisterStatusBar(DBM_StatusBarTimerDragBar)
+	DBM_StatusBarTimerDragBar:CreateBackdrop("Transparent")
+	DBM_StatusBarTimerDrag2Bar:SetStatusBarTexture(E.media.glossTex)
+	E:RegisterStatusBar(DBM_StatusBarTimerDrag2Bar)
+	DBM_StatusBarTimerDrag2Bar:CreateBackdrop("Transparent")
 
-			if not pointa then return; end
-			bar:ClearAllPoints();
+	S:HandleDropDownBox(DBMBossModFrameDropDownLevel)
+	DBMBossModFrameDropDownLevel:ClearAllPoints()
+	DBMBossModFrameDropDownLevel:Point("TOPLEFT", "DBMBossModFrame", "TOPLEFT", 117, -42)
+	S:HandleDropDownBox(DBMOptionsFramePage2StatusBarDesignDropDown)
+	DBMOptionsFramePage2StatusBarDesignDropDown:Point("TOPRIGHT", -16, -32)
+	S:HandleDropDownBox(DBMOptionsFramePage3StatusBarDesignDropDown)
+	DBMOptionsFramePage3StatusBarDesignDropDown:Point("TOPRIGHT", -16, -32)
+	S:HandleDropDownBox(DBMOptionsFramePage4RaidWarningDropDown)
+	DBMOptionsFramePage4RaidWarningDropDown:Point("TOPLEFT", 46, -48)
+	DBMOptionsFramePage4RaidWarningYSlider:Width(200)
+	DBMOptionsFramePage4RaidWarningXSlider:Width(200)
 
-			bar:Height(E.db.addOnSkins.dbmBarHeight);
-			bar:SetTemplate("Transparent");
+	S:HandleCheckBox(DBMOptionsFramePage1OptionSyncEnable)
+	S:HandleCheckBox(DBMOptionsFramePage1OptionSyncOldEnable)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonEnableAggroAlert)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonSoundAggro)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonFlashAggro)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonShakeAggro)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonSpecialWarningAggro)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonLocalWarningAggro)
+	S:HandleCheckBox(DBMOptionsFramePage1ButtonPartyAggro)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonEnableStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonFillUpStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonFliptOverStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonFlashBarOnEnd)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonAutoColorBars)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonShowIcon)
+	S:HandleCheckBox(DBMOptionsFramePage2ButtonShowIconRight)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonEnableStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonFillUpStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonFliptOverStatusBars)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonFlashBarOnEnd)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonAutoColorBars)
+	S:HandleCheckBox(DBMOptionsFramePage3ButtonShowIconRight)
+	S:HandleCheckBox(DBMOptionsFramePage5OptionSpecialWarnings)
+	S:HandleCheckBox(DBMOptionsFramePage5OptionShakeScreenEffects)
+	S:HandleCheckBox(DBMOptionsFramePage5OptionFlashEffects)
+	S:HandleCheckBox(DBMOptionsFramePage5ShowCombatInformations)
+	S:HandleCheckBox(DBMOptionsFramePage5ShowCombatSyncInfo)
+	S:HandleCheckBox(DBMOptionsFramePage6AutoRespondEnable)
+	S:HandleCheckBox(DBMOptionsFramePage6AutoRespondShowWhispers)
+	S:HandleCheckBox(DBMOptionsFramePage6AutoRespondInformUser)
+	S:HandleCheckBox(DBMOptionsFramePage6AutoRespondHideReply)
+	S:HandleCheckBox(DBMOptionsFramePage6EnableStatusOption)
+	S:HandleCheckBox(DBMOptionsFramePage6LoadGUIOnLogin)
 
-			background:SetNormalTexture(nil);
+	S:HandleButton(DBMOptionsFramePage1DistanceFrame)
+	S:HandleButton(DBMOptionsFramePage1CheckRangeButton)
+	S:HandleButton(DBMOptionsFramePage1SyncSystemVersionCheckButton)
+	S:HandleButton(DBMOptionsFramePage1ButtonTestAggroAlert)
+	S:HandleButton(DBMOptionsFramePage1ButtonResetAggroAlert)
+	S:HandleButton(DBMOptionsFramePage2PizzaTimerStartButton)
+	S:HandleButton(DBMOptionsFramePage2ButtonOldDefaults)
+	S:HandleButton(DBMOptionsFramePage2ButtonSetToDefaults)
+	S:HandleButton(DBMOptionsFramePage2ButtonMoveableBar)
+	S:HandleButton(DBMOptionsFramePage3ButtonMoveableBar)
+	S:HandleButton(DBMOptionsFramePage3ButtonSetToDefaults)
+	S:HandleButton(DBMOptionsFramePage4TestSoundButton)
+	DBMOptionsFramePage4TestSoundButton:ClearAllPoints()
+	DBMOptionsFramePage4TestSoundButton:Point("TOPRIGHT", -16, -42)
+	S:HandleButton(DBMOptionsFramePage4ShowMessageButton)
+	S:HandleButton(DBMOptionsFramePage4ResetButton)
+	S:HandleButton(DBMOptionsFramePage4ResetColorButton)
+	S:HandleButton(DBMOptionsFramePage5TestWarningButton)
+	S:HandleButton(DBMOptionsFramePage5TestShakeButton)
+	S:HandleButton(DBMOptionsFramePage5TestFlashButton)
+	S:HandleButton(DBMBossModFrameLoadBossModsButton)
+	DBMBossModFrameLoadBossModsButton:Point("TOPLEFT", 16, -42)
+	DBMBossModFrameLoadBossModsButton:Width(80)
+	S:HandleButton(DBMBossModFrameOptionsButton)
+	DBMBossModFrameOptionsButton:Point("TOPRIGHT", -38, -42)
+	DBMBossModFrameOptionsButton:Width(80)
+	S:HandleButton(DBMBossModListFrameLoadAddOns)
 
-			progress:SetStatusBarTexture(E["media"].normTex);
-			progress:ClearAllPoints();
-			progress:SetInside(bar);
+	S:HandleSliderFrame(DBMOptionsFramePage1MiniMapPositionSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage1MiniMapRadiusSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage2CSOpacitySlider)
+	S:HandleSliderFrame(DBMOptionsFramePage2StatusBarScaleSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage2StatusBarWidthSlider)
+	DBMOptionsFramePage2StatusBarWidthSlider:Point("TOPLEFT", "DBMOptionsFramePage2StatusBarScaleSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage2StatusBarTextSizeSlider)
+	DBMOptionsFramePage2StatusBarTextSizeSlider:Point("TOPLEFT", "DBMOptionsFramePage2StatusBarWidthSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage2StatusBarCountSlider)
+	DBMOptionsFramePage2StatusBarCountSlider:Point("TOPLEFT", "DBMOptionsFramePage2StatusBarTextSizeSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage3CSOpacitySlider)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarScaleSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarWidthSlider)
+	DBMOptionsFramePage3StatusBarWidthSlider:Point("TOPLEFT", "DBMOptionsFramePage3StatusBarScaleSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarTextSizeSlider)
+	DBMOptionsFramePage3StatusBarTextSizeSlider:Point("TOPLEFT", "DBMOptionsFramePage3StatusBarWidthSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarEnlargeAfterSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarEnlargeAfterPercentSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage3StatusBarEnlargeMaxTimeSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage4RaidWarningYSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage4RaidWarningXSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage4SelfWarningFontSizeSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage4tSelfWarningYSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage4tSelfWarningXSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage5DurationSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage5FadeTimeSlider)
+	DBMOptionsFramePage5FadeTimeSlider:Point("TOPLEFT", "DBMOptionsFramePage5DurationSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage5TextSizeSlider)
+	DBMOptionsFramePage5TextSizeSlider:Point("TOPLEFT", "DBMOptionsFramePage5FadeTimeSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage5ShakeDurationSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage5ShakeIntensitySlider)
+	DBMOptionsFramePage5ShakeIntensitySlider:Point("TOPLEFT", "DBMOptionsFramePage5ShakeDurationSlider", "TOPLEFT", 0, -16)
+	S:HandleSliderFrame(DBMOptionsFramePage5FlashDurationSlider)
+	S:HandleSliderFrame(DBMOptionsFramePage5FlashesSlider)
+	DBMOptionsFramePage5FlashesSlider:Point("TOPLEFT", "DBMOptionsFramePage5FlashDurationSlider", "TOPLEFT", 0, -16)
 
-			name:ClearAllPoints();
-			name:Point("LEFT", bar, "LEFT", 4, 0);
-			name:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
+	S:HandleEditBox(DBMOptionsFramePage2PizzaBoxName)
+	S:HandleEditBox(DBMOptionsFramePage2PizzaBoxHour)
+	S:HandleEditBox(DBMOptionsFramePage2PizzaBoxMin)
+	S:HandleEditBox(DBMOptionsFramePage2PizzaBoxSec)
+	S:HandleEditBox(DBMOptionsFramePage6AutoRespondBusyMessage)
 
-			timer:ClearAllPoints();
-			timer:Point("RIGHT", bar, "RIGHT", -4, 0)
-			timer:SetFont(E.LSM:Fetch("font", db.dbmFont), db.dbmFontSize, db.dbmFontOutline);
+	S:HandleCloseButton(DBMBossModFrameCloseButton)
+	S:HandleCloseButton(DBMOptionsFrameCloseButton)
 
-			if(DBM.Options.HealthFrameGrowUp) then
-				bar:Point(pointa, anchor, pointb, 0, count == 1 and 8 or 4);
-			else
-				bar:Point(pointa, anchor, pointb, 0, -(count == 1 and 8 or 4));
-			end
-			count = count + 1;
-		end
+	for i = 1, 4 do
+		S:HandleButton(_G["DBMBossModListFrameButton" .. i])
 	end
 
-	local function SkinRange()
-		DBMRangeCheck:SetTemplate("Transparent");
+	for i = 1, 6 do
+		S:HandleTab(_G["DBMOptionsFrameTab" .. i])
 	end
-
-	hooksecurefunc(DBT, "CreateBar", SkinBars);
-	hooksecurefunc(DBM.BossHealth, "Show", SkinBoss);
-	hooksecurefunc(DBM.BossHealth, "AddBoss", SkinBoss);
-	hooksecurefunc(DBM.BossHealth, "UpdateSettings", SkinBoss);
-	hooksecurefunc(DBM.RangeCheck, "Show", SkinRange);
-
-	S:RawHook("RaidNotice_AddMessage", function(noticeFrame, textString, colorInfo)
-		if(string.find(textString, " |T")) then
-			textString = string.gsub(textString, "(:12:12)", ":18:18:0:0:64:64:5:59:5:59");
-		end
-
-		return S.hooks.RaidNotice_AddMessage(noticeFrame, textString, colorInfo)
-	end, true)
 end
 
-S:AddCallbackForAddon("DBM-Core", "DBM-Core", LoadSkin);
-
-local function LoadSkin2()
-	if(not E.private.addOnSkins.DBM) then return; end
-
-	DBM_GUI_OptionsFrame:HookScript("OnShow", function(self)
-		self:StripTextures();
-		self:SetTemplate("Transparent");
-		DBM_GUI_OptionsFrameBossMods:StripTextures();
-		DBM_GUI_OptionsFrameBossMods:SetTemplate("Transparent");
-		DBM_GUI_OptionsFrameDBMOptions:StripTextures();
-		DBM_GUI_OptionsFrameDBMOptions:SetTemplate("Transparent");
-		DBM_GUI_OptionsFramePanelContainer:SetTemplate("Transparent");
-	end);
-
-	S:HandleButton(DBM_GUI_OptionsFrameOkay);
-	S:HandleScrollBar(DBM_GUI_OptionsFramePanelContainerFOVScrollBar);
-
-	S:HandleTab(DBM_GUI_OptionsFrameTab1);
-	S:HandleTab(DBM_GUI_OptionsFrameTab2);
-end
-
-S:AddCallbackForAddon("DBM-GUI", "DBM-GUI", LoadSkin2);
+S:AddCallbackForAddon("DBM_API", "DBM_API", LoadSkin)

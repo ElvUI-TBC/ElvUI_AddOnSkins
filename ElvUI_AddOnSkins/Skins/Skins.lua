@@ -18,7 +18,7 @@ function AS:Desaturate(frame, point)
 		end
 	end
 
-	frame:HookScript("OnUpdate", function(self)
+	frame:HookScript2("OnUpdate", function(self)
 		if self:GetNormalTexture() then
 			self:GetNormalTexture():SetDesaturated(true)
 		end
