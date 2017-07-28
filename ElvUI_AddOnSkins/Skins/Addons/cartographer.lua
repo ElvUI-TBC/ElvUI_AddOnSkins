@@ -152,6 +152,26 @@ local function NoteFrameSkin()
 	end)
 end
 
+local function QuestInfoSkin()
+	if not E.private.addOnSkins.Cartographer then return end
+	if not Cartographer_QuestInfo then return end
+
+	local function SkinQuestInfo()
+		local tooltip = _G["CQI_Tooltip"]
+		if tooltip.isSkinned then return end
+
+		tooltip:StripTextures()
+		tooltip:CreateBackdrop("Transparent")
+
+		local button = _G["QuestInfoButton"]
+		if button.isSkinned then return end
+
+		S:HandleButton(button)
+	end
+
+	SkinQuestInfo()
+end
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Cartographer then return end
 
@@ -168,6 +188,9 @@ local function LoadSkin()
 	if not AS:IsAddonExist("Cartographer_Notes") then
 		NoteFrameSkin()
 	end
+	if not AS:IsAddonExist("Cartographer_QuestInfo") then
+		QuestInfoSkin()
+	end
 end
 
 S:AddCallbackForAddon("Cartographer", "Cartographer", LoadSkin)
@@ -177,4 +200,7 @@ if AS:IsAddonExist("Cartographer_LookNFeel") then
 end
 if AS:IsAddonExist("Cartographer_Notes") then
 	S:AddCallbackForAddon("Cartographer_Notes", "Cartographer_Notes", NoteFrameSkin)
+end
+if AS:IsAddonExist("Cartographer_QuestInfo") then
+	S:AddCallbackForAddon("Cartographer_QuestInfo", "Cartographer_QuestInfo", QuestInfoSkin)
 end
