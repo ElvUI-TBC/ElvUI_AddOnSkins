@@ -68,6 +68,7 @@ local addonList = {
 	"Cartographer",
 	"EnergyWatch_v2",
 	"Cartographer3",
+	"QuestHelper",
 }
 
 AS.addOns = {};

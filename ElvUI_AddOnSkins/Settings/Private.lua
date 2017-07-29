@@ -58,6 +58,7 @@ V.addOnSkins = {
 	Cartographer = true,
 	EnergyWatch_v2 = true,
 	Cartographer3 = true,
+	QuestHelper = true,
 
 	Blizzard_WorldStateFrame = true,
 }

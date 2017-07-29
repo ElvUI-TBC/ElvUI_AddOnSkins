@@ -56,4 +56,5 @@
 	<Script file="cartographer.lua"/>
 	<Script file="EnergyWatch_v2.lua"/>
 	<Script file="cartographer3.lua"/>
+	<Script file="questHelper.lua"/>
 </Ui>
