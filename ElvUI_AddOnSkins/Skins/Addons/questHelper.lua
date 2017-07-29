@@ -13,7 +13,7 @@ local function LoadSkin()
 
 	-- World Map Button
 	local mapButton = QuestHelper_Pref.map_button
-	if QuestHelper_Pref.map_button then
+	if mapButton then
 		local button = QuestHelperWorldMapButton
 		button:StripTextures()
 		button:Width(112)
