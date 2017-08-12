@@ -13,6 +13,7 @@ V.addOnSkins = {
 	Clique = true,
 	FloAspectBar = true,
 	FloTotemBar = true,
+	Spy = true,
 	AtlasLoot = true,
 	Atlas = true,
 	FlightMap = true,
