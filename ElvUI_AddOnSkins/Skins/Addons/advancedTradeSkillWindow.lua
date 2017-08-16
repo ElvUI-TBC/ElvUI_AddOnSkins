@@ -5,7 +5,7 @@ local _G = _G
 local ipairs = ipairs
 local find = string.find
 
--- AdvancedTradeSkillWindow 0.7.8
+-- AdvancedTradeSkillWindow v0.6.9 (TBC)
 
 local function LoadSkin()
 	if(not E.private.addOnSkins.AdvancedTradeSkillWindow) then return; end
@@ -53,7 +53,6 @@ local function LoadSkin()
 		"ATSWNameSortButton",
 		"ATSWDifficultySortButton",
 		"ATSWCustomSortButton",
-		"ATSWOnlyCreatableButton",
 		-- Options
 		"ATSWOFUnifiedCounterButton",
 		"ATSWOFSeparateCounterButton",
@@ -98,29 +97,33 @@ local function LoadSkin()
 	}
 
 	for _, scrollBar in ipairs(scrollBars) do
-		_G[scrollBar]:GetParent():StripTextures()
-		S:HandleScrollBar(_G[scrollBar])
+    if scrollBar then
+      _G[scrollBar]:GetParent():StripTextures()
+      S:HandleScrollBar(_G[scrollBar])
+    end
 	end
 	for _, button in ipairs(buttons) do
-		S:HandleButton(_G[button])
+    if button then S:HandleButton(_G[button]) end
 	end
 	for _, checkBox in ipairs(checkBoxes) do
-		S:HandleCheckBox(_G[checkBox])
+    if checkBox then S:HandleCheckBox(_G[checkBox]) end
 	end
 	for _, editBox in ipairs(editBoxes) do
-		S:HandleEditBox(_G[editBox])
+    if editBox then S:HandleEditBox(_G[editBox]) end
 	end
 	for _, dropDownBox in ipairs(dropDownBoxes) do
-		S:HandleDropDownBox(_G[dropDownBox])
+    if dropDownBox then S:HandleDropDownBox(_G[dropDownBox]) end
 	end
 	for _, closeButton in ipairs(closeButtons) do
-		S:HandleCloseButton(_G[closeButton], _G[closeButton]:GetParent().backdrop)
+    if closeButton then S:HandleCloseButton(_G[closeButton], _G[closeButton]:GetParent().backdrop) end
 	end
 	for _, statusBar in ipairs(statusBars) do
-		_G[statusBar]:StripTextures()
-		_G[statusBar]:CreateBackdrop()
-		_G[statusBar]:SetStatusBarTexture(E["media"].normTex)
-		E:RegisterStatusBar(_G[statusBar])
+    if statusBar then
+      _G[statusBar]:StripTextures()
+      _G[statusBar]:CreateBackdrop()
+      _G[statusBar]:SetStatusBarTexture(E["media"].normTex)
+      E:RegisterStatusBar(_G[statusBar])
+    end
 	end
 
 	ATSWScanDelayFrame:StripTextures()
@@ -159,27 +162,28 @@ local function LoadSkin()
 
 	for i = 1, 23 do
 		local button = _G["ATSWSkill" .. i]
+    if button then
+      button:SetNormalTexture("")
+      button.SetNormalTexture = E.noop
+      button:GetHighlightTexture():SetAlpha(0)
+      button:SetDisabledTexture("")
+      button.SetDisabledTexture = E.noop
 
-		button:SetNormalTexture("")
-		button.SetNormalTexture = E.noop
-		button:GetHighlightTexture():SetAlpha(0)
-		button:SetDisabledTexture("")
-		button.SetDisabledTexture = E.noop
+      button.Text = button:CreateFontString(nil, "OVERLAY")
+      button.Text:FontTemplate(nil, 22)
+      button.Text:Point("LEFT", 3, 0)
+      button.Text:SetText("+")
 
-		button.Text = button:CreateFontString(nil, "OVERLAY")
-		button.Text:FontTemplate(nil, 22)
-		button.Text:Point("LEFT", 3, 0)
-		button.Text:SetText("+")
-
-		hooksecurefunc(button, "SetNormalTexture", function(self, texture)
-			if find(texture, "MinusButton") then
-				self.Text:SetText("-")
-			elseif find(texture, "PlusButton") then
-				self.Text:SetText("+")
-			else
-				self.Text:SetText("")
-			end
-		end);
+      hooksecurefunc(button, "SetNormalTexture", function(self, texture)
+        if find(texture, "MinusButton") then
+          self.Text:SetText("-")
+        elseif find(texture, "PlusButton") then
+          self.Text:SetText("+")
+        else
+          self.Text:SetText("")
+        end
+      end);
+    end
 	end
 
 	ATSWExpandButtonFrame:StripTextures()
@@ -314,16 +318,6 @@ local function LoadSkin()
 
 	ATSWAddCategoryButton:ClearAllPoints()
 	ATSWAddCategoryButton:Point("LEFT", ATSWCSNewCategoryBox, "RIGHT", 3, 0)
-
-	-- ChatLink fix
-	ATSWTradeSkillLinkButton:SetScript("OnClick", function()
-		local ChatFrameEditBox = ChatEdit_ChooseBoxForSend()
-		if (not ChatFrameEditBox:IsShown()) then
-			ChatEdit_ActivateChat(ChatFrameEditBox)
-		end
-
-		ChatFrameEditBox:Insert(GetTradeSkillListLink())
-	end)
 end
 
 S:AddCallbackForAddon("AdvancedTradeSkillWindow", "AdvancedTradeSkillWindow", LoadSkin)
