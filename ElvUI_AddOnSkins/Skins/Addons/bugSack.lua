@@ -1,7 +1,7 @@
 local E, L, V, P, G, _ = unpack(ElvUI);
 local S = E:GetModule("Skins");
 
--- for BugSack v2.3.0 TBC
+-- BugSack v2.3.0.70977 (TBC)
 
 local function LoadSkin()
   if(not E.private.addOnSkins.BugSack) then return; end
