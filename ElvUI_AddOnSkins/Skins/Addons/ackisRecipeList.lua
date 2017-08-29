@@ -38,7 +38,7 @@ local function LoadSkin()
 	hooksecurefunc(addon, "ShowScanButton", function(self)
 		local parent = self.ScanButton:GetParent()
 		if parent == TradeSkillFrame or parent == CraftFrame then
-			self.ScanButton:SetFrameLevel(TradeSkillFrame:GetFrameLevel() + 10)
+			self.ScanButton:SetFrameLevel(parent:GetFrameLevel() + 10)
 
 			local point = select(2, self.ScanButton:GetPoint())
 			if point == TradeSkillFrameCloseButton or point == CraftFrameCloseButton then
