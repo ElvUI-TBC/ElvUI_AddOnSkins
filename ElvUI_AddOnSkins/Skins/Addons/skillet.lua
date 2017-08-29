@@ -48,14 +48,14 @@ local function LoadSkin()
 		buttonIcon:SetTemplate("Default");
 	end
 
-  if SkilletRankFrameBorder then SkilletRankFrameBorder:Hide() end
-  if SkilletRankFrame then
-    SkilletRankFrame:StripTextures()
-    SkilletRankFrame:CreateBackdrop()
-    SkilletRankFrame:SetStatusBarTexture(E["media"].normTex)
-    E:RegisterStatusBar(SkilletRankFrame)
-  end
-  
+	if SkilletRankFrameBorder then SkilletRankFrameBorder:Hide() end
+	if SkilletRankFrame then
+		SkilletRankFrame:StripTextures()
+		SkilletRankFrame:CreateBackdrop()
+		SkilletRankFrame:SetStatusBarTexture(E["media"].normTex)
+		E:RegisterStatusBar(SkilletRankFrame)
+	end
+
 	hooksecurefunc(Skillet, "CreateTradeSkillWindow", function()
 		SkilletFrame:StripTextures();
 
