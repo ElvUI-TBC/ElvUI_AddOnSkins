@@ -5,7 +5,7 @@ local ipairs = ipairs
 local select = select
 local hooksecurefunc = hooksecurefunc
 
--- AckisRecipeList r888
+-- AckisRecipeList r892
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AckisRecipeList then return end
@@ -48,14 +48,34 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(addon, "CreateFrame", function(self)
-		local point = select(2, self.Frame:GetPoint())
-		if point == TradeSkillFrame or point == CraftFrame then
-			if TradeTabs then
-				self.Frame:Point("RIGHT", point, "RIGHT", 389, 27)
-			else
-				self.Frame:Point("RIGHT", point, "RIGHT", 349, 27)
+    -- Anchors to Skillet window
+		if (Skillet and Skillet:IsActive() and not CraftIsPetTraining()) then
+			self.Frame:SetPoint("LEFT", SkilletFrame, "RIGHT", 0, 41)
+		-- Anchor to Beast window if skillet is active
+		elseif (Skillet and Skillet:IsActive() and CraftIsPetTraining()) then
+			self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 349, 27)
+		-- Anchor to ATSW
+		elseif (ATSWFrame and ATSWFrame:IsVisible()) then
+			self.Frame:SetPoint("RIGHT", ATSWFrame, "RIGHT", 349, 29)
+		-- Move the window over a bit for trade tabs to be seen
+		elseif (TradeTabs) then
+			if (self.SkillType == "Trade") then
+				self.Frame:SetPoint("RIGHT", TradeSkillFrame, "RIGHT", 389, 27)
+			-- Anchor to crafting window
+			elseif (self.SkillType == "Craft") then
+				self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 389, 27)
 			end
+		-- Anchor to trade skill window
+		elseif (self.SkillType == "Trade") then
+			self.Frame:SetPoint("RIGHT", TradeSkillFrame, "RIGHT", 349, 27)
+		-- Anchor to crafting window
+		elseif (self.SkillType == "Craft") then
+			self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 349, 27)
+		-- Nothing found to anchor, just put it up in the middle
+		else
+			self.Frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 		end
+    
 
 		if not self.db.profile.testgui then
 			if not self.Frame.isSkinned then
