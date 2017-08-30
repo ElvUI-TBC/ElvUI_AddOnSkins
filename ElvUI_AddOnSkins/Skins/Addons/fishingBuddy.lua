@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- FishingBuddy 0.9.8 p1
+-- FishingBuddy 0.9.8 p1 (WOTLK)
+-- FishingBuddy 0.9.4m (TBC)
 
 local function LoadSkin()
 	if(not E.private.addOnSkins.FishingBuddy) then return end
@@ -25,8 +26,12 @@ local function LoadSkin()
 
 	S:HandleButton(FishingLocationsSwitchButton)
 
-	S:HandleSliderFrame(FishingBuddyOption_MinimapRadSlider)
-	S:HandleSliderFrame(FishingBuddyOption_MinimapPosSlider)
+	if FishingBuddyOption_MinimapRadSlider then
+		S:HandleSliderFrame(FishingBuddyOption_MinimapRadSlider)
+	end
+	if FishingBuddyOption_MinimapPosSlider then
+		S:HandleSliderFrame(FishingBuddyOption_MinimapPosSlider)
+	end
 
 	S:HandleDropDownBox(FishingBuddyOption_OutfitMenu, 210)
 	S:HandleDropDownBox(FishingBuddyOption_EasyCastKeys, 140)

@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI);
 local S = E:GetModule("Skins");
 
+-- Skillet: v1.10 - r81029.6
+
 local function LoadSkin()
 	if(not E.private.addOnSkins.Skillet) then return; end
 
@@ -44,6 +46,14 @@ local function LoadSkin()
 	for i = 1, 7 do
 		local buttonIcon = _G["SkilletNotesButton" .. i .. "Icon"];
 		buttonIcon:SetTemplate("Default");
+	end
+
+	if SkilletRankFrameBorder then SkilletRankFrameBorder:Hide() end
+	if SkilletRankFrame then
+		SkilletRankFrame:StripTextures()
+		SkilletRankFrame:CreateBackdrop()
+		SkilletRankFrame:SetStatusBarTexture(E["media"].normTex)
+		E:RegisterStatusBar(SkilletRankFrame)
 	end
 
 	hooksecurefunc(Skillet, "CreateTradeSkillWindow", function()

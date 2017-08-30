@@ -153,23 +153,19 @@ local function NoteFrameSkin()
 end
 
 local function QuestInfoSkin()
-	if not E.private.addOnSkins.Cartographer then return end
-	if not Cartographer_QuestInfo then return end
+	hooksecurefunc(Cartographer_QuestInfo, "CreateCartoButton", function(self)
+		if not E.private.addOnSkins.Cartographer then return end
+		if not Cartographer_QuestInfo then return end
 
-	local function SkinQuestInfo()
 		local tooltip = _G["CQI_Tooltip"]
 		if tooltip.isSkinned then return end
-
 		tooltip:StripTextures()
 		tooltip:CreateBackdrop("Transparent")
 
 		local button = _G["QuestInfoButton"]
 		if button.isSkinned then return end
-
 		S:HandleButton(button)
-	end
-
-	SkinQuestInfo()
+	end)
 end
 
 local function LoadSkin()
