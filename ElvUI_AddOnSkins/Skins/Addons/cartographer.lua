@@ -153,6 +153,8 @@ local function NoteFrameSkin()
 end
 
 local function QuestInfoSkin()
+	if not E.private.addOnSkins.Cartographer then return end
+	if not Cartographer_QuestInfo then return end
 	hooksecurefunc(Cartographer_QuestInfo, "CreateCartoButton", function(self)
 		if not E.private.addOnSkins.Cartographer then return end
 		if not Cartographer_QuestInfo then return end
