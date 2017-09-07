@@ -60,6 +60,7 @@ V.addOnSkins = {
 	EnergyWatch_v2 = true,
 	Cartographer3 = true,
 	QuestHelper = true,
+	EQCompare = true,
 
 	Blizzard_WorldStateFrame = true,
 }
