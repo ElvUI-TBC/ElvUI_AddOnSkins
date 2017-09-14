@@ -22,14 +22,20 @@ local function LoadSkin()
 		if Omen.Options["Skin.Modules.Hide"] then
 			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "BOTTOMRIGHT")
 		else
-			self.BarList:Point("BOTTOMLEFT", self.ModuleList, "TOPLEFT", 0, -(E.PixelMode and 1 or 3))
-			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "TOPRIGHT", 0, -(E.PixelMode and 1 or 3))
+			self.BarList:Point("BOTTOMLEFT", self.ModuleList, "TOPLEFT", 0, - (E.PixelMode and 1 or 3))
+			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "TOPRIGHT", 0, - (E.PixelMode and 1 or 3))
 		end
 
 		if self.activeModule then
 			self.activeModule:UpdateLayout()
 		end
 		self:ResizeBars()
+
+		if self.Anchor then
+			self.Anchor:SetFrameStrata("MEDIUM")
+			self.Anchor:SetFrameLevel(35)
+		end
+
 	end)
 
 	Omen:UpdateDisplay()
