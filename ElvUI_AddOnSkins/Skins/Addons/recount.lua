@@ -59,7 +59,7 @@ local function LoadSkin()
 	Recount.MainWindow.ResetButton:Size(15)
 	Recount.MainWindow.ResetButton:Point("TOPRIGHT", Recount.MainWindow.LeftButton, "TOPLEFT", -3, 0)
 
-	Recount.MainWindow.FileButton:Point("RIGHT", Recount.MainWindow.ResetButton, "LEFT", -16, 0)
+	Recount.MainWindow.FileButton:Point("RIGHT", Recount.MainWindow.ResetButton, "LEFT", -3, 0)
 
 	local buttons = {
 		Recount.MainWindow.RightButton,
