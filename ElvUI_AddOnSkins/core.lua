@@ -70,6 +70,7 @@ local addonList = {
 	"Cartographer3",
 	"QuestHelper",
 	"EQCompare",
+	"QuestGuru",
 }
 
 AS.addOns = {};

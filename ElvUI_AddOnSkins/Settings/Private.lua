@@ -61,6 +61,7 @@ V.addOnSkins = {
 	Cartographer3 = true,
 	QuestHelper = true,
 	EQCompare = true,
+	QuestGuru = true,
 
 	Blizzard_WorldStateFrame = true,
 }
