@@ -48,34 +48,24 @@ local function LoadSkin()
 	end)
 
 	hooksecurefunc(addon, "CreateFrame", function(self)
-		-- Anchors to Skillet window
-		if (Skillet and Skillet:IsActive() and not CraftIsPetTraining()) then
-			self.Frame:SetPoint("LEFT", SkilletFrame, "RIGHT", 0, 41)
-			-- Anchor to Beast window if skillet is active
-		elseif (Skillet and Skillet:IsActive() and CraftIsPetTraining()) then
-			self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 349, 27)
-			-- Anchor to ATSW
-		elseif (ATSWFrame and ATSWFrame:IsVisible()) then
-			self.Frame:SetPoint("RIGHT", ATSWFrame, "RIGHT", 349, 29)
-			-- Move the window over a bit for trade tabs to be seen
-		elseif (TradeTabs) then
-			if (self.SkillType == "Trade") then
-				self.Frame:SetPoint("RIGHT", TradeSkillFrame, "RIGHT", 389, 27)
-				-- Anchor to crafting window
-			elseif (self.SkillType == "Craft") then
-				self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 389, 27)
+		if Skillet and Skillet:IsActive() then
+			if not CraftIsPetTraining() and SkilletFrame then
+				self.Frame:SetPoint("LEFT", SkilletFrame, "RIGHT", 0, 41)
+			elseif CraftIsPetTraining() then
+				self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 349, 27)
 			end
-			-- Anchor to trade skill window
-		elseif (self.SkillType == "Trade") then
-			self.Frame:SetPoint("RIGHT", TradeSkillFrame, "RIGHT", 349, 27)
-			-- Anchor to crafting window
-		elseif (self.SkillType == "Craft") then
-			self.Frame:SetPoint("RIGHT", CraftFrame, "RIGHT", 349, 27)
-			-- Nothing found to anchor, just put it up in the middle
+		elseif ATSWFrame and ATSWFrame:IsVisible() then
+			self.Frame:SetPoint("RIGHT", ATSWFrame, "RIGHT", 349, 29)
+		elseif self.SkillType then
+			local point = self.SkillType == "Trade" and TradeSkillFrame or CraftFrame
+			if TradeTabs then
+				self.Frame:Point("RIGHT", point, "RIGHT", 389, 27)
+			else
+				self.Frame:Point("RIGHT", point, "RIGHT", 349, 27)
+			end
 		else
 			self.Frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
 		end
-
 
 		if not self.db.profile.testgui then
 			if not self.Frame.isSkinned then
