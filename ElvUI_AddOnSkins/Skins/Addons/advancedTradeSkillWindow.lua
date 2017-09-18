@@ -45,6 +45,7 @@ local function LoadSkin()
 		"ATSWOptionsFrameOKButton",
 		-- Merchant Frame
 		"ATSWAutoBuyButton",
+		"ATSWEnchantButton",
 	}
 
 	local checkBoxes = {
