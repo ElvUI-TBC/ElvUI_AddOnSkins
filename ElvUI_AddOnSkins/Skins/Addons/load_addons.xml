@@ -59,4 +59,5 @@
 	<Script file="cartographer3.lua"/>
 	<Script file="questHelper.lua"/>
 	<Script file="eqCompare.lua"/>
+	<Script file="questGuru.lua"/>
 </Ui>

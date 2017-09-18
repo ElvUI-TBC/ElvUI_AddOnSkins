@@ -6,8 +6,8 @@ local function LoadSkin()
 	captureBarCreate = function(id)
 		local bar = _G["WorldStateCaptureBar"..id]
 		bar:SetSize(173, 16)
-		bar:ClearAllPoints()
-		bar:SetPoint("CENTER", UIParent, "CENTER", 0, 360)
+		--bar:ClearAllPoints()
+		--bar:SetPoint("CENTER", UIParent, "CENTER", 0, 360)
 		bar:CreateBackdrop("Default")
 
 		_G["WorldStateCaptureBar"..id.."LeftBar"]:SetSize(85, 16)

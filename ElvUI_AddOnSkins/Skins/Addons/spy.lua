@@ -4,10 +4,6 @@ local S = E:GetModule("Skins")
 -- Repository: https://github.com/fkndarthlol/Spy
 -- Version: 1.0
 
-local _G = _G
-
-local SquareButton_SetIcon = SquareButton_SetIcon
-
 local function LoadSkin()
 	if(not E.private.addOnSkins.Spy) then return end
 

@@ -155,18 +155,18 @@ end
 local function QuestInfoSkin()
 	if not E.private.addOnSkins.Cartographer then return end
 	if not Cartographer_QuestInfo then return end
-	hooksecurefunc(Cartographer_QuestInfo, "CreateCartoButton", function(self)
-		if not E.private.addOnSkins.Cartographer then return end
-		if not Cartographer_QuestInfo then return end
 
+	hooksecurefunc(Cartographer_QuestInfo, "CreateCartoButton", function(self)
 		local tooltip = _G["CQI_Tooltip"]
-		if tooltip.isSkinned then return end
-		tooltip:StripTextures()
-		tooltip:CreateBackdrop("Transparent")
+		if not tooltip.isSkinned then
+			tooltip:StripTextures()
+			tooltip:CreateBackdrop("Transparent")
+		end
 
 		local button = _G["QuestInfoButton"]
-		if button.isSkinned then return end
-		S:HandleButton(button)
+		if not button.isSkinned then
+			S:HandleButton(button)
+		end
 	end)
 end
 
