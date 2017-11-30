@@ -182,7 +182,7 @@ local function getOptions()
 					dbmGroup = {
 						order = 2,
 						type = "group",
-						name = L["DBM"],
+						name = "DBM",
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
 						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle(); DBM.BossHealth:UpdateSettings(); end,
 						disabled = function() return not AS:CheckAddOn("DBM_API"); end,
@@ -212,7 +212,7 @@ local function getOptions()
 								type = "select",
 								name = L["Font Outline"],
 								values = {
-									["NONE"] = L["None"],
+									["NONE"] = "NONE",
 									["OUTLINE"] = "OUTLINE",
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
@@ -223,7 +223,7 @@ local function getOptions()
 					waGroup = {
 						order = 3,
 						type = "group",
-						name = L["WeakAuras"],
+						name = "WeakAuras",
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
 						set = function(info, value) E.db.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
 						disabled = function() return not AS:CheckAddOn("WeakAuras"); end,
@@ -243,7 +243,7 @@ local function getOptions()
 					chatBarGroup = {
 						order = 4,
 						type = "group",
-						name = L["ChatBar"],
+						name = "ChatBar",
 						get = function(info) return E.db.addOnSkins[info[#info]]; end,
 						set = function(info, value) E.db.addOnSkins[info[#info]] = value; ChatBar_UpdateButtonOrientation(); ChatBar_UpdateButtons(); end,
 						disabled = function() return not AS:CheckAddOn("ChatBar"); end,
