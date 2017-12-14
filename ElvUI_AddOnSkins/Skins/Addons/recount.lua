@@ -28,9 +28,11 @@ local function LoadSkin()
 		frame.Title:ClearAllPoints()
 		frame.Title:SetPoint("LEFT", header, 6, 0)
 
-		if frame ~= Recount.MainWindow then
+		if frame ~= Recount.MainWindow and frame.CloseButton then
 			S:HandleCloseButton(frame.CloseButton)
-			frame.CloseButton.backdrop:SetInside()
+			if frame.CloseButton.backdrop then
+				frame.CloseButton.backdrop:SetInside()
+			end
 			frame.CloseButton:Size(18)
 			frame.CloseButton:Point("TOPRIGHT", header, -2, -2)
 		end
