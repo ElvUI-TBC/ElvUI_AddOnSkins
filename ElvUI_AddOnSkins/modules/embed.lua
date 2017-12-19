@@ -108,7 +108,7 @@ function EMB:EmbedToggle()
 	end
 
 	if self.leftFrame.frameName then
-		local frame = _G[self.left.frameName]
+		local frame = _G[self.leftFrame.frameName]
 		if frame and frame:IsObjectType("Frame") and not frame:IsProtected() then
 			frame:ClearAllPoints()
 			frame:SetParent(self.leftFrame)
