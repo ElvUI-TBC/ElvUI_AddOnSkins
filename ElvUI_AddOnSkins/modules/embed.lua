@@ -228,8 +228,8 @@ function EMB:WindowResize()
 	self:UpdateSwitchButton()
 
 	if IsAddOnLoaded("ElvUI_Config") then
-		E.Options.args.addOnSkins.args.embed.args.leftWindowWidth.min = floor(chatPanel:GetWidth() * .25)
-		E.Options.args.addOnSkins.args.embed.args.leftWindowWidth.max = floor(chatPanel:GetWidth() * .75)
+		E.Options.args.elvuiPlugins.args.addOnSkins.args.embed.args.leftWindowWidth.min = floor(chatPanel:GetWidth() * .25)
+		E.Options.args.elvuiPlugins.args.addOnSkins.args.embed.args.leftWindowWidth.max = floor(chatPanel:GetWidth() * .75)
 	end
 end
 
