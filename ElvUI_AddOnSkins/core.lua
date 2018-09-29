@@ -113,17 +113,57 @@ local positionValues = {
 	CENTER = "CENTER",
 	TOP = "TOP",
 	BOTTOM = "BOTTOM"
-};
+}
 
 local function getOptions()
+	if not E.Options.args.elvuiPlugins then
+		E.Options.args.elvuiPlugins = {
+			order = 50,
+			type = "group",
+			name = "|cff00b30bE|r|cffC4C4C4lvUI_|r|cff00b30bP|r|cffC4C4C4lugins|r",
+			args = {
+				header = {
+					order = 0,
+					type = "header",
+					name = "|cff00b30bE|r|cffC4C4C4lvUI_|r|cff00b30bP|r|cffC4C4C4lugins|r"
+				},
+				addOnSkinsShortcut = {
+					type = "execute",
+					name = ColorizeSettingName(L["AddOn Skins"]),
+					func = function()
+						if IsAddOnLoaded("ElvUI_Config") then
+							local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+							ACD:SelectGroup("ElvUI", "elvuiPlugins", "addOnSkins", "addOns")
+						end
+					end
+				}
+			}
+		}
+	elseif not E.Options.args.elvuiPlugins.args.addOnSkinsShortcut then
+		E.Options.args.elvuiPlugins.args.addOnSkinsShortcut = {
+			type = "execute",
+			name = ColorizeSettingName(L["AddOn Skins"]),
+			func = function()
+				if IsAddOnLoaded("ElvUI_Config") then
+					local ACD = LibStub("AceConfigDialog-3.0-ElvUI")
+					ACD:SelectGroup("ElvUI", "elvuiPlugins", "addOnSkins", "addOns")
+				end
+			end
+		}
+	end
+
 	local options = {
-		order = 50,
 		type = "group",
 		name = ColorizeSettingName(L["AddOn Skins"]),
 		childGroups = "tab",
 		args = {
-			skins = {
+			header = {
 				order = 1,
+				type = "header",
+				name = L["AddOn Skins"]
+			},
+			skins = {
+				order = 2,
 				type = "group",
 				name = L["Skins"],
 				childGroups = "tab",
@@ -293,76 +333,79 @@ local function getOptions()
 				get = function(info) return E.db.addOnSkins.embed[info[#info]] end,
 				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value; E:GetModule("EmbedSystem"):EmbedUpdate() end,
 				args = {
-					desc = {
+					header = {
 						order = 1,
+						type = "header",
+						name = L["Embed Settings"]
+					},
+					desc = {
+						order = 2,
 						type = "description",
 						name = "Settings to control Embedded AddOns: Available Embeds: Recount | Omen",
 					},
 					embedType = {
-						order = 2,
+						order = 3,
 						type = "select",
 						name = L["Embed Type"],
 						values = {
 							["DISABLE"] = L["Disable"],
 							["SINGLE"] = L["Single"],
 							["DOUBLE"] = L["Double"]
-						},
+						}
 					},
 					leftWindow = {
-						order = 3,
+						order = 4,
 						type = "select",
 						name = L["Left Panel"],
 						values = {
 							["Recount"] = "Recount",
 							["Omen"] = "Omen"
 						},
-						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
 					rightWindow = {
-						order = 4,
+						order = 5,
 						type = "select",
 						name = L["Right Panel"],
 						values = {
 							["Recount"] = "Recount",
 							["Omen"] = "Omen"
 						},
-						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType ~= "DOUBLE" end
 					},
 					leftWindowWidth = {
+						order = 6,
 						type = "range",
-						order = 5,
 						name = L["Left Window Width"],
-						min = 100,
-						max = 300,
-						step = 1,
+						min = 100, max = 300, step = 1
 					},
 					hideChat = {
-						name = "Hide Chat Frame",
-						order = 6,
+						order = 7,
 						type = "select",
+						name = "Hide Chat Frame",
 						values = E:GetModule("EmbedSystem"):GetChatWindowInfo(),
-						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end,
+						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
 					rightChatPanel = {
+						order = 8,
 						type = "toggle",
-						name = "Embed into Right Chat Panel",
-						order = 7,
+						name = "Embed into Right Chat Panel"
 					},
 					belowTopTab = {
+						order = 9,
 						type = "toggle",
-						name = "Embed Below Top Tab",
-						order = 8,
-					},
-				},
-			},
-		},
+						name = "Embed Below Top Tab"
+					}
+				}
+			}
+		}
 	}
 
 	for _, addonName in pairs(addonList) do
 		AS:RegisterAddonOption(addonName, options)
 	end
 
-	E.Options.args.addOnSkins = options;
+	E.Options.args.elvuiPlugins.args.addOnSkins = options
 end
 
 function AS:Initialize()
