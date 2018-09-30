@@ -15,6 +15,7 @@
 	<Script file="clique.lua"/>
 	<Script file="dbm.lua"/>
 	<Script file="doom_CooldownPulse.lua"/>
+	<Script file="EqCompare.lua"/>
 	<Script file="fishingBuddy.lua"/>
 	<Script file="flightMap.lua"/>
 	<Script file="moveAnything.lua"/>
@@ -25,6 +26,7 @@
 	<Script file="questGuru.lua"/>
 	<Script file="questHelper.lua"/>
 	<Script file="recount.lua"/>
+	<Script file="Skillet.lua"/>
 	<Script file="spy.lua"/>
 	<Script file="tellMeWhen.lua"/>
 	<Script file="totemTimers.lua"/>

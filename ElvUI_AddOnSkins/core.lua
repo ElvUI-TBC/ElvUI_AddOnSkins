@@ -2,10 +2,13 @@ local E, L, V, P, G = unpack(ElvUI)
 local EP = LibStub("LibElvUIPlugin-1.0", true)
 local AS = E:NewModule("AddOnSkins")
 
+local pairs, select = pairs, select
 local find, format, lower, match, trim = string.find, string.format, string.lower, string.match, string.trim
 
 local GetAddOnInfo = GetAddOnInfo
-local FONT_SIZE, NONE = FONT_SIZE, NONE
+local GetNumAddOns = GetNumAddOns
+local IsAddOnLoaded = IsAddOnLoaded
+local DISABLED, FONT_SIZE, NONE = DISABLED, FONT_SIZE, NONE
 
 local addonList = {
 	"AckisRecipeList",
@@ -24,6 +27,7 @@ local addonList = {
 	"Clique",
 	"DBM",
 	"Doom_CooldownPulse",
+	"EqCompare",
 	"FishingBuddy",
 	"FlightMap",
 	"MoveAnything",
@@ -34,6 +38,7 @@ local addonList = {
 	"QuestGuru",
 	"QuestHelper",
 	"Recount",
+	"Skillet",
 	"Spy",
 	"TellMeWhen",
 	"TotemTimers",
@@ -61,6 +66,7 @@ local SUPPORTED_ADDONS = {
 	"Clique"..ColorizeVersion("102"),						-- 102
 	"DeadlyBossMods"..ColorizeVersion("1.25"),				-- 1.25
 	"Doom_CooldownPulse"..ColorizeVersion("1.1.3"),			-- 1.1.3
+	"EqCompare"..ColorizeVersion("1.4 r71243"),				-- 1.4 r71243
 	"FishingBuddy"..ColorizeVersion("0.9.4m"),				-- 0.9.4m
 	"FlightMap"..ColorizeVersion("2.4-1"),					-- 2.4-1
 	"MoveAnything"..ColorizeVersion("2.66"),				-- 2.66
@@ -71,6 +77,7 @@ local SUPPORTED_ADDONS = {
 	"QuestGuru"..ColorizeVersion("0.9.3"),					-- 0.9.3
 	"QuestHelper"..ColorizeVersion("0.59"),					-- 0.59
 	"Recount"..ColorizeVersion("r924"),						-- r924
+	"Skillet"..ColorizeVersion("1.10 r81029.6"),			-- 1.10 r81029.6
 	"Spy"..ColorizeVersion("1.0"),							-- 1.0
 	"TellMeWhen"..ColorizeVersion("1.0"),					-- 1.0
 	"TotemTimers"..ColorizeVersion("8.1d"),					-- 8.1d
@@ -230,7 +237,7 @@ local function getOptions()
 						type = "group",
 						name = "DBM",
 						get = function(info) return E.db.addOnSkins[info[#info]] end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle() DBM.BossHealth:UpdateSettings() end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value DBM.Bars:ApplyStyle() DBM.BossHealth:UpdateSettings() end,
 						disabled = function() return not AS:CheckAddOn("DBM_API") end,
 						args = {
 							dbmBarHeight = {
@@ -287,14 +294,14 @@ local function getOptions()
 					desc = {
 						order = 2,
 						type = "description",
-						name = "Settings to control Embedded AddOns: Available Embeds: Recount | Omen",
+						name = "Settings to control Embedded AddOns: Available Embeds: Recount | Omen"
 					},
 					embedType = {
 						order = 3,
 						type = "select",
 						name = L["Embed Type"],
 						values = {
-							["DISABLE"] = L["Disable"],
+							["DISABLE"] = DISABLED,
 							["SINGLE"] = L["Single"],
 							["DOUBLE"] = L["Double"]
 						}
