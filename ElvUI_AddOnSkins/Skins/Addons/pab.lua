@@ -1,10 +1,10 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
 -- Party Ability Bars
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.PAB) then return; end
+	if not E.private.addOnSkins.PAB then return end
 
 	if not PAB then return end
 
@@ -23,7 +23,7 @@ local function LoadSkin()
 	S:HandleEditBox(_G["PABScrollFrameAbility name"])
 	S:HandleEditBox(_G["PABScrollFrameCD (s)"])
 
-	PAB_Panel_Button1:SetPoint("TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
+	PAB_Panel_Button1:Point("TOPLEFT", _G["PABScrollFrameAbility name"], "BOTTOMLEFT", -1, -7)
 	S:HandleButton(PAB_Panel_Button1)
 	S:HandleButton(PAB_Panel_Button2)
 
@@ -97,4 +97,4 @@ local function LoadSkin()
 	end
 end
 
-S:AddCallbackForAddon("PAB", "PAB", LoadSkin);
+S:AddCallbackForAddon("PAB", "PAB", LoadSkin)

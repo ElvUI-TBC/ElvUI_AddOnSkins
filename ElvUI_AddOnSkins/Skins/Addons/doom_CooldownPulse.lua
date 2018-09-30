@@ -1,10 +1,12 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
 
--- Doom_CooldownPulse 1.2.3
+-- Doom_CooldownPulse 1.1.3
+
+local select, unpack = select, unpack
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.Doom_CooldownPulse) then return; end
+	if not E.private.addOnSkins.Doom_CooldownPulse then return end
 
 	local frame = E:GetModule("AddOnSkins"):FindFrameByPoint("CENTER", UIParent, "BOTTOMLEFT", DCP_Saved.x, DCP_Saved.y)
 	if not frame then return end
@@ -37,10 +39,6 @@ local function LoadSkin()
 		S:HandleSliderFrame(DCP_OptionsFrameSlider5)
 		S:HandleSliderFrame(DCP_OptionsFrameSlider6)
 
-		S:HandleEditBox(DCP_OptionsFrameIgnoreBox)
-		DCP_OptionsFrameIgnoreBox.backdrop:Point("TOPLEFT", -4, -6)
-		DCP_OptionsFrameIgnoreBox.backdrop:Point("BOTTOMRIGHT", 0, 5)
-
 		S:HandleButton(DCP_OptionsFrameButton1)
 		S:HandleButton(DCP_OptionsFrameButton2)
 		S:HandleButton(DCP_OptionsFrameButton3)
@@ -48,4 +46,4 @@ local function LoadSkin()
 	end)
 end
 
-S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", LoadSkin);
+S:AddCallbackForAddon("Doom_CooldownPulse", "Doom_CooldownPulse", LoadSkin)

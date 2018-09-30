@@ -1,52 +1,86 @@
-local E, L, V, P, G = unpack(ElvUI);
-local S = E:GetModule("Skins");
+local E, L, V, P, G = unpack(ElvUI)
+local S = E:GetModule("Skins")
+
+-- BlackList 1.2.3
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.BlackList) then return; end
+	if not E.private.addOnSkins.BlackList then return; end
 
-	S:HandleButton(FriendsFrameOptionsButton);
-	S:HandleButton(FriendsFrameShareListButton);
-	S:HandleButton(FriendsFrameRemovePlayerButton);
-	S:HandleButton(FriendsFrameBlacklistPlayerButton);
-	FriendsTabHeaderTab4:StripTextures();
-	FriendsTabHeaderTab4:Width(63);
-	FriendsTabHeaderTab4:Height(26);
-	FriendsTabHeaderTab4:Point("TOPLEFT", FriendsTabHeaderTab3, "TOPLEFT", 3, -7);
-	S:HandleButton(FriendsTabHeaderTab4);
+	S:HandleButton(FriendsFrameOptionsButton)
+	S:HandleButton(FriendsFrameShareListButton)
+	S:HandleButton(FriendsFrameRemovePlayerButton)
+	S:HandleButton(FriendsFrameBlacklistPlayerButton)
 
-	S:HandleCloseButton(BlackListDetailsCloseButton);
-	BlackListDetailsFrame:StripTextures();
-	BlackListDetailsFrame:SetTemplate("Transparent");
-	BlackListDetailsFrameReasonTextBackground:StripTextures();
-	BlackListDetailsFrameReasonTextBackground:CreateBackdrop("Default");
-	S:HandleButton(BlackListDetailsEditButton);
-	S:HandleCheckBox(BlackListDetailsFrameCheckButton1);
-	S:HandleCheckBox(BlackListDetailsFrameCheckButton2);
-	S:HandleScrollBar(BlackListDetailsFrameScrollFrameScrollBar);
+	FriendFrameToggleTab4:StripTextures()
+	FriendFrameToggleTab4:Size(60, 25)
+	S:HandleButton(FriendFrameToggleTab4)
 
-	BlackListEditDetailsFrame:StripTextures();
-	BlackListEditDetailsFrame:SetTemplate("Transparent");
-	BlackListEditDetailsFrameLevelBackground:StripTextures();
-	BlackListEditDetailsFrameLevelBackground:CreateBackdrop("Default");
-	BlackListEditDetailsFrameLevelBackground.backdrop:Point('TOPLEFT', 5, -3);
-	BlackListEditDetailsFrameLevelBackground.backdrop:Point('BOTTOMRIGHT', -5, 5);
-	S:HandleButton(BlackListEditDetailsFrameSaveButton);
-	S:HandleButton(BlackListEditDetailsFrameCancelButton);
-	S:HandleDropDownBox(BlackListEditDetailsFrameClassDropDown);
-	S:HandleDropDownBox(BlackListEditDetailsFrameRaceDropDown);
+	IgnoreFrameToggleTab4:StripTextures()
+	IgnoreFrameToggleTab4:Size(60, 25)
+	S:HandleButton(IgnoreFrameToggleTab4)
 
-	BlackListOptionsFrame:StripTextures();
-	BlackListOptionsFrame:SetTemplate("Transparent");
-	S:HandleCheckBox(SoundCheckButton);
-	S:HandleCheckBox(CenterCheckButton);
-	S:HandleCheckBox(ChatCheckButton);
-	S:HandleCheckBox(IgnoreCheckButton);
-	S:HandleCheckBox(BanCheckButton);
-	S:HandleCheckBox(KickCheckButton);
-	S:HandleEditBox(BL_RankBox);
-	BL_RankBox:Width(20);
-	BL_RankBox:Height(20);
-	S:HandleButton(BlackListOptionsFrameClose);
+	for i = 1, 4 do
+		local tab = _G["BlackListFrameToggleTab"..i]
+		local muteTab = _G["MutedFrameToggleTab"..i]
+
+		tab:StripTextures()
+		tab:CreateBackdrop("Default", true)
+		tab.backdrop:Point("TOPLEFT", 3, -7)
+		tab.backdrop:Point("BOTTOMRIGHT", -2, -1)
+
+		tab:HookScript2("OnEnter", S.SetModifiedBackdrop)
+		tab:HookScript2("OnLeave", S.SetOriginalBackdrop)
+
+		muteTab:StripTextures()
+		muteTab:CreateBackdrop("Default", true)
+		muteTab.backdrop:Point("TOPLEFT", 3, -7)
+		muteTab.backdrop:Point("BOTTOMRIGHT", -2, -1)
+
+		muteTab:HookScript2("OnEnter", S.SetModifiedBackdrop)
+		muteTab:HookScript2("OnLeave", S.SetOriginalBackdrop)
+	end
+
+	S:HandleCloseButton(BlackListDetailsCloseButton)
+
+	BlackListDetailsFrame:StripTextures()
+	BlackListDetailsFrame:SetTemplate("Transparent")
+
+	BlackListDetailsFrameReasonTextBackground:StripTextures()
+	BlackListDetailsFrameReasonTextBackground:CreateBackdrop("Default")
+
+	S:HandleButton(BlackListDetailsEditButton)
+
+	S:HandleCheckBox(BlackListDetailsFrameCheckButton1)
+	S:HandleCheckBox(BlackListDetailsFrameCheckButton2)
+
+	S:HandleScrollBar(BlackListDetailsFrameScrollFrameScrollBar)
+
+	BlackListEditDetailsFrame:StripTextures()
+	BlackListEditDetailsFrame:SetTemplate("Transparent")
+
+	BlackListEditDetailsFrameLevelBackground:StripTextures()
+	BlackListEditDetailsFrameLevelBackground:CreateBackdrop("Default")
+	BlackListEditDetailsFrameLevelBackground.backdrop:Point("TOPLEFT", 5, -3)
+	BlackListEditDetailsFrameLevelBackground.backdrop:Point("BOTTOMRIGHT", -5, 5)
+
+	S:HandleButton(FriendsFrameMutedPlayerButton)
+	S:HandleButton(FriendsFrameUnmuteButton)
+
+	S:HandleButton(BlackListEditDetailsFrameSaveButton)
+	S:HandleButton(BlackListEditDetailsFrameCancelButton)
+
+	S:HandleDropDownBox(BlackListEditDetailsFrameClassDropDown)
+	S:HandleDropDownBox(BlackListEditDetailsFrameRaceDropDown)
+
+	BlackListOptionsFrame:StripTextures()
+	BlackListOptionsFrame:SetTemplate("Transparent")
+
+	S:HandleCheckBox(BlackListOptionsFrameCombatCheckButton)
+	S:HandleCheckBox(BlackListOptionsFrameStealthCheckButton)
+	S:HandleCheckBox(BlackListOptionsFrameOtherCheckButton)
+	S:HandleCheckBox(BlackListOptionsFrameIgnoreCheckButton)
+
+	S:HandleButton(BlackListOptionsFrameClose)
 end
 
-S:AddCallbackForAddon("BlackList", "BlackList", LoadSkin);
+S:AddCallbackForAddon("BlackList", "BlackList", LoadSkin)

@@ -1,87 +1,93 @@
-local E, L, V, P, G, _ = unpack(ElvUI);
-local EP = LibStub("LibElvUIPlugin-1.0", true);
-local AS = E:NewModule("AddOnSkins");
+local E, L, V, P, G = unpack(ElvUI)
+local EP = LibStub("LibElvUIPlugin-1.0", true)
+local AS = E:NewModule("AddOnSkins")
 
-local find, lower, match, trim = string.find, string.lower, string.match, string.trim
+local find, format, lower, match, trim = string.find, string.format, string.lower, string.match, string.trim
 
 local GetAddOnInfo = GetAddOnInfo
+local FONT_SIZE, NONE = FONT_SIZE, NONE
 
 local addonList = {
-	"Omen",
-	"Recount",
-	"SexyCooldown",
-	"DBM",
-	"Auctionator",
-	"BugSack",
-	"CallToArms",
-	"Postal",
-	"QuestPointer",
-	"Clique",
-	"FloAspectBar",
-	"FloTotemBar",
-	"Spy",
-	"AtlasLoot",
-	"Atlas",
-	"FlightMap",
-	"WeakAuras",
-	"KHunterTimers",
-	"TellMeWhen",
-	"GearScore",
-	"AllStats",
-	"BlackList",
-	"GnomishVendorShrinker",
-	"ACP",
-	"EveryQuest",
-	"_NPCScan",
-	"MoveAnything",
-	"VanasKoS",
-	"BindPad",
-	"ZygorGuidesViewer",
-	"ZygorTalentAdvisor",
-	"WowLua",
-	"ChatBar",
-	"Skillet",
-	"TotemTimers",
-	"PlateBuffs",
-	"MageNuggets",
-	"InspectEquip",
-	"AdvancedTradeSkillWindow",
-	"AtlasQuest",
 	"AckisRecipeList",
-	"LightHeaded",
-	"Carbonite",
-	"Enchantrix",
-	"FishingBuddy",
-	"Talented",
-	"TinyPad",
-	"ZOMGBuffs",
+	"ACP",
+	"AdvancedTradeSkillWindow",
+	"Atlas",
+	"AtlasLoot",
+	"Auctionator",
+	"BindPad",
+	"BlackList",
+	"BugSack",
 	"BuyEmAll",
-	"Doom_CooldownPulse",
-	"AdiBags",
-	"PallyPower",
-	"KarniCrap",
-	"TradeskillInfo",
-	"PAB",
-	"EPGP",
-	"EPGP_LootMaster",
-	"RaidRoll",
+	"CallToArms",
 	"Cartographer",
-	"EnergyWatch_v2",
 	"Cartographer3",
-	"QuestHelper",
-	"EQCompare",
+	"Clique",
+	"DBM",
+	"Doom_CooldownPulse",
+	"FishingBuddy",
+	"FlightMap",
+	"MoveAnything",
+	"Omen",
+	"PAB",
+	"PallyPower",
+	"Postal",
 	"QuestGuru",
+	"QuestHelper",
+	"Recount",
+	"Spy",
+	"TellMeWhen",
+	"TotemTimers",
 }
 
-AS.addOns = {};
+local function ColorizeVersion(version)
+	return format(" |cffff7d0a%s|r", version)
+end
+local SUPPORTED_ADDONS_STRING = ""
+
+local SUPPORTED_ADDONS = {
+	"AckisRecipeList"..ColorizeVersion("r8.9.2"),			-- r8.9.2
+	"AddonControlPanel"..ColorizeVersion("2.4.3"),			-- 2.4.3
+	"AdvancedTradeSkillWindow"..ColorizeVersion("0.6.9"),	-- 0.6.9
+	"Atlas"..ColorizeVersion("1.12.0"),						-- 1.12.0
+	"AtlasLoot"..ColorizeVersion("4.06.04"),				-- 4.06.04
+	"Auctionator"..ColorizeVersion("1.1.1"),				-- 1.1.1
+	"BindPad"..ColorizeVersion("1.8.6"),					-- 1.8.6
+	"BlackList"..ColorizeVersion("1.2.3"),					-- 1.2.3
+	"BugSack"..ColorizeVersion("2.3.0.70977"),				-- 2.3.0.70977
+	"BuyEmAll"..ColorizeVersion("2.8"),						-- 2.8
+	"CallToArms"..ColorizeVersion("r13"),					-- r13
+	"Cartographer"..ColorizeVersion("2.2"),					-- 2.2
+	"Cartographer 3.0"..ColorizeVersion("0.9.1"),			-- 0.9.1
+	"Clique"..ColorizeVersion("102"),						-- 102
+	"DeadlyBossMods"..ColorizeVersion("1.25"),				-- 1.25
+	"Doom_CooldownPulse"..ColorizeVersion("1.1.3"),			-- 1.1.3
+	"FishingBuddy"..ColorizeVersion("0.9.4m"),				-- 0.9.4m
+	"FlightMap"..ColorizeVersion("2.4-1"),					-- 2.4-1
+	"MoveAnything"..ColorizeVersion("2.66"),				-- 2.66
+	"Omen"..ColorizeVersion("2.0.4"),						-- 2.0.4
+	"PartyAbilityBars"..ColorizeVersion("2.4.3"),			-- 2.4.3
+	"PallyPower"..ColorizeVersion("2.01.00"),				-- 2.01.00
+	"Postal"..ColorizeVersion("2.1"),						-- 2.1
+	"QuestGuru"..ColorizeVersion("0.9.3"),					-- 0.9.3
+	"QuestHelper"..ColorizeVersion("0.59"),					-- 0.59
+	"Recount"..ColorizeVersion("r924"),						-- r924
+	"Spy"..ColorizeVersion("1.0"),							-- 1.0
+	"TellMeWhen"..ColorizeVersion("1.0"),					-- 1.0
+	"TotemTimers"..ColorizeVersion("8.1d"),					-- 8.1d
+}
+for _, supportedAddOn in pairs(SUPPORTED_ADDONS) do
+	SUPPORTED_ADDONS_STRING = SUPPORTED_ADDONS_STRING.."\n"..supportedAddOn
+end
+
+AS.addOns = {}
 
 for i = 1, GetNumAddOns() do
-	local name, _, _, enabled = GetAddOnInfo(i);
-	AS.addOns[lower(name)] = enabled ~= nil;
+	local name, _, _, enabled = GetAddOnInfo(i)
+	AS.addOns[lower(name)] = enabled ~= nil
 end
 
 function AS:CheckAddOn(addon)
-	return self.addOns[lower(addon)] or false;
+	return self.addOns[lower(addon)] or false
 end
 
 function AS:IsAddonExist(addon)
@@ -177,8 +183,8 @@ local function getOptions()
 						order = 1,
 						type = "group",
 						name = L["AddOn Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						get = function(info) return E.private.addOnSkins[info[#info]] end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value E:StaticPopup_Show("PRIVATE_RL") end,
 						args = {
 							header = {
 								order = 1,
@@ -191,8 +197,8 @@ local function getOptions()
 						order = 2,
 						type = "group",
 						name = L["Blizzard Skins"],
-						get = function(info) return E.private.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.private.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
+						get = function(info) return E.private.addOnSkins[info[#info]] end,
+						set = function(info, value) E.private.addOnSkins[info[#info]] = value E:StaticPopup_Show("PRIVATE_RL") end,
 						args = {
 							header = {
 								order = 1,
@@ -202,7 +208,7 @@ local function getOptions()
 							Blizzard_WorldStateFrame = {
 								type = "toggle",
 								name = "WorldStateFrame",
-								desc = L["TOGGLESKIN_DESC"],
+								desc = L["TOGGLESKIN_DESC"]
 							}
 						}
 					}
@@ -223,104 +229,44 @@ local function getOptions()
 						order = 2,
 						type = "group",
 						name = "DBM",
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle(); DBM.BossHealth:UpdateSettings(); end,
-						disabled = function() return not AS:CheckAddOn("DBM_API"); end,
+						get = function(info) return E.db.addOnSkins[info[#info]] end,
+						set = function(info, value) E.db.addOnSkins[info[#info]] = value; DBM.Bars:ApplyStyle() DBM.BossHealth:UpdateSettings() end,
+						disabled = function() return not AS:CheckAddOn("DBM_API") end,
 						args = {
 							dbmBarHeight = {
 								order = 1,
 								type = "range",
 								name = "Bar Height",
-								min = 6, max = 60,
-								step = 1
+								min = 6, max = 60, step = 1
+							},
+							spacer = {
+								order = 2,
+								type = "description",
+								name = ""
 							},
 							dbmFont = {
-								order = 2,
+								order = 3,
 								type = "select",
 								dialogControl = "LSM30_Font",
 								name = L["Font"],
 								values = AceGUIWidgetLSMlists.font
 							},
 							dbmFontSize = {
-								order = 3,
+								order = 4,
 								type = "range",
-								name = L["Font Size"],
+								name = FONT_SIZE,
 								min = 6, max = 22, step = 1
 							},
 							dbmFontOutline = {
-								order = 4,
+								order = 5,
 								type = "select",
 								name = L["Font Outline"],
 								values = {
-									["NONE"] = "NONE",
+									["NONE"] = NONE,
 									["OUTLINE"] = "OUTLINE",
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
 								}
-							}
-						}
-					},
-					waGroup = {
-						order = 3,
-						type = "group",
-						name = "WeakAuras",
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; E:StaticPopup_Show("PRIVATE_RL"); end,
-						disabled = function() return not AS:CheckAddOn("WeakAuras"); end,
-						args = {
-							weakAuraAuraBar = {
-								order = 1,
-								type = "toggle",
-								name = L["AuraBar Backdrop"]
-							},
-							weakAuraIconCooldown = {
-								order = 2,
-								type = "toggle",
-								name = L["Icon Cooldown"]
-							}
-						}
-					},
-					chatBarGroup = {
-						order = 4,
-						type = "group",
-						name = "ChatBar",
-						get = function(info) return E.db.addOnSkins[info[#info]]; end,
-						set = function(info, value) E.db.addOnSkins[info[#info]] = value; ChatBar_UpdateButtonOrientation(); ChatBar_UpdateButtons(); end,
-						disabled = function() return not AS:CheckAddOn("ChatBar"); end,
-						args = {
-							chatBarSize = {
-								order = 1,
-								type = "range",
-								name = "Button Size",
-								min = 0, max = 60,
-								step = 1
-							},
-							chatBarSpacing = {
-								order = 2,
-								type = "range",
-								name = "Button Spacing",
-								min = 0, max = 60,
-								step = 1
-							},
-							chatBarTextPoint = {
-								order = 3,
-								type = "select",
-								name = L["Text Position"],
-								values = positionValues
-							},
-							chatBarTextXOffset = {
-								order = 4,
-								type = "range",
-								name = L["Text xOffset"],
-								desc = L["Offset position for text."],
-								min = -300, max = 300, step = 1
-							},
-							chatBarTextYOffset = {
-								order = 5,
-								type = "range",
-								name = L["Text yOffset"],
-								desc = L["Offset position for text."],
-								min = -300, max = 300, step = 1
 							}
 						}
 					}
@@ -331,7 +277,7 @@ local function getOptions()
 				type = "group",
 				name = "Embed Settings",
 				get = function(info) return E.db.addOnSkins.embed[info[#info]] end,
-				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value; E:GetModule("EmbedSystem"):EmbedUpdate() end,
+				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value E:GetModule("EmbedSystem"):EmbedUpdate() end,
 				args = {
 					header = {
 						order = 1,
@@ -397,6 +343,23 @@ local function getOptions()
 						name = "Embed Below Top Tab"
 					}
 				}
+			},
+			supportedAddOns = {
+				order = 7,
+				type = "group",
+				name = L["Supported AddOns"],
+				args = {
+					header = {
+						order = 1,
+						type = "header",
+						name = L["Supported AddOns"]
+					},
+					text = {
+						order = 2,
+						type = "description",
+						name = SUPPORTED_ADDONS_STRING
+					}
+				}
 			}
 		}
 	}
@@ -409,7 +372,7 @@ local function getOptions()
 end
 
 function AS:Initialize()
-	EP:RegisterPlugin("ElvUI_AddOnSkins", getOptions);
+	EP:RegisterPlugin("ElvUI_AddOnSkins", getOptions)
 
 	if E.db.addOnSkins.embed.left then
 		E.db.addOnSkins.embed.leftWindow = E.db.addOnSkins.embed.left

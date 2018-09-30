@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- DBM 1.25
+
 local function LoadSkin()
-	if(not E.private.addOnSkins.DBM) then return; end
+	if not E.private.addOnSkins.DBM then return; end
 
 	-- DBM Boss Mod Frame
 	DBMBossModFrame:StripTextures()
@@ -10,6 +12,7 @@ local function LoadSkin()
 	DBMBossModFrame.backdrop:Point("TOPLEFT", 10, -12)
 	DBMBossModFrame.backdrop:Point("BOTTOMRIGHT", -31, 75)
 
+	DBMBossModFrameDBMBossModScrollFrame:StripTextures()
 	DBMBossModFrameDBMBossModScrollFrame:CreateBackdrop("Default")
 
 	S:HandleScrollBar(DBMBossModFrameDBMBossModScrollFrameScrollBar)
@@ -196,4 +199,4 @@ local function LoadSkin()
 	DBMOptionsFramePage6AutoRespondBusyMessage:Height(23)
 end
 
-S:AddCallbackForAddon("DBM_GUI", "DBM_GUI", LoadSkin);
+S:AddCallbackForAddon("DBM_GUI", "DBM_GUI", LoadSkin)

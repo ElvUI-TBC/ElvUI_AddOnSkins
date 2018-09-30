@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+-- QuestHelper 0.59
+
 local function LoadSkin()
 	if not E.private.addOnSkins.QuestHelper then return end
 

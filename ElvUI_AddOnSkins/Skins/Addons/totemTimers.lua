@@ -1,4 +1,4 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
 -- TotemTimers 8.1d
