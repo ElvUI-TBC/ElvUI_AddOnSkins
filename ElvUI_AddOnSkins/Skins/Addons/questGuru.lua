@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 -- QuestGuru 0.9.3
 
 local _G = _G
-local pairs = pairs
+local pairs, unpack, select = pairs, unpack, select
 local find = string.find
 
 local function LoadSkin()
@@ -12,25 +12,6 @@ local function LoadSkin()
 
 	local QUESTGURU_NUMTABS = QUESTGURU_NUMTABS or 5
 	local QUESTGURU_QUESTS_DISPLAYED = QUESTGURU_QUESTS_DISPLAYED or 27
-
-	local function QuestObjectiveTextColor()
-		local numObjectives = GetNumQuestLeaderBoards()
-		local objective, abandon
-		local _, type, finished
-		local numVisibleObjectives = 0
-		for i = 1, numObjectives do
-			_, type, finished = GetQuestLogLeaderBoard(i)
-			if type ~= "spell" then
-				numVisibleObjectives = numVisibleObjectives + 1
-				objective = _G["QuestGuru_QuestLogObjective"..numVisibleObjectives]
-				if finished then
-					objective:SetTextColor(1, 0.80, 0.10)
-				else
-					objective:SetTextColor(0.6, 0.6, 0.6)
-				end
-			end
-		end
-	end
 
 	local function QuestQualityColors(frame, text, quality, link)
 		if link and not quality then
@@ -52,6 +33,181 @@ local function LoadSkin()
 		end
 	end
 
+	local questItems = {
+		"QuestGuru_QuestLogItem",
+		"QuestGuru_QuestHistoryItem",
+		"QuestGuru_QuestAbandonItem"
+	}
+
+	for _, frame in pairs(questItems) do
+		for i = 1, MAX_NUM_ITEMS do
+			local item = _G[frame..i]
+			local icon = _G[frame..i.."IconTexture"]
+			local count = _G[frame..i.."Count"]
+
+			item:StripTextures()
+			item:SetTemplate("Default")
+			item:StyleButton()
+			item:Size(143, 40)
+			item:SetFrameLevel(item:GetFrameLevel() + 2)
+
+			icon:Size(E.PixelMode and 38 or 32)
+			icon:SetDrawLayer("OVERLAY")
+			icon:Point("TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
+			S:HandleIcon(icon)
+
+			count:SetParent(item.backdrop)
+			count:SetDrawLayer("OVERLAY")
+		end
+	end
+
+	local function QuestObjectiveTextColor()
+		local numObjectives = GetNumQuestLeaderBoards()
+		local objective
+		local _, type, finished
+		local numVisibleObjectives = 0
+		for i = 1, numObjectives do
+			_, type, finished = GetQuestLogLeaderBoard(i)
+			if type ~= "spell" then
+				numVisibleObjectives = numVisibleObjectives + 1
+				objective = _G["QuestGuru_QuestLogObjective"..numVisibleObjectives]
+				if finished then
+					objective:SetTextColor(1, 0.80, 0.10)
+				else
+					objective:SetTextColor(0.6, 0.6, 0.6)
+				end
+			end
+		end
+	end
+
+	-- QuestGuru History Hooks
+	hooksecurefunc("QuestLog_UpdateQuestHistoryDetails", function()
+		for i = 1, 10 do
+			_G["QuestGuru_QuestHistoryObjective"..i]:SetTextColor(1, 0.80, 0.10)
+		end
+	end)
+
+	hooksecurefunc("QuestGuru_QuestHistoryFrameItems_Update", function()
+		local questHistory
+		local scrollOffset = FauxScrollFrame_GetOffset(QuestGuru_QuestHistoryListScrollFrame)
+		local qID = _G["QuestGuru_QuestHistoryTitle"..QuestGuru_currHistory - scrollOffset].qID
+
+		for i, qH in ipairs(QuestGuru_History) do
+			if qH.qID == qID then
+				questHistory = qH
+				questFound = true
+				break
+			end
+		end
+		if not questFound then return end
+
+		local item, name, link
+		local index, baseIndex
+		local rewardsCount = 0
+
+		if questHistory.Choices > 0 then
+			baseIndex = rewardsCount
+
+			for i = 1, questHistory.Choices, 1 do
+				index = i + baseIndex
+
+				item = _G["QuestGuru_QuestHistoryItem"..index]
+				name = _G["QuestGuru_QuestHistoryItem"..index.."Name"]
+				link = questHistory.Choice[i].Link
+
+				QuestQualityColors(item, name, nil, link)
+			end
+		end
+
+		if questHistory.Rewards > 0 then
+			baseIndex = rewardsCount
+
+			for i = 1, questHistory.Rewards, 1 do
+				index = i + baseIndex
+
+				item = _G["QuestGuru_QuestHistoryItem"..index]
+				name = _G["QuestGuru_QuestHistoryItem"..index.."Name"]
+				link = questHistory.Reward[i].Link
+
+				QuestQualityColors(item, name, nil, link)
+			end
+		end
+	end)
+
+	hooksecurefunc("QuestGuru_QuestHistoryFrameItems_Update", function()
+		if not QuestHistoryItemHighlight.isSkinned then
+			QuestHistoryItemHighlight:StripTextures()
+
+			QuestHistoryItemHighlight.bg = CreateFrame("Frame", nil, QuestHistoryItemHighlight)
+			QuestHistoryItemHighlight.bg:SetTemplate()
+			QuestHistoryItemHighlight.bg:SetBackdropColor(0, 0, 0, 0)
+			QuestHistoryItemHighlight.bg:SetBackdropBorderColor(1, 1, 0)
+			QuestHistoryItemHighlight.bg:Point("TOPLEFT", 8, -7)
+			QuestHistoryItemHighlight.bg:Point("BOTTOMRIGHT", -105, 17)
+
+			QuestHistoryItemHighlight.isSkinned = true
+		end
+	end)
+
+	-- QuestGuru Abandon Hooks
+	hooksecurefunc("QuestLog_UpdateQuestAbandonDetails", function()
+		for i = 1, 10 do
+			_G["QuestGuru_QuestAbandonObjective"..i]:SetTextColor(0.6, 0.6, 0.6)
+		end
+	end)
+
+	hooksecurefunc("QuestGuru_QuestAbandonFrameItems_Update", function()
+		local questAbandon
+		local questFound = false
+		local scrollOffset = FauxScrollFrame_GetOffset(QuestGuru_QuestAbandonListScrollFrame)
+		local qID = _G["QuestGuru_QuestAbandonTitle"..QuestGuru_currAbandon - scrollOffset].qID
+
+		for i, qH in ipairs(QuestGuru_Abandon) do
+			if qH.qID == qID then
+				questAbandon = qH
+				questFound = true
+				break
+			end
+		end
+		if not questFound then return end
+
+		local item, name, link
+		local index, baseIndex
+		local rewardsCount = 0
+
+		if questAbandon.Choices > 0 then
+			baseIndex = rewardsCount
+
+			for i = 1, questAbandon.Choices, 1 do
+				index = i + baseIndex
+
+				item = _G["QuestGuru_QuestAbandonItem"..index]
+				name = _G["QuestGuru_QuestAbandonItem"..index.."Name"]
+				link = questAbandon.Choice[i].Link
+
+				QuestQualityColors(item, name, nil, link)
+
+				rewardsCount = rewardsCount + 1
+			end
+		end
+
+		if questAbandon.Rewards > 0 then
+			baseIndex = rewardsCount
+
+			for i = 1, questAbandon.Rewards, 1 do
+				index = i + baseIndex
+
+				item = _G["QuestGuru_QuestAbandonItem"..index]
+				name = _G["QuestGuru_QuestAbandonItem"..index.."Name"]
+				link = questAbandon.Reward[i].Link
+
+				QuestQualityColors(item, name, nil, link)
+
+				rewardsCount = rewardsCount + 1
+			end
+		end
+	end)
+
 	if E.private.skins.blizzard.enable and E.private.skins.blizzard.quest then
 		-- In case QuestLog skin loads after QuestGuru
 		E:Delay(0.5, function()
@@ -69,6 +225,7 @@ local function LoadSkin()
 			local titleTextColor = {1, 0.80, 0.10}
 			local textColor = {1, 1, 1}
 
+			-- QuestGuru Log Text
 			QuestGuru_QuestLogDescriptionTitle:SetTextColor(unpack(titleTextColor))
 			QuestGuru_QuestLogQuestTitle:SetTextColor(unpack(titleTextColor))
 			QuestGuru_QuestLogPlayerTitleText:SetTextColor(unpack(titleTextColor))
@@ -80,16 +237,47 @@ local function LoadSkin()
 			QuestGuru_QuestLogItemReceiveText:SetTextColor(unpack(textColor))
 			QuestGuru_QuestLogSpellLearnText:SetTextColor(unpack(textColor))
 
+			-- QuestGuru History Text
+			QuestGuru_QuestHistoryDescriptionTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryDescriptionTitle.SetTextColor = E.noop
+			QuestGuru_QuestHistoryQuestTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryQuestTitle.SetTextColor = E.noop
+			QuestGuru_QuestHistoryPlayerTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryPlayerTitleText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryRewardTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryRewardTitleText.SetTextColor = E.noop
+
+			QuestGuru_QuestHistoryObjectivesText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryObjectivesText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryQuestDescription:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryQuestDescription.SetTextColor = E.noop
+			QuestGuru_QuestHistoryItemChooseText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryItemChooseText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryItemReceiveText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryItemReceiveText.SetTextColor = E.noop
+			QuestGuru_QuestHistorySpellLearnText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistorySpellLearnText.SetTextColor = E.noop
+
+			-- QuestGuru Abandon Text
 			QuestGuru_QuestAbandonDescriptionTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonDescriptionTitle.SetTextColor = E.noop
 			QuestGuru_QuestAbandonQuestTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonQuestTitle.SetTextColor = E.noop
 			QuestGuru_QuestAbandonPlayerTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonPlayerTitleText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonRewardTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonRewardTitleText.SetTextColor = E.noop
 
 			QuestGuru_QuestAbandonObjectivesText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonObjectivesText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonQuestDescription:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonQuestDescription.SetTextColor = E.noop
 			QuestGuru_QuestAbandonItemChooseText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonItemChooseText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonItemReceiveText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonItemReceiveText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonSpellLearnText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonSpellLearnText.SetTextColor = E.noop
 
 			if GetQuestLogRequiredMoney() > 0 then
 				if GetQuestLogRequiredMoney() > GetMoney() then
@@ -121,6 +309,7 @@ local function LoadSkin()
 			local titleTextColor = {1, 0.80, 0.10}
 			local textColor = {1, 1, 1}
 
+			-- Quest Log
 			QuestTitleText:SetTextColor(unpack(titleTextColor))
 			QuestTitleFont:SetTextColor(unpack(titleTextColor))
 			QuestFont:SetTextColor(unpack(textColor))
@@ -141,6 +330,7 @@ local function LoadSkin()
 			QuestRewardSpellLearnText:SetTextColor(unpack(textColor))
 			QuestRewardText:SetTextColor(unpack(textColor))
 
+			-- QuestGuru Log Text
 			QuestGuru_QuestLogDescriptionTitle:SetTextColor(unpack(titleTextColor))
 			QuestGuru_QuestLogQuestTitle:SetTextColor(unpack(titleTextColor))
 			QuestGuru_QuestLogPlayerTitleText:SetTextColor(unpack(titleTextColor))
@@ -152,17 +342,47 @@ local function LoadSkin()
 			QuestGuru_QuestLogItemReceiveText:SetTextColor(unpack(textColor))
 			QuestGuru_QuestLogSpellLearnText:SetTextColor(unpack(textColor))
 
+			-- QuestGuru History Text
+			QuestGuru_QuestHistoryDescriptionTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryDescriptionTitle.SetTextColor = E.noop
+			QuestGuru_QuestHistoryQuestTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryQuestTitle.SetTextColor = E.noop
+			QuestGuru_QuestHistoryPlayerTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryPlayerTitleText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryRewardTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestHistoryRewardTitleText.SetTextColor = E.noop
+
+			QuestGuru_QuestHistoryObjectivesText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryObjectivesText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryQuestDescription:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryQuestDescription.SetTextColor = E.noop
+			QuestGuru_QuestHistoryItemChooseText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryItemChooseText.SetTextColor = E.noop
+			QuestGuru_QuestHistoryItemReceiveText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistoryItemReceiveText.SetTextColor = E.noop
+			QuestGuru_QuestHistorySpellLearnText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestHistorySpellLearnText.SetTextColor = E.noop
+
+			-- QuestGuru Abandon Text
 			QuestGuru_QuestAbandonDescriptionTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonDescriptionTitle.SetTextColor = E.noop
 			QuestGuru_QuestAbandonQuestTitle:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonQuestTitle.SetTextColor = E.noop
 			QuestGuru_QuestAbandonPlayerTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonPlayerTitleText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonRewardTitleText:SetTextColor(unpack(titleTextColor))
+			QuestGuru_QuestAbandonRewardTitleText.SetTextColor = E.noop
 
 			QuestGuru_QuestAbandonObjectivesText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonObjectivesText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonQuestDescription:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonQuestDescription.SetTextColor = E.noop
 			QuestGuru_QuestAbandonItemChooseText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonItemChooseText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonItemReceiveText:SetTextColor(unpack(textColor))
+			QuestGuru_QuestAbandonItemReceiveText.SetTextColor = E.noop
 			QuestGuru_QuestAbandonSpellLearnText:SetTextColor(unpack(textColor))
-
+			QuestGuru_QuestAbandonSpellLearnText.SetTextColor = E.noop
 
 			if GetQuestLogRequiredMoney() > 0 then
 				if GetQuestLogRequiredMoney() > GetMoney() then
@@ -203,6 +423,8 @@ local function LoadSkin()
 	end)
 
 	-- QuestGuru Main Frame
+	QuestGuru_QuestLogTitleText:SetText("")
+
 	QuestGuru_QuestLogFrame:StripTextures(true)
 	QuestGuru_QuestLogFrame:CreateBackdrop("Transparent")
 	QuestGuru_QuestLogFrame.backdrop:Point("TOPLEFT", 10, -12)
@@ -231,15 +453,24 @@ local function LoadSkin()
 		tab:HookScript2("OnLeave", S.SetOriginalBackdrop)
 	end
 
+	-- Expand / Collapse All Button
 	QuestGuru_QuestFrameExpandCollapseButton:StripTextures()
-	QuestGuru_QuestFrameExpandCollapseButton:SetNormalTexture("")
+	QuestGuru_QuestFrameExpandCollapseButton:SetText("")
+	QuestGuru_QuestFrameExpandCollapseButton:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
 	QuestGuru_QuestFrameExpandCollapseButton.SetNormalTexture = E.noop
+	QuestGuru_QuestFrameExpandCollapseButton:GetNormalTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+	QuestGuru_QuestFrameExpandCollapseButton:GetNormalTexture().SetTexCoord = E.noop
+	QuestGuru_QuestFrameExpandCollapseButton:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
+	QuestGuru_QuestFrameExpandCollapseButton.SetPushedTexture = E.noop
+	QuestGuru_QuestFrameExpandCollapseButton:GetPushedTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+	QuestGuru_QuestFrameExpandCollapseButton:GetPushedTexture().SetTexCoord = E.noop
 	QuestGuru_QuestFrameExpandCollapseButton:SetHighlightTexture("")
 	QuestGuru_QuestFrameExpandCollapseButton.SetHighlightTexture = E.noop
 	QuestGuru_QuestFrameExpandCollapseButton:SetDisabledTexture("")
 	QuestGuru_QuestFrameExpandCollapseButton.SetDisabledTexture = E.noop
 	QuestGuru_QuestFrameExpandCollapseButton:Point("TOPLEFT", 21, -31)
 
+	-- Expand / Collapse Buttons
 	local questGuruTitles = {
 		"QuestGuru_QuestLogTitle",
 		"QuestGuru_QuestHistoryTitle",
@@ -276,34 +507,6 @@ local function LoadSkin()
 		end
 	end
 
-	local questItems = {
-		"QuestGuru_QuestLogItem",
-		"QuestGuru_QuestHistoryItem",
-		"QuestGuru_QuestAbandonItem"
-	}
-
-	for _, frame in pairs(questItems) do
-		for i = 1, MAX_NUM_ITEMS do
-			local item = _G[frame..i]
-			local icon = _G[frame..i.."IconTexture"]
-			local count = _G[frame..i.."Count"]
-
-			item:StripTextures()
-			item:SetTemplate("Default")
-			item:StyleButton()
-			item:Size(143, 40)
-			item:SetFrameLevel(item:GetFrameLevel() + 2)
-
-			icon:Size(E.PixelMode and 38 or 32)
-			icon:SetDrawLayer("OVERLAY")
-			icon:Point("TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
-			S:HandleIcon(icon)
-
-			count:SetParent(item.backdrop)
-			count:SetDrawLayer("OVERLAY")
-		end
-	end
-
 	-- QuestGuru Log
 	QuestGuru_QuestLogNoQuestsText:ClearAllPoints()
 	QuestGuru_QuestLogNoQuestsText:Point("CENTER", QuestGuru_EmptyQuestLogFrame, "CENTER", -45, 65)
@@ -311,10 +514,13 @@ local function LoadSkin()
 	QuestGuru_QuestLogListScrollFrame:StripTextures()
 	QuestGuru_QuestLogListScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestLogListScrollFrame:Size(305, 410)
+	QuestGuru_QuestLogListScrollFrame:Show()
+	QuestGuru_QuestLogListScrollFrame.Hide = E.noop
 
 	QuestGuru_QuestLogDetailScrollFrame:StripTextures()
 	QuestGuru_QuestLogDetailScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestLogDetailScrollFrame:Size(305, 410)
+	QuestGuru_QuestLogDetailScrollFrame:SetHitRectInsets(0, 0, 0, 2)
 
 	S:HandleScrollBar(QuestGuru_QuestLogListScrollFrameScrollBar)
 	S:HandleScrollBar(QuestGuru_QuestLogDetailScrollFrameScrollBar)
@@ -337,15 +543,19 @@ local function LoadSkin()
 
 	S:HandleButton(QuestGuru_QuestFrameExitButton)
 	QuestGuru_QuestFrameExitButton:Point("BOTTOMRIGHT", QuestGuru_QuestLogFrame, "BOTTOMRIGHT", -68, 24)
+	QuestGuru_QuestFrameExitButton:Width(105)
 
 	-- QuestGuru History
 	QuestGuru_QuestHistoryListScrollFrame:StripTextures()
 	QuestGuru_QuestHistoryListScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestHistoryListScrollFrame:Size(305, 410)
+	QuestGuru_QuestHistoryListScrollFrame:Show()
+	QuestGuru_QuestHistoryListScrollFrame.Hide = E.noop
 
 	QuestGuru_QuestHistoryDetailScrollFrame:StripTextures()
 	QuestGuru_QuestHistoryDetailScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestHistoryDetailScrollFrame:Size(305, 410)
+	QuestGuru_QuestHistoryDetailScrollFrame:SetHitRectInsets(0, 0, 0, 2)
 
 	S:HandleScrollBar(QuestGuru_QuestHistoryListScrollFrameScrollBar)
 	S:HandleScrollBar(QuestGuru_QuestHistoryDetailScrollFrameScrollBar)
@@ -360,17 +570,20 @@ local function LoadSkin()
 	QuestGuru_QuestAbandonListScrollFrame:StripTextures()
 	QuestGuru_QuestAbandonListScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestAbandonListScrollFrame:Size(305, 410)
+	QuestGuru_QuestAbandonListScrollFrame:Show()
+	QuestGuru_QuestAbandonListScrollFrame.Hide = E.noop
 
 	QuestGuru_QuestAbandonDetailScrollFrame:StripTextures()
 	QuestGuru_QuestAbandonDetailScrollFrame:CreateBackdrop("Default", true)
 	QuestGuru_QuestAbandonDetailScrollFrame:Size(305, 410)
+	QuestGuru_QuestAbandonDetailScrollFrame:SetHitRectInsets(0, 0, 0, 2)
 
 	S:HandleScrollBar(QuestGuru_QuestAbandonListScrollFrameScrollBar)
 	S:HandleScrollBar(QuestGuru_QuestAbandonDetailScrollFrameScrollBar)
 
 	S:HandleButton(QuestGuru_QuestAbandonClearList)
 	QuestGuru_QuestAbandonClearList:ClearAllPoints()
-	QuestGuru_QuestAbandonClearList:Point("RIGHT", QuestGuru_QuestFrameExitButton, "LEFT", -30, 0)
+	QuestGuru_QuestAbandonClearList:Point("RIGHT", QuestGuru_QuestFrameExitButton, "LEFT", -2, 0)
 
 	QuestGuru_QuestAbandonSearchText:Point("BOTTOMLEFT", QuestGuru_QuestLogFrame, "BOTTOMLEFT", 20, 28)
 
@@ -402,6 +615,70 @@ local function LoadSkin()
 	QuestGuru_QuestWatchTooltip:HookScript2("OnShow", function(self)
 		TT:SetStyle(self)
 	end)
+
+	-- QuestGuru Main Options
+	S:HandleCheckBox(QuestGuru_OptionsFrameColorizePlayerNameToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameColorizeAreaNamesToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameColorizeNPCNamesToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameShowTooltipTextToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameAutoCompleteToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameAltStatusToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameGuildStatusToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameSimpleGuildStatusToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameShowObjItemIconsToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameDisableCommToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameShowLevelsQuestLogToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameShowLevelsHistoryToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameShowLevelsAbandonToggle)
+
+	-- QuestGuru Tracker Options
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerEnabledToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerBorderToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerClickThroughToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerAutoTrackToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerAutoTrackToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerShowCompletedObjToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerColorizeObjToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerHeadersToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerShowLevelsToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerQuestTooltipsToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerPartyTooltipsToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerQuestPercentToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerExpandUpToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameTrackerAutoUnTrackToggle)
+
+	S:HandleSliderFrame(QuestGuru_OptionsFrameTrackerLines)
+	S:HandleSliderFrame(QuestGuru_OptionsFrameTrackerScale)
+	S:HandleSliderFrame(QuestGuru_OptionsFrameTrackerAlpha)
+
+	-- QuestGuru Sound Options
+	S:HandleCheckBox(QuestGuru_OptionsFrameSoundToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameSoundProgressToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameSoundObjCompleteToggle)
+	S:HandleCheckBox(QuestGuru_OptionsFrameSoundQuestCompleteToggle)
+
+	S:HandleDropDownBox(QuestGuru_OptionsFrameSoundProgressButton, 300)
+	S:HandleDropDownBox(QuestGuru_OptionsFrameSoundObjCompleteButton, 300)
+	S:HandleDropDownBox(QuestGuru_OptionsFrameSoundQuestCompleteButton, 300)
+
+	-- QuestGuru Announcer Options
+	S:HandleCheckBox(QuestGuru_AnnounceFrameAnnounceToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameChannelSayToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameChannelPartyToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameChannelGuildToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameChannelWhisperToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameMessageItemToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameMessageMonsterToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameMessageEventToggle)
+	S:HandleCheckBox(QuestGuru_AnnounceFrameMessageQuestToggle)
+
+	S:HandleEditBox(QuestGuru_AnnounceFrameChannelWhisperTo)
+	S:HandleEditBox(QuestGuru_AnnounceFrameMessageItem)
+	S:HandleEditBox(QuestGuru_AnnounceFrameMessageMonster)
+	S:HandleEditBox(QuestGuru_AnnounceFrameMessageEvent)
+	S:HandleEditBox(QuestGuru_AnnounceFrameMessageQuest)
+	
+	S:HandleButton(QuestGuru_AnnounceFrameMessageHelpButton)
 end
 
 S:AddCallbackForAddon("QuestGuru", "QuestGuru", LoadSkin)
