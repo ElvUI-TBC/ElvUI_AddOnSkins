@@ -61,6 +61,45 @@ local function LoadSkin()
 		end
 	end
 
+	local questHonorFrames = {
+		"QuestGuru_QuestLogHonorFrame",
+		"QuestGuru_QuestHistoryHonorFrame",
+		"QuestGuru_QuestAbandonHonorFrame"
+	}
+
+	for _, frame in pairs(questHonorFrames) do
+		local honor = _G[frame]
+		local icon = _G[frame.."Icon"]
+		local points = _G[frame.."Points"]
+		local text = _G[frame.."HonorReceiveText"]
+
+		honor:SetTemplate("Default")
+		honor:Size(143, 40)
+
+		icon.backdrop = CreateFrame("Frame", nil, honor)
+		icon.backdrop:SetFrameLevel(honor:GetFrameLevel() - 1)
+		icon.backdrop:SetTemplate("Default")
+		icon.backdrop:SetOutside(icon)
+
+		icon:SetTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PVPCurrency-Honor-"..E.myfaction)
+		icon.SetTexture = E.noop
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetDrawLayer("OVERLAY")
+		icon:Size(E.PixelMode and 38 or 32)
+		icon:ClearAllPoints()
+		icon:Point("TOPLEFT", E.PixelMode and 1 or 4, -(E.PixelMode and 1 or 4))
+		icon:SetParent(icon.backdrop)
+
+		points:ClearAllPoints()
+		points:Point("BOTTOMRIGHT", icon, "BOTTOMRIGHT", -2, 2)
+		points:SetParent(icon.backdrop)
+		points:SetDrawLayer("OVERLAY")
+		points:FontTemplate(nil, nil, "OUTLINE")
+
+		text:Point("LEFT", honor, "LEFT", 44, 0)
+		text:SetText(HONOR_POINTS)
+	end
+
 	local function QuestObjectiveTextColor()
 		local numObjectives = GetNumQuestLeaderBoards()
 		local objective
@@ -105,31 +144,71 @@ local function LoadSkin()
 		local index, baseIndex
 		local rewardsCount = 0
 
-		if questHistory.Choices > 0 then
+		local numQuestChoices = questHistory.Choices
+		local numQuestRewards = questHistory.Rewards
+		local numQuestSpellRewards = questHistory.SpellRewards
+		local money = questHistory.RewardMoney
+		local honor = questHistory.Honor
+		local totalRewards = numQuestRewards + numQuestChoices + numQuestSpellRewards
+		local questItemName = "QuestGuru_QuestHistoryItem"
+
+		if numQuestChoices > 0 then
 			baseIndex = rewardsCount
 
-			for i = 1, questHistory.Choices, 1 do
+			for i = 1, numQuestChoices, 1 do
 				index = i + baseIndex
 
-				item = _G["QuestGuru_QuestHistoryItem"..index]
-				name = _G["QuestGuru_QuestHistoryItem"..index.."Name"]
+				item = _G[questItemName..index]
+				name = _G[questItemName..index.."Name"]
 				link = questHistory.Choice[i].Link
 
 				QuestQualityColors(item, name, nil, link)
 			end
 		end
 
-		if questHistory.Rewards > 0 then
+		if numQuestRewards > 0 then
 			baseIndex = rewardsCount
 
-			for i = 1, questHistory.Rewards, 1 do
+			for i = 1, numQuestRewards, 1 do
 				index = i + baseIndex
 
-				item = _G["QuestGuru_QuestHistoryItem"..index]
-				name = _G["QuestGuru_QuestHistoryItem"..index.."Name"]
+				item = _G[questItemName..index]
+				name = _G[questItemName..index.."Name"]
 				link = questHistory.Reward[i].Link
 
 				QuestQualityColors(item, name, nil, link)
+			end
+		end
+
+		if money == 0 and honor > 0 and (numQuestRewards > 0 or numQuestChoices > 0 or numQuestSpellRewards) then
+			local honorFrame = _G["QuestGuru_QuestHistoryHonorFrame"]
+			local questItemReceiveText = _G["QuestGuru_QuestHistoryItemReceiveText"]
+			local spacerFrame = QuestGuru_QuestHistorySpacerFrame
+
+			honorFrame:ClearAllPoints()
+			if numQuestRewards > 0 then
+				honorFrame:Point("TOPLEFT", questItemName..totalRewards, "BOTTOMLEFT", 0, -3)
+				QuestFrame_SetAsLastShown("QuestGuru_QuestHistoryHonorFrame", spacerFrame)
+			else
+				honorFrame:Point("TOPLEFT", questItemReceiveText, "BOTTOMLEFT", -3, -6)
+
+				if numQuestSpellRewards > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					questItemReceiveText:Point("TOPLEFT", questItemName..totalRewards, "BOTTOMLEFT", 3, 15)
+				elseif numQuestChoices > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					index = numQuestChoices
+					if mod(index, 2) == 0 then
+						index = index - 1
+					end
+
+					questItemReceiveText:Point("TOPLEFT", questItemName..index, "BOTTOMLEFT", 3, 15)
+				else
+					questItemReceiveText:SetText(REWARD_ITEMS_ONLY)
+					questItemReceiveText:Point("TOPLEFT", QuestGuru_QuestHistoryRewardTitleText, "BOTTOMLEFT", 3, 15)
+				end
+
+				QuestFrame_SetAsLastShown(questItemReceiveText, spacerFrame)
 			end
 		end
 	end)
@@ -175,14 +254,22 @@ local function LoadSkin()
 		local index, baseIndex
 		local rewardsCount = 0
 
-		if questAbandon.Choices > 0 then
+		local numQuestChoices = questAbandon.Choices
+		local numQuestRewards = questAbandon.Rewards
+		local numQuestSpellRewards = questAbandon.SpellRewards
+		local money = questAbandon.RewardMoney
+		local honor = questAbandon.Honor
+		local totalRewards = numQuestRewards + numQuestChoices + numQuestSpellRewards
+		local questItemName = "QuestGuru_QuestAbandonItem"
+
+		if numQuestChoices > 0 then
 			baseIndex = rewardsCount
 
-			for i = 1, questAbandon.Choices, 1 do
+			for i = 1, numQuestChoices, 1 do
 				index = i + baseIndex
 
-				item = _G["QuestGuru_QuestAbandonItem"..index]
-				name = _G["QuestGuru_QuestAbandonItem"..index.."Name"]
+				item = _G[questItemName..index]
+				name = _G[questItemName..index.."Name"]
 				link = questAbandon.Choice[i].Link
 
 				QuestQualityColors(item, name, nil, link)
@@ -191,19 +278,49 @@ local function LoadSkin()
 			end
 		end
 
-		if questAbandon.Rewards > 0 then
+		if numQuestRewards > 0 then
 			baseIndex = rewardsCount
 
-			for i = 1, questAbandon.Rewards, 1 do
+			for i = 1, numQuestRewards, 1 do
 				index = i + baseIndex
 
-				item = _G["QuestGuru_QuestAbandonItem"..index]
-				name = _G["QuestGuru_QuestAbandonItem"..index.."Name"]
+				item = _G[questItemName..index]
+				name = _G[questItemName..index.."Name"]
 				link = questAbandon.Reward[i].Link
 
 				QuestQualityColors(item, name, nil, link)
 
 				rewardsCount = rewardsCount + 1
+			end
+		end
+
+		if money == 0 and honor > 0 and (numQuestRewards > 0 or numQuestChoices > 0 or numQuestSpellRewards) then
+			local honorFrame = _G["QuestGuru_QuestAbandonHonorFrame"]
+			local questItemReceiveText = _G["QuestGuru_QuestAbandonItemReceiveText"]
+			local spacerFrame = QuestGuru_QuestAbandonSpacerFrame
+
+			honorFrame:ClearAllPoints()
+			if numQuestRewards > 0 then
+				honorFrame:Point("TOPLEFT", questItemName..totalRewards, "BOTTOMLEFT", 0, -3)
+				QuestFrame_SetAsLastShown("QuestGuru_QuestAbandonHonorFrame", spacerFrame)
+			else
+				honorFrame:Point("TOPLEFT", questItemReceiveText, "BOTTOMLEFT", -3, -6)
+				questItemReceiveText:ClearAllPoints()
+				if numQuestSpellRewards > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					questItemReceiveText:Point("TOPLEFT", questItemName..totalRewards, "BOTTOMLEFT", 3, 15)
+				elseif numQuestChoices > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					index = numQuestChoices
+					if mod(index, 2) == 0 then
+						index = index - 1
+					end
+					questItemReceiveText:Point("TOPLEFT", questItemName..index, "BOTTOMLEFT", 3, 15)
+				else
+					questItemReceiveText:SetText(REWARD_ITEMS_ONLY)
+					questItemReceiveText:Point("TOPLEFT", QuestGuru_QuestAbandonRewardTitleText, "BOTTOMLEFT", 3, 15)
+				end
+				QuestFrame_SetAsLastShown(questItemReceiveText, spacerFrame)
 			end
 		end
 	end)
@@ -220,196 +337,153 @@ local function LoadSkin()
 			QuestGuru_QuestLogListScrollFrame:Size(305, 410)
 			QuestGuru_QuestLogDetailScrollFrame:Size(305, 410)
 		end)
-
-		hooksecurefunc("QuestFrameItems_Update", function(questState)
-			local titleTextColor = {1, 0.80, 0.10}
-			local textColor = {1, 1, 1}
-
-			-- QuestGuru Log Text
-			QuestGuru_QuestLogDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogRewardTitleText:SetTextColor(unpack(titleTextColor))
-
-			QuestGuru_QuestLogObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogSpellLearnText:SetTextColor(unpack(textColor))
-
-			-- QuestGuru History Text
-			QuestGuru_QuestHistoryDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryDescriptionTitle.SetTextColor = E.noop
-			QuestGuru_QuestHistoryQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryQuestTitle.SetTextColor = E.noop
-			QuestGuru_QuestHistoryPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryPlayerTitleText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryRewardTitleText.SetTextColor = E.noop
-
-			QuestGuru_QuestHistoryObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryObjectivesText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryQuestDescription.SetTextColor = E.noop
-			QuestGuru_QuestHistoryItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryItemChooseText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryItemReceiveText.SetTextColor = E.noop
-			QuestGuru_QuestHistorySpellLearnText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistorySpellLearnText.SetTextColor = E.noop
-
-			-- QuestGuru Abandon Text
-			QuestGuru_QuestAbandonDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonDescriptionTitle.SetTextColor = E.noop
-			QuestGuru_QuestAbandonQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonQuestTitle.SetTextColor = E.noop
-			QuestGuru_QuestAbandonPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonPlayerTitleText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonRewardTitleText.SetTextColor = E.noop
-
-			QuestGuru_QuestAbandonObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonObjectivesText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonQuestDescription.SetTextColor = E.noop
-			QuestGuru_QuestAbandonItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonItemChooseText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonItemReceiveText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonSpellLearnText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonSpellLearnText.SetTextColor = E.noop
-
-			if GetQuestLogRequiredMoney() > 0 then
-				if GetQuestLogRequiredMoney() > GetMoney() then
-					QuestGuru_QuestLogRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
-					QuestGuru_QuestAbandonRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
-				else
-					QuestGuru_QuestLogRequiredMoneyText:titleTextColor(unpack(textColor))
-					QuestGuru_QuestAbandonRequiredMoneyText:titleTextColor(unpack(textColor))
-				end
-			end
-
-			QuestObjectiveTextColor()
-
-			local numQuestRewards, numQuestChoices = GetNumQuestLogRewards(), GetNumQuestLogChoices()
-			local rewardsCount = numQuestChoices + numQuestRewards
-			if rewardsCount > 0 then
-				local questItem, itemName, link
-				for i = 1, rewardsCount do
-					questItem = _G["QuestGuru_QuestLogItem"..i]
-					itemName = _G["QuestGuru_QuestLogItem"..i.."Name"]
-					link = questItem.type and GetQuestLogItemLink(questItem.type, questItem:GetID())
-
-					QuestQualityColors(questItem, itemName, nil, link)
-				end
-			end
-		end)
-	else
-		hooksecurefunc("QuestFrameItems_Update", function(questState)
-			local titleTextColor = {1, 0.80, 0.10}
-			local textColor = {1, 1, 1}
-
-			-- Quest Log
-			QuestTitleText:SetTextColor(unpack(titleTextColor))
-			QuestTitleFont:SetTextColor(unpack(titleTextColor))
-			QuestFont:SetTextColor(unpack(textColor))
-			QuestFontNormalSmall:SetTextColor(unpack(textColor))
-			QuestDescription:SetTextColor(unpack(textColor))
-			QuestObjectiveText:SetTextColor(unpack(textColor))
-
-			QuestDetailObjectiveTitleText:SetTextColor(unpack(titleTextColor))
-			QuestDetailRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestDetailItemReceiveText:SetTextColor(unpack(textColor))
-			QuestDetailSpellLearnText:SetTextColor(unpack(textColor))
-			QuestDetailItemChooseText:SetTextColor(unpack(textColor))
-
-			QuestRewardRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestRewardItemChooseText:SetTextColor(unpack(textColor))
-			QuestRewardItemReceiveText:SetTextColor(unpack(textColor))
-			QuestRewardSpellLearnText:SetTextColor(unpack(textColor))
-			QuestRewardText:SetTextColor(unpack(textColor))
-
-			-- QuestGuru Log Text
-			QuestGuru_QuestLogDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestLogRewardTitleText:SetTextColor(unpack(titleTextColor))
-
-			QuestGuru_QuestLogObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestLogSpellLearnText:SetTextColor(unpack(textColor))
-
-			-- QuestGuru History Text
-			QuestGuru_QuestHistoryDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryDescriptionTitle.SetTextColor = E.noop
-			QuestGuru_QuestHistoryQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryQuestTitle.SetTextColor = E.noop
-			QuestGuru_QuestHistoryPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryPlayerTitleText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestHistoryRewardTitleText.SetTextColor = E.noop
-
-			QuestGuru_QuestHistoryObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryObjectivesText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryQuestDescription.SetTextColor = E.noop
-			QuestGuru_QuestHistoryItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryItemChooseText.SetTextColor = E.noop
-			QuestGuru_QuestHistoryItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistoryItemReceiveText.SetTextColor = E.noop
-			QuestGuru_QuestHistorySpellLearnText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestHistorySpellLearnText.SetTextColor = E.noop
-
-			-- QuestGuru Abandon Text
-			QuestGuru_QuestAbandonDescriptionTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonDescriptionTitle.SetTextColor = E.noop
-			QuestGuru_QuestAbandonQuestTitle:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonQuestTitle.SetTextColor = E.noop
-			QuestGuru_QuestAbandonPlayerTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonPlayerTitleText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonRewardTitleText:SetTextColor(unpack(titleTextColor))
-			QuestGuru_QuestAbandonRewardTitleText.SetTextColor = E.noop
-
-			QuestGuru_QuestAbandonObjectivesText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonObjectivesText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonQuestDescription:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonQuestDescription.SetTextColor = E.noop
-			QuestGuru_QuestAbandonItemChooseText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonItemChooseText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonItemReceiveText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonItemReceiveText.SetTextColor = E.noop
-			QuestGuru_QuestAbandonSpellLearnText:SetTextColor(unpack(textColor))
-			QuestGuru_QuestAbandonSpellLearnText.SetTextColor = E.noop
-
-			if GetQuestLogRequiredMoney() > 0 then
-				if GetQuestLogRequiredMoney() > GetMoney() then
-					QuestGuru_QuestLogRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
-					QuestGuru_QuestAbandonRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
-				else
-					QuestGuru_QuestLogRequiredMoneyText:titleTextColor(unpack(textColor))
-					QuestGuru_QuestAbandonRequiredMoneyText:titleTextColor(unpack(textColor))
-				end
-			end
-
-			QuestObjectiveTextColor()
-
-			local numQuestRewards, numQuestChoices = GetNumQuestLogRewards(), GetNumQuestLogChoices()
-			local rewardsCount = numQuestChoices + numQuestRewards
-			if rewardsCount > 0 then
-				local questItem, itemName, link
-				for i = 1, rewardsCount do
-					questItem = _G["QuestGuru_QuestLogItem"..i]
-					itemName = _G["QuestGuru_QuestLogItem"..i.."Name"]
-					link = questItem.type and GetQuestLogItemLink(questItem.type, questItem:GetID())
-
-					QuestQualityColors(questItem, itemName, nil, link)
-				end
-			end
-		end)
 	end
+
+	hooksecurefunc("QuestFrameItems_Update", function()
+		local titleTextColor = {1, 0.80, 0.10}
+		local textColor = {1, 1, 1}
+
+		-- Quest Log
+		QuestTitleText:SetTextColor(unpack(titleTextColor))
+		QuestTitleFont:SetTextColor(unpack(titleTextColor))
+		QuestFont:SetTextColor(unpack(textColor))
+		QuestFontNormalSmall:SetTextColor(unpack(textColor))
+		QuestDescription:SetTextColor(unpack(textColor))
+		QuestObjectiveText:SetTextColor(unpack(textColor))
+
+		QuestDetailObjectiveTitleText:SetTextColor(unpack(titleTextColor))
+		QuestDetailRewardTitleText:SetTextColor(unpack(titleTextColor))
+		QuestDetailItemReceiveText:SetTextColor(unpack(textColor))
+		QuestDetailSpellLearnText:SetTextColor(unpack(textColor))
+		QuestDetailItemChooseText:SetTextColor(unpack(textColor))
+
+		QuestRewardRewardTitleText:SetTextColor(unpack(titleTextColor))
+		QuestRewardTitleText:SetTextColor(unpack(titleTextColor))
+		QuestRewardItemChooseText:SetTextColor(unpack(textColor))
+		QuestRewardItemReceiveText:SetTextColor(unpack(textColor))
+		QuestRewardSpellLearnText:SetTextColor(unpack(textColor))
+		QuestRewardText:SetTextColor(unpack(textColor))
+
+		-- QuestGuru Log Text
+		QuestGuru_QuestLogDescriptionTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestLogQuestTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestLogPlayerTitleText:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestLogRewardTitleText:SetTextColor(unpack(titleTextColor))
+
+		QuestGuru_QuestLogObjectivesText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestLogQuestDescription:SetTextColor(unpack(textColor))
+		QuestGuru_QuestLogItemChooseText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestLogItemReceiveText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestLogSpellLearnText:SetTextColor(unpack(textColor))
+
+		-- QuestGuru History Text
+		QuestGuru_QuestHistoryDescriptionTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestHistoryDescriptionTitle.SetTextColor = E.noop
+		QuestGuru_QuestHistoryQuestTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestHistoryQuestTitle.SetTextColor = E.noop
+		QuestGuru_QuestHistoryPlayerTitleText:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestHistoryPlayerTitleText.SetTextColor = E.noop
+		QuestGuru_QuestHistoryRewardTitleText:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestHistoryRewardTitleText.SetTextColor = E.noop
+
+		QuestGuru_QuestHistoryObjectivesText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestHistoryObjectivesText.SetTextColor = E.noop
+		QuestGuru_QuestHistoryQuestDescription:SetTextColor(unpack(textColor))
+		QuestGuru_QuestHistoryQuestDescription.SetTextColor = E.noop
+		QuestGuru_QuestHistoryItemChooseText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestHistoryItemChooseText.SetTextColor = E.noop
+		QuestGuru_QuestHistoryItemReceiveText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestHistoryItemReceiveText.SetTextColor = E.noop
+		QuestGuru_QuestHistorySpellLearnText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestHistorySpellLearnText.SetTextColor = E.noop
+
+		-- QuestGuru Abandon Text
+		QuestGuru_QuestAbandonDescriptionTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestAbandonDescriptionTitle.SetTextColor = E.noop
+		QuestGuru_QuestAbandonQuestTitle:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestAbandonQuestTitle.SetTextColor = E.noop
+		QuestGuru_QuestAbandonPlayerTitleText:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestAbandonPlayerTitleText.SetTextColor = E.noop
+		QuestGuru_QuestAbandonRewardTitleText:SetTextColor(unpack(titleTextColor))
+		QuestGuru_QuestAbandonRewardTitleText.SetTextColor = E.noop
+
+		QuestGuru_QuestAbandonObjectivesText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestAbandonObjectivesText.SetTextColor = E.noop
+		QuestGuru_QuestAbandonQuestDescription:SetTextColor(unpack(textColor))
+		QuestGuru_QuestAbandonQuestDescription.SetTextColor = E.noop
+		QuestGuru_QuestAbandonItemChooseText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestAbandonItemChooseText.SetTextColor = E.noop
+		QuestGuru_QuestAbandonItemReceiveText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestAbandonItemReceiveText.SetTextColor = E.noop
+		QuestGuru_QuestAbandonSpellLearnText:SetTextColor(unpack(textColor))
+		QuestGuru_QuestAbandonSpellLearnText.SetTextColor = E.noop
+
+		if GetQuestLogRequiredMoney() > 0 then
+			if GetQuestLogRequiredMoney() > GetMoney() then
+				QuestGuru_QuestLogRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+				QuestGuru_QuestAbandonRequiredMoneyText:SetTextColor(0.6, 0.6, 0.6)
+			else
+				QuestGuru_QuestLogRequiredMoneyText:titleTextColor(unpack(textColor))
+				QuestGuru_QuestAbandonRequiredMoneyText:titleTextColor(unpack(textColor))
+			end
+		end
+
+		QuestObjectiveTextColor()
+
+		local numQuestSpellRewards = 0
+		local numQuestRewards, numQuestChoices = GetNumQuestLogRewards(), GetNumQuestLogChoices()
+		if GetQuestLogRewardSpell() then
+			numQuestSpellRewards = 1
+		end
+		local money = GetQuestLogRewardMoney()
+		local honor = GetQuestLogRewardHonor()
+		local rewardsCount = numQuestChoices + numQuestRewards + numQuestSpellRewards
+
+		local questItemName = "QuestGuru_QuestLogItem"
+
+		if rewardsCount > 0 then
+			local questItem, itemName, link
+			for i = 1, rewardsCount do
+				questItem = _G[questItemName..i]
+				itemName = _G[questItemName..i.."Name"]
+				link = questItem.type and GetQuestLogItemLink(questItem.type, questItem:GetID())
+
+				QuestQualityColors(questItem, itemName, nil, link)
+			end
+		end
+
+		if money == 0 and honor > 0 and (numQuestRewards > 0 or numQuestChoices > 0 or numQuestSpellRewards) then
+			local honorFrame = _G["QuestGuru_QuestLogHonorFrame"]
+			local questItemReceiveText = _G["QuestGuru_QuestLogItemReceiveText"]
+			local spacerFrame = QuestLogSpacerFrame
+
+			honorFrame:ClearAllPoints()
+			if numQuestRewards > 0 then
+				honorFrame:Point("TOPLEFT", questItemName..rewardsCount, "BOTTOMLEFT", 0, -3)
+				QuestFrame_SetAsLastShown("QuestGuru_QuestLogHonorFrame", spacerFrame)
+			else
+				honorFrame:Point("TOPLEFT", questItemReceiveText, "BOTTOMLEFT", -3, -6)
+
+				if numQuestSpellRewards > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					questItemReceiveText:Point("TOPLEFT", questItemName..rewardsCount, "BOTTOMLEFT", 3, 15)
+				elseif numQuestChoices > 0 then
+					questItemReceiveText:SetText(REWARD_ITEMS)
+					local index = numQuestChoices
+					if mod(index, 2) == 0 then
+						index = index - 1
+					end
+
+					questItemReceiveText:Point("TOPLEFT", questItemName..index, "BOTTOMLEFT", 3, 15)
+				else
+					questItemReceiveText:SetText(REWARD_ITEMS_ONLY)
+					questItemReceiveText:Point("TOPLEFT", QuestGuru_QuestLogRewardTitleText, "BOTTOMLEFT", 3, 15)
+				end
+
+				QuestFrame_SetAsLastShown(questItemReceiveText, spacerFrame)
+			end
+		end
+	end)
 
 	hooksecurefunc("QuestLog_UpdateQuestDetails", function()
 		local requiredMoney = GetQuestLogRequiredMoney()

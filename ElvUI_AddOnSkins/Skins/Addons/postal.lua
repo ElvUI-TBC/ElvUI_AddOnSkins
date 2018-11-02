@@ -59,6 +59,7 @@ local function LoadSkin()
 		if Postal_OpenAllMenuButton and not Postal_OpenAllMenuButton.isSkinned then
 			S:HandleNextPrevButton(Postal_OpenAllMenuButton, true)
 			Postal_OpenAllMenuButton:Point("LEFT", PostalOpenAllButton, "RIGHT", 2, 0)
+			Postal_OpenAllMenuButton:Height(25)
 			
 			Postal_OpenAllMenuButton.isSkinned = true
 		end
@@ -72,6 +73,12 @@ local function LoadSkin()
 			Postal_BlackBookButton.isSkinned = true
 		end
 	end)
+
+	InboxPrevPageButton:Point("CENTER", InboxFrame, "BOTTOMLEFT", 62, 104)
+	InboxPrevPageButton.SetPoint = E.noop
+
+	InboxNextPageButton:Point("CENTER", InboxFrame, "BOTTOMLEFT", 313, 104)
+	InboxNextPageButton.SetPoint = E.noop
 
 	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
 end
