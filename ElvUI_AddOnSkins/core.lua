@@ -8,7 +8,7 @@ local find, format, lower, match, trim = string.find, string.format, string.lowe
 local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
-local DISABLED, FONT_SIZE, NONE = DISABLED, FONT_SIZE, NONE
+local DISABLE, FONT_SIZE, NONE = DISABLE, FONT_SIZE, NONE
 
 local addonList = {
 	"AckisRecipeList",
@@ -301,7 +301,7 @@ local function getOptions()
 						type = "select",
 						name = L["Embed Type"],
 						values = {
-							["DISABLE"] = DISABLED,
+							["DISABLE"] = DISABLE,
 							["SINGLE"] = L["Single"],
 							["DOUBLE"] = L["Double"]
 						}
