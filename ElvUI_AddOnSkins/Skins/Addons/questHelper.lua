@@ -11,7 +11,7 @@ local function LoadSkin()
 	QuestHelper.tooltip:HookScript2("OnShow", function(self)
 		self:StripTextures()
 		self:SetTemplate("Transparent")
-		self:SetScale(0.7)
+		self:SetScale(UIParent:GetScale())
 	end)
 
 	-- World Map Button
@@ -29,32 +29,14 @@ local function LoadSkin()
 		-- Text Viewer Frame
 		QuestHelperTextViewer:StripTextures()
 		QuestHelperTextViewer:SetTemplate("Transparent")
-		QuestHelperTextViewer:SetScale(0.7)
+		QuestHelperTextViewer:SetScale(UIParent:GetScale())
 
 		-- Both the 0.59 and 0.95 versions are floating around, so we support both below!
+		local scrollBar = QuestHelperTextViewer.scrollbar or QuestHelperTextViewer_ScrollFrameScrollBar
+		S:HandleScrollBar(scrollBar)
 
-		-- ScrollBar
-		local scrollBar
-		if QuestHelperTextViewer.scrollbar then -- (0.95, final TBC backport)
-			scrollBar = QuestHelperTextViewer.scrollbar
-		elseif QuestHelperTextViewer_ScrollFrameScrollBar then -- (0.59, old version of QH for TBC)
-			scrollBar = QuestHelperTextViewer_ScrollFrameScrollBar
-		end
-		if scrollBar then
-			scrollBar:StripTextures()
-			S:HandleScrollBar(scrollBar)
-		end
-
-		-- Close Button
-		local closeButton
-		if QuestHelperTextViewer.closebutton then -- (0.95, final TBC backport)
-			closeButton = QuestHelperTextViewer.closebutton
-		elseif QuestHelperTextViewer_CloseButton then -- (0.59, old version of QH for TBC)
-			closeButton = QuestHelperTextViewer_CloseButton
-		end
-		if closeButton then
-			S:HandleCloseButton(closeButton)
-		end
+		local closeButton = QuestHelperTextViewer.closebutton or QuestHelperTextViewer_CloseButton
+		S:HandleCloseButton(closeButton)
 	end)
 end
 
