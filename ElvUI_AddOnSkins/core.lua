@@ -75,7 +75,7 @@ local SUPPORTED_ADDONS = {
 	"PallyPower"..ColorizeVersion("2.01.00"),				-- 2.01.00
 	"Postal"..ColorizeVersion("2.1"),						-- 2.1
 	"QuestGuru"..ColorizeVersion("0.9.3"),					-- 0.9.3
-	"QuestHelper"..ColorizeVersion("0.59"),					-- 0.59
+	"QuestHelper"..ColorizeVersion("0.59 & 0.95-Backport"),	-- 0.59
 	"Recount"..ColorizeVersion("r924"),						-- r924
 	"Skillet"..ColorizeVersion("1.10 r81029.6"),			-- 1.10 r81029.6
 	"Spy"..ColorizeVersion("1.0"),							-- 1.0
