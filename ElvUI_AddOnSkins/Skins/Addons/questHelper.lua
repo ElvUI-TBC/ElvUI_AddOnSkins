@@ -1,7 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- QuestHelper 0.59
+-- QuestHelper 0.95 (Modern "Wrath" version backported for TBC)
+-- https://github.com/VideoPlayerCode/QuestHelperTBC
 
 local function LoadSkin()
 	if not E.private.addOnSkins.QuestHelper then return end
@@ -25,17 +26,35 @@ local function LoadSkin()
 	end
 
 	hooksecurefunc(QuestHelper, "ShowText", function()
-		-- Slash Commands
+		-- Text Viewer Frame
 		QuestHelperTextViewer:StripTextures()
 		QuestHelperTextViewer:SetTemplate("Transparent")
 		QuestHelperTextViewer:SetScale(0.7)
 
+		-- Both the 0.59 and 0.95 versions are floating around, so we support both below!
+
 		-- ScrollBar
-		QuestHelperTextViewer_ScrollFrameScrollBar:StripTextures()
-		S:HandleScrollBar(QuestHelperTextViewer_ScrollFrameScrollBar)
+		local scrollBar
+		if QuestHelperTextViewer.scrollbar then -- (0.95, final TBC backport)
+			scrollBar = QuestHelperTextViewer.scrollbar
+		elseif QuestHelperTextViewer_ScrollFrameScrollBar then -- (0.59, old version of QH for TBC)
+			scrollBar = QuestHelperTextViewer_ScrollFrameScrollBar
+		end
+		if scrollBar then
+			scrollBar:StripTextures()
+			S:HandleScrollBar(scrollBar)
+		end
 
 		-- Close Button
-		S:HandleCloseButton(QuestHelperTextViewer_CloseButton)
+		local closeButton
+		if QuestHelperTextViewer.closebutton then -- (0.95, final TBC backport)
+			closeButton = QuestHelperTextViewer.closebutton
+		elseif QuestHelperTextViewer_CloseButton then -- (0.59, old version of QH for TBC)
+			closeButton = QuestHelperTextViewer_CloseButton
+		end
+		if closeButton then
+			S:HandleCloseButton(closeButton)
+		end
 	end)
 end
 
