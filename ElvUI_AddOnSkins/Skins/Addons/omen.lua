@@ -26,10 +26,6 @@ local function LoadSkin()
 			self.BarList:Point("BOTTOMRIGHT", self.ModuleList, "TOPRIGHT", 0, -(E.PixelMode and 1 or 3))
 		end
 
-		if Recount_MainWindow then
-			self.Anchor:SetFrameLevel(Recount_MainWindow:GetFrameLevel() + 5)
-		end
-
 		if self.activeModule then
 			self.activeModule:UpdateLayout()
 		end
