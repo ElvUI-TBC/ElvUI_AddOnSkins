@@ -211,6 +211,10 @@ function EMB:WindowResize()
 	self.mainFrame:Point("BOTTOMLEFT", chatData, topRight, 0, yOffset)
 	self.mainFrame:Point("TOPRIGHT", chatTab, db.belowTopTab and "BOTTOMRIGHT" or "TOPRIGHT", xOffset, db.belowTopTab and -SPACING or 0)
 
+	-- Ensure that the embed-frame is always rendered *above* the chatwindow text to avoid clipping.
+	-- NOTE: "SetFrameStrata" MUST be executed AFTER the "SetParent" call (above), since re-parenting always inherits parent's strata!
+	self.mainFrame:SetFrameStrata("MEDIUM")
+
 	if isDouble then
 		self.leftFrame:ClearAllPoints()
 		self.leftFrame:Point("TOPLEFT", self.mainFrame)
@@ -262,12 +266,6 @@ function EMB:EmbedCreate()
 	self.mainFrame = CreateFrame("Frame", "ElvUI_AddOnSkins_Embed_MainWindow", UIParent)
 	self.leftFrame = CreateFrame("Frame", "ElvUI_AddOnSkins_Embed_LeftWindow", self.mainFrame)
 	self.rightFrame = CreateFrame("Frame", "ElvUI_AddOnSkins_Embed_RightWindow", self.mainFrame)
-
-	-- Ensure that the embed-frame is always rendered *above* the chatwindow text to avoid clipping.
-	-- NOTE: "SetFrameStrata" is very unreliable *until* the frame has become visible, hence this solution.
-	hooksecurefunc(self.mainFrame, "Show", function(self)
-		self:SetFrameStrata("MEDIUM")
-	end)
 
 	self.switchButton = CreateFrame("Button", "ElvUI_AddOnSkins_Embed_SwitchButton", UIParent)
 	self.switchButton:Size(120, 32)
