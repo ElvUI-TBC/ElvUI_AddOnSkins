@@ -31,4 +31,7 @@
 	<Script file="spy.lua"/>
 	<Script file="tellMeWhen.lua"/>
 	<Script file="totemTimers.lua"/>
+	<Script file="talented.lua"/>
+	<Script file="ZOMGBuffs.lua"/>
+	<Script file="postal.lia"/>
 </Ui>
