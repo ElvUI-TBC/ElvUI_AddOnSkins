@@ -139,10 +139,10 @@ local function SkinRockConfig(lib)
 
 		local pullout = _G[self.base.mainPane:GetName().."_ChoicePullout"]
 		if pullout then
-			pullout:SetTemplate("Transparent")
+			pullout:SetTemplate("Default")
 		else
 			S:SecureHookScript(self.base.addonChooser.button, "OnClick", function(self)
-				_G[lib.base.mainPane:GetName().."_ChoicePullout"]:SetTemplate("Transparent")
+				_G[lib.base.mainPane:GetName().."_ChoicePullout"]:SetTemplate("Default")
 				S:Unhook(self, "OnClick")
 			end)
 		end
