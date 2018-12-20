@@ -11,7 +11,7 @@ local dewdropEditBoxFrame
 local dewdropSliderFrame
 
 local function SkinDewdrop2()
-	local frame
+	local frame, button
 	local i = 1
 
 	while _G["Dewdrop20Level" .. i] do
@@ -31,9 +31,15 @@ local function SkinDewdrop2()
 	end
 
 	i = 1
-	while _G["Dewdrop20Button" .. i] do
-		if not _G["Dewdrop20Button" .. i].isHook then
-			_G["Dewdrop20Button" .. i]:HookScript2("OnEnter", function(self)
+	while _G["Dewdrop20Button"..i] do
+		button = _G["Dewdrop20Button"..i]
+
+		button.text:SetFont(E.media.normFont, 12)
+
+		if not button.isHook then
+			button.highlight:SetTexture(1, 1, 1, 0.3)
+
+			button:HookScript2("OnEnter", function(self)
 				if not self.disabled and self.hasArrow then
 					if not dewdropEditBoxFrame and self.hasEditBox then
 						dewdropEditBoxFrame = AS:FindFrameBySizeChild({"EditBox"}, 200, 40)
@@ -44,6 +50,7 @@ local function SkinDewdrop2()
 							dewdropEditBoxFrame.editBox:DisableDrawLayer("BACKGROUND")
 						end
 					end
+
 					if not dewdropSliderFrame and self.hasSlider then
 						dewdropSliderFrame = AS:FindFrameBySizeChild({"Slider", "EditBox"}, 100, 170)
 
@@ -58,7 +65,8 @@ local function SkinDewdrop2()
 					SkinDewdrop2()
 				end
 			end)
-			_G["Dewdrop20Button" .. i].isHook = true
+
+			button.isHook = true
 		end
 
 		i = i + 1
