@@ -117,16 +117,26 @@ local function SkinRockConfig(lib)
 
 		self.base:SetTemplate("Transparent")
 		self.base.header:StripTextures()
+
 		S:HandleCloseButton(self.base.closeButton, self.base)
 
-		self.base.treeView:SetTemplate("Transparent")
-		S:HandleScrollBar(self.base.treeView.scrollBar)
-		S:HandleDropDownBox(self.base.addonChooser)
+		self.base.treeView:StripTextures()
+		self.base.treeView:CreateBackdrop("Transparent")
+		self.base.treeView.backdrop:Point("TOPLEFT", 0, 0)
+		self.base.treeView.backdrop:Point("BOTTOMRIGHT", -6, 0)
 
+		S:HandleScrollBar(self.base.treeView.scrollBar)
+
+		S:HandleDropDownBox(self.base.addonChooser)
+		self.base.addonChooser:Point("TOP", 1, -2)
+
+		self.base.addonChooser.text:StripTextures()
+		self.base.addonChooser.text:CreateBackdrop("Default")
+		self.base.addonChooser.text.backdrop:Point("BOTTOMRIGHT", 19, 0)
 		self.base.addonChooser.text:Height(20)
-		self.base.addonChooser.text:SetTemplate("Transparent")
+
 		S:HandleNextPrevButton(self.base.addonChooser.button, true)
-		
+
 		local pullout = _G[self.base.mainPane:GetName().."_ChoicePullout"]
 		if pullout then
 			pullout:SetTemplate("Transparent")
@@ -137,10 +147,16 @@ local function SkinRockConfig(lib)
 			end)
 		end
 
-		self.base.mainPane:SetTemplate("Transparent")
+		self.base.mainPane:StripTextures()
+		self.base.mainPane:CreateBackdrop("Transparent")
+		self.base.mainPane.backdrop:Point("TOPLEFT", 6, 0)
+		self.base.mainPane.backdrop:Point("BOTTOMRIGHT", 0, 0)
+
 		S:HandleScrollBar(self.base.mainPane.scrollBar)
 
-		self.base.treeView.sizer:SetTemplate("Transparent")
+		self.base.treeView.sizer:SetTemplate("Default", true)
+		self.base.treeView.sizer:HookScript2("OnEnter", S.SetModifiedBackdrop)
+		self.base.treeView.sizer:HookScript2("OnLeave", S.SetOriginalBackdrop)
 
 		self.base.isSkinned = true
 	end
