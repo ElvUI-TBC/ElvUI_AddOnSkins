@@ -24,3 +24,4 @@ L["Left Panel"] = true
 L["Left Window Width"] = true
 L["Right Panel"] = true
 L["Single"] = true
+L["Toggle Embedded Addon"] = true
