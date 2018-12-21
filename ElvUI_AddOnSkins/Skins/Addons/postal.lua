@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
 -- Postal 2.1
 
@@ -80,7 +81,7 @@ local function LoadSkin()
 	InboxNextPageButton:Point("CENTER", InboxFrame, "BOTTOMLEFT", 313, 104)
 	InboxNextPageButton.SetPoint = E.noop
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
 end
 
 S:AddCallbackForAddon("Postal", "Postal", LoadSkin)

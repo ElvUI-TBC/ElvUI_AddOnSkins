@@ -1,5 +1,7 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+
+local select, unpack = select, unpack
 
 -- Omen 2.0.4
 

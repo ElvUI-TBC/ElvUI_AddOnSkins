@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
-local AS = E:GetModule("AddOnSkins")
 local S = E:GetModule("Skins")
+
+local _G = _G
+
+local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Recount then return end
@@ -42,29 +45,29 @@ local function LoadSkin()
 
 	SkinFrame(Recount.MainWindow)
 
-	Recount.MainWindow.RightButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.RightButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.RightButton:GetNormalTexture():SetTexCoord(0.421, 0.234, 0.015, 0.203)
 	Recount.MainWindow.RightButton:GetNormalTexture():Point("TOPLEFT", 2, -4)
 	Recount.MainWindow.RightButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 4)
-	Recount.MainWindow.RightButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.RightButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.RightButton:GetPushedTexture():SetTexCoord(0.421, 0.234, 0.015, 0.203)
 	Recount.MainWindow.RightButton:GetPushedTexture():Point("TOPLEFT", 2, -4)
 	Recount.MainWindow.RightButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, 4)
 
-	Recount.MainWindow.LeftButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.LeftButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.LeftButton:GetNormalTexture():SetTexCoord(0.234, 0.421, 0.015, 0.203)
 	Recount.MainWindow.LeftButton:GetNormalTexture():Point("TOPLEFT", 2, -4)
 	Recount.MainWindow.LeftButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 4)
-	Recount.MainWindow.LeftButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.LeftButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.LeftButton:GetPushedTexture():SetTexCoord(0.234, 0.421, 0.015, 0.203)
 	Recount.MainWindow.LeftButton:GetPushedTexture():Point("TOPLEFT", 2, -4)
 	Recount.MainWindow.LeftButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, 4)
 
-	Recount.MainWindow.ResetButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.ResetButton:SetNormalTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.ResetButton:GetNormalTexture():SetTexCoord(0.015, 0.203, 0.015, 0.203)
 	Recount.MainWindow.ResetButton:GetNormalTexture():Point("TOPLEFT", 2, -2)
 	Recount.MainWindow.ResetButton:GetNormalTexture():Point("BOTTOMRIGHT", -2, 2)
-	Recount.MainWindow.ResetButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures.blp]])
+	Recount.MainWindow.ResetButton:SetPushedTexture([[Interface\AddOns\ElvUI\media\textures\SquareButtonTextures]])
 	Recount.MainWindow.ResetButton:GetPushedTexture():SetTexCoord(0.015, 0.203, 0.015, 0.203)
 	Recount.MainWindow.ResetButton:GetPushedTexture():Point("TOPLEFT", 2, -2)
 	Recount.MainWindow.ResetButton:GetPushedTexture():Point("BOTTOMRIGHT", -2, 2)

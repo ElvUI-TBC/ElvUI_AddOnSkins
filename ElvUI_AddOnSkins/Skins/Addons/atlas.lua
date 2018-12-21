@@ -4,7 +4,7 @@ local S = E:GetModule("Skins")
 -- Atlas 1.12.0
 
 local function LoadSkin()
-	if not E.private.addOnSkins.Atlas then return; end
+	if not E.private.addOnSkins.Atlas then return end
 
 	AtlasFrame:StripTextures()
 	AtlasFrame:SetTemplate("Transparent")

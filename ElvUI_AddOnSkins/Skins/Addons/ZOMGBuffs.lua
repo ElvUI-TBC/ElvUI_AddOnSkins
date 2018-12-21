@@ -1,9 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
-local pairs = pairs
-local select = select
-local unpack = unpack
+local pairs, select, unpack = pairs, select, unpack
 
 -- ZOMGBuffs r18
 
@@ -39,10 +38,10 @@ local function LoadSkin()
 		return frame
 	end, true)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("ZFrame-1.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Tablet-2.0")
+	AS:SkinLibrary("ZFrame-1.0")
 end
 
 local function LoadSkinBM()
@@ -103,7 +102,7 @@ local function LoadSkinBM()
 	S:SecureHook(ZBM, "SplitPanelColumnPopulate", function(self, col)
 		if not self.expandpanel.class then return end
 
-		for i, _ in pairs(col.cell) do
+		for i in pairs(col.cell) do
 			SkinActionButton(col.cell[i])
 		end
 	end)
@@ -112,7 +111,7 @@ local function LoadSkinBM()
 		local f = self.frame
 
 		for i = 1, #f.row do
-			for j, _ in pairs(f.row[i].cell) do
+			for j in pairs(f.row[i].cell) do
 				SkinActionButton(f.row[i].cell[j])
 			end
 		end

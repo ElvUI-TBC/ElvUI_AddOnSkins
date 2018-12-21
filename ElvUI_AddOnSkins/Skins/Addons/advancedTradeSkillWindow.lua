@@ -8,7 +8,7 @@ local find = string.find
 -- AdvancedTradeSkillWindow v0.6.9 (TBC)
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.AdvancedTradeSkillWindow) then return; end
+	if not E.private.addOnSkins.AdvancedTradeSkillWindow then return end
 
 	local scrollBars = {
 		-- Main Frame
@@ -122,7 +122,7 @@ local function LoadSkin()
 		if statusBar then
 			_G[statusBar]:StripTextures()
 			_G[statusBar]:CreateBackdrop()
-			_G[statusBar]:SetStatusBarTexture(E["media"].normTex)
+			_G[statusBar]:SetStatusBarTexture(E.media.normTex)
 			E:RegisterStatusBar(_G[statusBar])
 		end
 	end
@@ -151,7 +151,6 @@ local function LoadSkin()
 	ATSWReagentFrame.backdrop:Point("TOPLEFT", 12, -14)
 	ATSWReagentFrame.backdrop:Point("BOTTOMRIGHT", -34, 74)
 
-
 	S:HandleNextPrevButton(_G["ATSWDecrementButton"])
 	S:HandleNextPrevButton(_G["ATSWIncrementButton"])
 
@@ -162,7 +161,7 @@ local function LoadSkin()
 	ATSWFramePortrait:Kill()
 
 	for i = 1, 23 do
-		local button = _G["ATSWSkill" .. i]
+		local button = _G["ATSWSkill"..i]
 		if button then
 			button:SetNormalTexture("")
 			button.SetNormalTexture = E.noop
@@ -183,7 +182,7 @@ local function LoadSkin()
 				else
 					self.Text:SetText("")
 				end
-			end);
+			end)
 		end
 	end
 
@@ -206,7 +205,7 @@ local function LoadSkin()
 		else
 			self.Text:SetText("-")
 		end
-	end);
+	end)
 
 	ATSWRankFrameBorder:StripTextures()
 	ATSWRankFrameBorder:Hide()
@@ -242,25 +241,26 @@ local function LoadSkin()
 	end)
 
 	for i = 1, ATSW_MAX_TRADE_SKILL_REAGENTS do
-		local reagent = _G["ATSWReagent" .. i]
-		local icon = _G["ATSWReagent" .. i .. "IconTexture"]
-		local count = _G["ATSWReagent" .. i .. "Count"]
+		local reagent = _G["ATSWReagent"..i]
+		local icon = _G["ATSWReagent"..i.."IconTexture"]
+		local count = _G["ATSWReagent"..i.."Count"]
 
 		SkinIcon(reagent, icon, count)
 	end
 
 	for i = 1, 17 do
-		local buttonDelete = _G["ATSWCSCSkill" .. i .. "Delete"]
-		local buttonUp = _G["ATSWCSCSkill" .. i .. "MoveUp"]
-		local buttonDown = _G["ATSWCSCSkill" .. i .. "MoveDown"]
-
-		buttonDelete:Size(17)
-		buttonUp:Size(24)
-		buttonDown:Size(24)
+		local buttonDelete = _G["ATSWCSCSkill"..i.."Delete"]
+		local buttonUp = _G["ATSWCSCSkill"..i.."MoveUp"]
+		local buttonDown = _G["ATSWCSCSkill"..i.."MoveDown"]
 
 		S:HandleButton(buttonDelete)
+		buttonDelete:Size(17)
+
+		buttonUp:Size(24)
 		S:HandleNextPrevButton(buttonUp, "UP")
 		S:SquareButton_SetIcon(buttonUp, "UP")
+
+		buttonDown:Size(24)
 		S:HandleNextPrevButton(buttonDown, "DOWN")
 		S:SquareButton_SetIcon(buttonDown, "DOWN")
 	end
@@ -281,7 +281,6 @@ local function LoadSkin()
 
 	ATSWCustomSortButton:ClearAllPoints()
 	ATSWCustomSortButton:Point("TOP", ATSWDifficultySortButton, "BOTTOM", 0, 6)
-
 
 	ATSWOptionsButton:Height(20)
 	ATSWOptionsButton:ClearAllPoints()

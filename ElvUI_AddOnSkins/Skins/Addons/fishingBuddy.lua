@@ -1,11 +1,15 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
+local pairs, unpack = pairs, unpack
+local find = string.find
+
 -- FishingBuddy 0.9.8 p1 (WOTLK)
 -- FishingBuddy 0.9.4m (TBC)
 
 local function LoadSkin()
-	if(not E.private.addOnSkins.FishingBuddy) then return end
+	if not E.private.addOnSkins.FishingBuddy then return end
 
 	FishingBuddyFrame:CreateBackdrop("Transparent")
 	FishingBuddyFrame.backdrop:Point("TOPLEFT", 14, -14)
@@ -96,9 +100,9 @@ local function LoadSkin()
 			c.Text:SetText("")
 
 			hooksecurefunc(c, "SetNormalTexture", function(self, texture)
-				if string.find(texture, "MinusButton") then
+				if find(texture, "MinusButton") then
 					self.Text:SetText("-")
-				elseif string.find(texture, "PlusButton") then
+				elseif find(texture, "PlusButton") then
 					self.Text:SetText("+")
 				else
 					self.Text:SetText("")

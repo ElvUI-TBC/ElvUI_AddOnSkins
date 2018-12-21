@@ -1,8 +1,10 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
-local ipairs = ipairs
-local select = select
+local _G = _G
+local ipairs, select = ipairs, select
+local find = string.find
+
 local hooksecurefunc = hooksecurefunc
 
 -- AckisRecipeList r892
@@ -94,7 +96,7 @@ local function LoadSkin()
 				self.Frame.ProgressBar:CreateBackdrop()
 				self.Frame.ProgressBar:Height(22)
 				self.Frame.ProgressBar:SetPoint("BOTTOMLEFT", self.Frame, 11, 7)
-				self.Frame.ProgressBar:SetStatusBarTexture(E["media"].normTex)
+				self.Frame.ProgressBar:SetStatusBarTexture(E.media.normTex)
 				self.Frame.ProgressBar:SetStatusBarColor(0.13, 0.35, 0.80)
 				E:RegisterStatusBar(self.Frame.ProgressBar)
 
@@ -121,7 +123,7 @@ local function LoadSkin()
 					button.text:SetText("+")
 
 					hooksecurefunc(button, "SetNormalTexture", function(self, texture)
-						if string.find(texture, "MinusButton") then
+						if find(texture, "MinusButton") then
 							self.text:SetText("-")
 						else
 							self.text:SetText("+")

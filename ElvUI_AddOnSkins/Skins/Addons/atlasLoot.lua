@@ -1,5 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
+
+local _G = _G
+local select, unpack = select, unpack
+
+local CreateFrame = CreateFrame
+local hooksecurefunc = hooksecurefunc
 
 local function LoadSkin()
 	if not E.private.addOnSkins.AtlasLoot then return; end
@@ -173,9 +180,9 @@ local function LoadSkin()
 		AtlasLootPanel:Point("TOP", "AtlasFrame", "BOTTOM", 0, -2)
 	end)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Tablet-2.0")
 end
 
 S:AddCallbackForAddon("AtlasLoot", "AtlasLoot", LoadSkin)

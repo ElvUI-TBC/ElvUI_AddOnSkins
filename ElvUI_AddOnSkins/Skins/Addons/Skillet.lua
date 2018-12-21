@@ -6,6 +6,8 @@ local S = E:GetModule("Skins")
 local _G = _G
 local unpack = unpack
 
+local hooksecurefunc = hooksecurefunc
+
 local function LoadSkin()
 	if not E.private.addOnSkins.Skillet then return end
 
@@ -57,7 +59,7 @@ local function LoadSkin()
 	if SkilletRankFrame then
 		SkilletRankFrame:StripTextures()
 		SkilletRankFrame:CreateBackdrop()
-		SkilletRankFrame:SetStatusBarTexture(E["media"].normTex)
+		SkilletRankFrame:SetStatusBarTexture(E.media.normTex)
 
 		E:RegisterStatusBar(SkilletRankFrame)
 	end

@@ -4,8 +4,11 @@ local S = E:GetModule("Skins")
 -- QuestGuru 0.9.3
 
 local _G = _G
-local pairs, unpack, select = pairs, unpack, select
+local ipairs, pairs, unpack, select = ipairs, pairs, unpack, select
 local find = string.find
+
+local hooksecurefunc = hooksecurefunc
+local HONOR_POINTS = HONOR_POINTS
 
 local function LoadSkin()
 	if not E.private.addOnSkins.QuestGuru then return end

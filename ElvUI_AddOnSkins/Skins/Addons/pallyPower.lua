@@ -1,6 +1,7 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
 local unpack = unpack
 
 -- PallyPower 2.01.00
@@ -16,7 +17,7 @@ local function LoadSkin()
 
 	PallyPower.options.args.display.args.gapping.min = -1
 
-	local backdrop = E["media"].backdropfadecolor
+	local backdrop = E.media.backdropfadecolor
 	PallyPower.db.profile.cBuffGood = {r = backdrop[1], g = backdrop[2], b = backdrop[3], t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedAll = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}
 	PallyPower.db.profile.cBuffNeedSome = {r = 0.5, g = 0.5, b = 0.5, t = backdrop[4]}

@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local unpack = unpack
+
 -- Talented r291
 
 local function LoadSkin()
@@ -40,7 +42,7 @@ local function LoadSkin()
 			button.texture:SetTexCoord(unpack(E.TexCoords))
 			button.texture:SetDrawLayer("ARTWORK")
 
-			button.rank:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			button.rank:SetFont(E.LSM:Fetch("font", E.db.general.font), 12, "OUTLINE")
 			button.rank:Point("CENTER", button, "BOTTOMRIGHT", 2, 0)
 			button.rank.texture:Kill()
 
@@ -54,7 +56,7 @@ local function LoadSkin()
 		local target = S.hooks[self].GetButtonTarget(self, button)
 
 		if not target.isSkinned then
-			target:SetFont(E.LSM:Fetch("font", E.db["general"].font), 12, "OUTLINE")
+			target:SetFont(E.LSM:Fetch("font", E.db.general.font), 12, "OUTLINE")
 			target:Point("CENTER", button, "TOPRIGHT", 2, 0)
 			target.texture:Kill()
 

@@ -2,6 +2,8 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
+local select = select
+
 -- Cartographer3 0.9.1
 
 local function NoteFrameSkin()

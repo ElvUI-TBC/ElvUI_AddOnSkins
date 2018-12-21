@@ -1,6 +1,8 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
+
 -- CallToArms r13
 
 local function LoadSkin()

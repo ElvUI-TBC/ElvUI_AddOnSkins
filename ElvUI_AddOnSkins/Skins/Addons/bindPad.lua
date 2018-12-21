@@ -1,5 +1,10 @@
-local E, L, V, P, G, _ = unpack(ElvUI)
+local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+
+local _G = _G
+local unpack = unpack
+
+local CreateFrame = CreateFrame
 
 -- BindPad 1.8.6
 
@@ -37,9 +42,10 @@ local function LoadSkin()
 	BindPadFrame.backdrop:Point("BOTTOMRIGHT", -31, 71)
 
 	for i = 1, 42 do
-		local slot = _G["BindPadSlot" .. i]
-		local slotIcon = _G["BindPadSlot" .. i .. "Icon"]
-		local slotAddButton = _G["BindPadSlot" .. i .. "AddButton"]
+		local slot = _G["BindPadSlot"..i]
+		local border = _G["BindPadSlot"..i.."Border"]
+		local slotIcon = _G["BindPadSlot"..i.."Icon"]
+		local slotAddButton = _G["BindPadSlot"..i.."AddButton"]
 
 		slot:SetNormalTexture(nil)
 		slot:SetTemplate("Defaylt", true)
@@ -49,8 +55,8 @@ local function LoadSkin()
 		slotIcon:SetTexCoord(unpack(E.TexCoords))
 		slotIcon:SetDrawLayer("ARTWORK")
 
-		_G["BindPadSlot" .. i .. "Border"]:SetTexture(1, 1, 0, 0.3)
-		_G["BindPadSlot" .. i .. "Border"]:SetInside()
+		border:SetTexture(1, 1, 0, 0.3)
+		border:SetInside()
 
 		slotAddButton:SetNormalTexture(nil)
 		slotAddButton:SetPushedTexture(nil)
@@ -64,7 +70,7 @@ local function LoadSkin()
 	end
 
 	for i = 1, 4 do
-		local tab = _G["BindPadFrameTab" .. i]
+		local tab = _G["BindPadFrameTab"..i]
 		S:HandleTab(tab)
 		tab.backdrop:Point("TOPLEFT", 3, -8)
 		tab.backdrop:Point("BOTTOMRIGHT", -3, -1)
@@ -103,8 +109,8 @@ local function LoadSkin()
 	S:HandleScrollBar(BindPadMacroPopupScrollFrameScrollBar)
 
 	for i = 1, 20 do
-		local button = _G["BindPadMacroPopupButton" .. i]
-		local buttonIcon = _G["BindPadMacroPopupButton" .. i .. "Icon"]
+		local button = _G["BindPadMacroPopupButton"..i]
+		local buttonIcon = _G["BindPadMacroPopupButton"..i.."Icon"]
 
 		button:StripTextures()
 		button:StyleButton(nil, true)

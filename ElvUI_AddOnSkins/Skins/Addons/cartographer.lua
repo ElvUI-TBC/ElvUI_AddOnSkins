@@ -2,6 +2,9 @@ local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 local AS = E:GetModule("AddOnSkins")
 
+local _G = _G
+local select = select
+
 -- Cartographer 2.2
 
 local function LockButtonSkin()

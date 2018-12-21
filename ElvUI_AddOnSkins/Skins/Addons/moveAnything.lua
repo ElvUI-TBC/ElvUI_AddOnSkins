@@ -1,6 +1,9 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
+local _G = _G
+local unpack = unpack
+
 local function LoadSkin()
 	if not E.private.addOnSkins.MoveAnything then return end
 

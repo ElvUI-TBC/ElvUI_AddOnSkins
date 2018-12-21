@@ -1,10 +1,12 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
 
--- Clique v 102
-
 local _G = _G
 local select, unpack = select, unpack
+
+local hooksecurefunc = hooksecurefunc
+
+-- Clique v 102
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Clique then return end
@@ -50,7 +52,7 @@ local function LoadSkin()
 				if selected == self.listSelected then
 					self:SetBackdropBorderColor(1, 1, 1)
 				else
-					self:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					self:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end)
 		end
@@ -153,7 +155,7 @@ local function LoadSkin()
 				if idx == self.listSelected then
 					button:SetBackdropBorderColor(1, 1, 1)
 				else
-					button:SetBackdropBorderColor(unpack(E["media"].bordercolor))
+					button:SetBackdropBorderColor(unpack(E.media.bordercolor))
 				end
 			end
 		end
