@@ -8,7 +8,6 @@ local find, format, lower, match, trim = string.find, string.format, string.lowe
 local GetAddOnInfo = GetAddOnInfo
 local GetNumAddOns = GetNumAddOns
 local IsAddOnLoaded = IsAddOnLoaded
-local DISABLE, FONT_SIZE, NONE = DISABLE, FONT_SIZE, NONE
 
 local addonList = {
 	"AckisRecipeList",
@@ -220,7 +219,7 @@ local function getOptions()
 							},
 							Blizzard_WorldStateFrame = {
 								type = "toggle",
-								name = "WorldStateFrame",
+								name = L["WorldState Frame"],
 								desc = L["TOGGLESKIN_DESC"]
 							}
 						}
@@ -249,7 +248,7 @@ local function getOptions()
 							dbmBarHeight = {
 								order = 1,
 								type = "range",
-								name = "Bar Height",
+								name = L["Bar Height"],
 								min = 6, max = 60, step = 1
 							},
 							spacer = {
@@ -267,7 +266,7 @@ local function getOptions()
 							dbmFontSize = {
 								order = 4,
 								type = "range",
-								name = FONT_SIZE,
+								name = L["Font Size"],
 								min = 6, max = 22, step = 1
 							},
 							dbmFontOutline = {
@@ -275,7 +274,7 @@ local function getOptions()
 								type = "select",
 								name = L["Font Outline"],
 								values = {
-									["NONE"] = NONE,
+									["NONE"] = L["None"],
 									["OUTLINE"] = "OUTLINE",
 									["MONOCHROMEOUTLINE"] = "MONOCROMEOUTLINE",
 									["THICKOUTLINE"] = "THICKOUTLINE"
@@ -288,7 +287,7 @@ local function getOptions()
 			embed = {
 				order = 4,
 				type = "group",
-				name = "Embed Settings",
+				name = L["Embed Settings"],
 				get = function(info) return E.db.addOnSkins.embed[info[#info]] end,
 				set = function(info, value) E.db.addOnSkins.embed[info[#info]] = value E:GetModule("EmbedSystem"):EmbedUpdate() end,
 				args = {
@@ -307,7 +306,7 @@ local function getOptions()
 						type = "select",
 						name = L["Embed Type"],
 						values = {
-							["DISABLE"] = DISABLE,
+							["DISABLE"] = L["Disable"],
 							["SINGLE"] = L["Single"],
 							["DOUBLE"] = L["Double"]
 						}
@@ -341,19 +340,19 @@ local function getOptions()
 					hideChat = {
 						order = 7,
 						type = "select",
-						name = "Hide Chat Frame",
+						name = L["Hide Chat Frame"],
 						values = E:GetModule("EmbedSystem"):GetChatWindowInfo(),
 						disabled = function() return E.db.addOnSkins.embed.embedType == "DISABLE" end
 					},
 					rightChatPanel = {
 						order = 8,
 						type = "toggle",
-						name = "Embed into Right Chat Panel"
+						name = L["Embed into Right Chat Panel"]
 					},
 					belowTopTab = {
 						order = 9,
 						type = "toggle",
-						name = "Embed Below Top Tab"
+						name = L["Embed Below Top Tab"]
 					}
 				}
 			},

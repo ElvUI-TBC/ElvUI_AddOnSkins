@@ -6,15 +6,6 @@ P.addOnSkins = {
 	dbmFontSize = 12,
 	dbmFontOutline = "OUTLINE",
 
-	weakAuraAuraBar = true,
-	weakAuraIconCooldown = true,
-
-	chatBarSize = 16,
-	chatBarSpacing = 1,
-	chatBarTextPoint = "LEFT",
-	chatBarTextXOffset = -3,
-	chatBarTextYOffset = 0,
-
 	embed = {
 		embedType = "DISABLE",
 		leftWindow = "Omen",
