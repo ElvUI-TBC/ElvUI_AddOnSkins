@@ -15,16 +15,31 @@ local function LoadSkin()
 	local addon = LibStub("AceAddon-3.0"):GetAddon("Ackis Recipe List", true)
 	if not addon then return end
 
-	local function ExpandCollapseButton(button, text)
-		S:HandleButton(button)
-		button:Size(17)
+	local function ExpandCollapseButton(button, minus)
+		button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
+		button.SetNormalTexture = E.noop
+		button:GetNormalTexture():Size(15)
 
-		if not button.text then
-			button.text = button:CreateFontString(nil, "OVERLAY")
-			button.text:SetFont("Interface\\AddOns\\ElvUI\\media\\fonts\\PT_Sans_Narrow.ttf", 16, "OUTLINE")
-			button.text:SetText(text)
-			button.text:SetJustifyH("CENTER")
-			button.text:SetPoint("CENTER", button)
+		button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
+		button.SetPushedTexture = E.noop
+		button:GetPushedTexture():Size(15)
+
+		button:SetHighlightTexture("")
+		button.SetHighlightTexture = E.noop
+
+		button:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
+		button.SetDisabledTexture = E.noop
+		button:GetDisabledTexture():Size(15)
+		button:GetDisabledTexture():SetDesaturated(true)
+
+		if minus then
+			button:GetNormalTexture():SetTexCoord(0.540, 0.965, 0.085, 0.920)
+			button:GetPushedTexture():SetTexCoord(0.540, 0.965, 0.085, 0.920)
+			button:GetDisabledTexture():SetTexCoord(0.540, 0.965, 0.085, 0.920)
+		else
+			button:GetNormalTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+			button:GetPushedTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+			button:GetDisabledTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
 		end
 	end
 
@@ -66,7 +81,7 @@ local function LoadSkin()
 				self.Frame:Point("RIGHT", point, "RIGHT", 349, 27)
 			end
 		else
-			self.Frame:SetPoint("CENTER", UIParent, "CENTER", 0, 0)
+			self.Frame:Point("CENTER", UIParent, "CENTER", 0, 0)
 		end
 
 		if not self.db.profile.testgui then
@@ -75,14 +90,15 @@ local function LoadSkin()
 				self.Frame.Header.Texture:Kill()
 
 				S:HandleButton(self.Frame.CloseButton)
-				self.Frame.CloseButton:SetPoint("BOTTOMRIGHT", self.Frame, -8, 6)
+				self.Frame.CloseButton:Point("BOTTOMRIGHT", self.Frame, -8, 6)
 
-				-- HandleCloseButton for easy text creation
-				ExpandCollapseButton(self.Frame.ExpandAllButton, "+")
-				ExpandCollapseButton(self.Frame.CollapseAllButton, "-")
-				self.Frame.ExpandAllButton:SetPoint("TOPRIGHT", self.Frame, "TOPRIGHT", -28, -26)
+				ExpandCollapseButton(self.Frame.ExpandAllButton)
+				self.Frame.ExpandAllButton:ClearAllPoints()
+				self.Frame.ExpandAllButton:Point("TOPLEFT", self.Frame, "TOPLEFT", 11, -27)
+
+				ExpandCollapseButton(self.Frame.CollapseAllButton, true)
 				self.Frame.CollapseAllButton:ClearAllPoints()
-				self.Frame.CollapseAllButton:SetPoint("RIGHT", self.Frame.ExpandAllButton, "LEFT", -4, 0)
+				self.Frame.CollapseAllButton:Point("LEFT", self.Frame.ExpandAllButton, "RIGHT", 4, 0)
 
 				S:HandleCloseButton(self.Frame.XButton, self.Frame)
 
@@ -95,7 +111,7 @@ local function LoadSkin()
 				self.Frame.ProgressBar:StripTextures()
 				self.Frame.ProgressBar:CreateBackdrop()
 				self.Frame.ProgressBar:Height(22)
-				self.Frame.ProgressBar:SetPoint("BOTTOMLEFT", self.Frame, 11, 7)
+				self.Frame.ProgressBar:Point("BOTTOMLEFT", self.Frame, 11, 7)
 				self.Frame.ProgressBar:SetStatusBarTexture(E.media.normTex)
 				self.Frame.ProgressBar:SetStatusBarColor(0.13, 0.35, 0.80)
 				E:RegisterStatusBar(self.Frame.ProgressBar)
@@ -108,25 +124,32 @@ local function LoadSkin()
 				button = _G["AckisRecipeListRecipe"..i]
 
 				if button and not button.isSkinned then
-					button:SetNormalTexture("")
+					button:SetNormalTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
 					button.SetNormalTexture = E.noop
-					button:SetPushedTexture("")
+					button:GetNormalTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+					button:GetNormalTexture():Size(14)
+
+					button:SetPushedTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
 					button.SetPushedTexture = E.noop
+					button:GetPushedTexture():Size(14)
+					button:GetPushedTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+
 					button:SetHighlightTexture("")
 					button.SetHighlightTexture = E.noop
-					button:SetDisabledTexture("")
-					button.SetDisabledTexture = E.noop
 
-					button.text = button:CreateFontString(nil, "OVERLAY")
-					button.text:FontTemplate(nil, 22)
-					button.text:Point("RIGHT", -5, 0)
-					button.text:SetText("+")
+					button:SetDisabledTexture("Interface\\AddOns\\ElvUI\\media\\textures\\PlusMinusButton")
+					button.SetDisabledTexture = E.noop
+					button:GetDisabledTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+					button:GetDisabledTexture():SetDesaturated(true)
+					button:GetDisabledTexture():Size(14)
 
 					hooksecurefunc(button, "SetNormalTexture", function(self, texture)
 						if find(texture, "MinusButton") then
-							self.text:SetText("-")
+							self:GetNormalTexture():SetTexCoord(0.540, 0.965, 0.085, 0.920)
+							self:GetPushedTexture():SetTexCoord(0.540, 0.965, 0.085, 0.920)
 						else
-							self.text:SetText("+")
+							self:GetNormalTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
+							self:GetPushedTexture():SetTexCoord(0.040, 0.465, 0.085, 0.920)
 						end
 					end)
 
