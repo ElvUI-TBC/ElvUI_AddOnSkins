@@ -87,6 +87,9 @@ local function LoadSkin()
 		if button then
 			button:GetNormalTexture():SetDesaturated(true)
 			button:GetHighlightTexture():SetDesaturated(true)
+			if button:GetPushedTexture() then
+				button:GetPushedTexture():SetDesaturated(true)
+			end
 		end
 	end
 
