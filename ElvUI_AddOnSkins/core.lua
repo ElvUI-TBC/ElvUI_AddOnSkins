@@ -31,7 +31,7 @@ local addonList = {
 	"FlightMap",
 	"MoveAnything",
 	"Omen",
---	"Outfitter",
+	"Outfitter",
 	"PAB",
 	"PallyPower",
 	"Postal",
@@ -73,7 +73,7 @@ local SUPPORTED_ADDONS = {
 	"FlightMap"..ColorizeVersion("2.4-1"),					-- 2.4-1
 	"MoveAnything"..ColorizeVersion("2.66"),				-- 2.66
 	"Omen"..ColorizeVersion("2.0.4"),						-- 2.0.4
---	"Outfitter"..ColorizeVersion("4.2.6"),					-- 4.2.6
+	"Outfitter"..ColorizeVersion("4.2.6"),					-- 4.2.6
 	"PartyAbilityBars"..ColorizeVersion("2.4.3"),			-- 2.4.3
 	"PallyPower"..ColorizeVersion("2.01.00"),				-- 2.01.00
 	"Postal"..ColorizeVersion("2.1"),						-- 2.1

@@ -20,7 +20,7 @@
 	<Script file="flightMap.lua"/>
 	<Script file="moveAnything.lua"/>
 	<Script file="omen.lua"/>
-	<!-- <Script file="outfitter.lua"/> -->
+	<Script file="outfitter.lua"/>
 	<Script file="pab.lua"/>
 	<Script file="pallyPower.lua"/>
 	<Script file="postal.lua"/>

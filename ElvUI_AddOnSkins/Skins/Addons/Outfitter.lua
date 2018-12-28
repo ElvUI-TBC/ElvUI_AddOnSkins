@@ -15,8 +15,13 @@ local function LoadSkin()
 	OutfitterButton:GetNormalTexture():SetTexCoord(0.25, 0.75, 0.15, 0.4)
 	OutfitterButton:GetNormalTexture():SetInside()
 
-	S:HandleButton(OutfitterEnableAll)
 	S:HandleButton(OutfitterEnableNone)
+	OutfitterEnableNone:ClearAllPoints()
+	OutfitterEnableNone:Point("TOPLEFT", PaperDollFrame, 16, -20)
+
+	S:HandleButton(OutfitterEnableAll)
+	OutfitterEnableAll:ClearAllPoints()
+	OutfitterEnableAll:Point("BOTTOM", OutfitterEnableNone, 0, -20)
 
 	local slots = {
 		"HeadSlot",
@@ -46,24 +51,38 @@ local function LoadSkin()
 
 		S:HandleCheckBox(check)
 		check:Size(22)
+		check:SetFrameLevel(check:GetFrameLevel() + 2)
 	end
 
 	-- Quickslots
-	hooksecurefunc(Outfitter._QuickSlots, "Open", function()
+	local function SkinQuickSlots()
 		OutfitterQuickSlots:StripTextures()
-		
-		for i = 0, 10 do
+		if not OutfitterQuickSlots.backdrop then
+			OutfitterQuickSlots:CreateBackdrop("Transparent")
+			OutfitterQuickSlots.backdrop:Point("TOPLEFT", 4, -3)
+			OutfitterQuickSlots.backdrop:Point("BOTTOMRIGHT", -6, 7)
+		end
+	end
+	hooksecurefunc(Outfitter._QuickSlots, "Open", SkinQuickSlots)
+
+	local function SkinQuickSlotButtons()
+		for i = 0, 30 do
 			local item = _G["OutfitterQuickSlotsButton"..i.."Item1"]
 			local icon = _G["OutfitterQuickSlotsButton"..i.."Item1IconTexture"]
-			
+			local normal = _G["OutfitterQuickSlotsButton"..i.."Item1NormalTexture"]
+
 			if item then
-				item:SetTemplate()
+				item:SetTemplate("Default", true)
 				item:StyleButton()
 
 				icon:SetTexCoord(unpack(E.TexCoords))
+				icon:SetInside()
+
+				normal:SetAlpha(0)
 			end
 		end
-	end)
+	end
+	hooksecurefunc(Outfitter._QuickSlotButton, "Construct", SkinQuickSlotButtons)
 
 	-- Main Frame
 	hooksecurefunc(Outfitter, "OnShow", function()
@@ -161,40 +180,49 @@ local function LoadSkin()
 	OutfitterAboutFrame:StripTextures()
 	OutfitterAboutFrame:SetTemplate("Transparent")
 
+	-- PopUp Frame
+	OutfitterNameOutfitDialog:StripTextures()
+	OutfitterNameOutfitDialog:SetTemplate("Transparent")
+	OutfitterNameOutfitDialog:Point("TOPLEFT", OutfitterMainFrame, "TOPRIGHT", 2, 0)
+
+	OutfitterNameOutfitDialogName:StripTextures()
+	S:HandleEditBox(OutfitterNameOutfitDialogName)
+
+	S:HandleDropDownBox(OutfitterNameOutfitDialogAutomation)
+	S:HandleDropDownBox(OutfitterNameOutfitDialogCreateUsing)
+
+	S:HandleButton(OutfitterNameOutfitDialogCancelButton)
+	S:HandleButton(OutfitterNameOutfitDialogDoneButton)
+
 	-- Outfiter Bar
-	hooksecurefunc(Outfitter.OutfitBar, "UpdateBar", function()
+	local function SkinBars()
 		for i = 1, 2 do
 			local bar = _G["OutfitterOutfitBar"..i]
 
 			if bar then
 				bar:StripTextures()
 
-				if not bar.isSkinned then
+				if not bar.backdrop then
 					bar:CreateBackdrop()
-					bar.backdrop:Point("TOPLEFT", 2, -2)
-					bar.backdrop:Point("BOTTOMRIGHT", -4, 6)
-
-					bar.isSkinned = true
+					bar.backdrop:Point("TOPLEFT", 3, -2)
+					bar.backdrop:Point("BOTTOMRIGHT", -5, 6)
 				end
-			end
 
-			for j = 0, 100 do
-				local button = _G["OutfitterOutfitBar"..i.."Button"..j]
-				local icon = _G["OutfitterOutfitBar"..i.."Button"..j.."IconTexture"]
-				local normal = _G["OutfitterOutfitBar"..i.."Button"..j.."NormalTexture"]
+				for j = 0, 100 do
+					local button = _G["OutfitterOutfitBar"..i.."Button"..j]
+					local icon = _G["OutfitterOutfitBar"..i.."Button"..j.."IconTexture"]
+					local normal = _G["OutfitterOutfitBar"..i.."Button"..j.."NormalTexture"]
 
-				if button then
-					icon:SetTexCoord(unpack(E.TexCoords))
-
-					if not button.isSkinned then
+					if button and not button.isSkinned then
 						button:CreateBackdrop()
 						button:StyleButton()
 						button:GetHighlightTexture():SetInside(button.backdrop)
 						button:GetPushedTexture():SetInside(button.backdrop)
 
+						icon:SetTexCoord(unpack(E.TexCoords))
 						icon:SetInside(button.backdrop)
 
-						normal:Kill()
+						normal:SetAlpha(0)
 
 						for k = 1, button:GetNumRegions() do
 							local region = select(k, button:GetRegions())
@@ -210,7 +238,8 @@ local function LoadSkin()
 				end
 			end
 		end
-	end)
+	end
+	hooksecurefunc(Outfitter.OutfitBar, "UpdateBars2", SkinBars)
 end
 
 S:AddCallbackForAddon("Outfitter", "Outfitter", LoadSkin)
