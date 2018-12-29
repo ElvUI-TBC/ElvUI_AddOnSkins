@@ -36,6 +36,7 @@ V.addOnSkins = {
 	Talented = true,
 	TellMeWhen = true,
 	TotemTimers = true,
+	TrinketMenu = true,
 	ZOMGBuffs = true,
 
 	-- Blizzard

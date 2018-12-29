@@ -44,6 +44,7 @@ local addonList = {
 	"Talented",
 	"TellMeWhen",
 	"TotemTimers",
+	"TrinketMenu",
 	"ZOMGBuffs",
 }
 
@@ -87,6 +88,7 @@ local SUPPORTED_ADDONS = {
 	"Talented"..ColorizeVersion("r291"),					-- r291
 	"TellMeWhen"..ColorizeVersion("1.0"),					-- 1.0
 	"TotemTimers"..ColorizeVersion("8.1d"),					-- 8.1d
+	"TrinketMenu"..ColorizeVersion("3.71"),					-- 3.71
 	"ZOMGBuffs"..ColorizeVersion("r18"),					-- r18
 }
 for _, supportedAddOn in pairs(SUPPORTED_ADDONS) do
