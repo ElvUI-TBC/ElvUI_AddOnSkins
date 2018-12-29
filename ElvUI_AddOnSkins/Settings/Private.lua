@@ -19,6 +19,7 @@ V.addOnSkins = {
 	DBM = true,
 	Doom_CooldownPulse = true,
 	EqCompare = true,
+	Factionizer = true,
 	FishingBuddy = true,
 	FlightMap = true,
 	MoveAnything = true,

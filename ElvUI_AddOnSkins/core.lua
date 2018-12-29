@@ -27,6 +27,7 @@ local addonList = {
 	"DBM",
 	"Doom_CooldownPulse",
 	"EqCompare",
+	"Factionizer",
 	"FishingBuddy",
 	"FlightMap",
 	"MoveAnything",
@@ -69,6 +70,7 @@ local SUPPORTED_ADDONS = {
 	"DeadlyBossMods"..ColorizeVersion("1.25"),				-- 1.25
 	"Doom_CooldownPulse"..ColorizeVersion("1.1.3"),			-- 1.1.3
 	"EqCompare"..ColorizeVersion("1.4 r71243"),				-- 1.4 r71243
+	"Factionizer"..ColorizeVersion("20400.7"),				-- 20400.7
 	"FishingBuddy"..ColorizeVersion("0.9.4m"),				-- 0.9.4m
 	"FlightMap"..ColorizeVersion("2.4-1"),					-- 2.4-1
 	"MoveAnything"..ColorizeVersion("2.66"),				-- 2.66

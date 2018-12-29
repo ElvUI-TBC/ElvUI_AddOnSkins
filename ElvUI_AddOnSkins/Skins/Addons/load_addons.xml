@@ -16,6 +16,7 @@
 	<Script file="dbm.lua"/>
 	<Script file="doom_CooldownPulse.lua"/>
 	<Script file="EqCompare.lua"/>
+	<Script file="Factionizer.lua"/>
 	<Script file="fishingBuddy.lua"/>
 	<Script file="flightMap.lua"/>
 	<Script file="moveAnything.lua"/>
