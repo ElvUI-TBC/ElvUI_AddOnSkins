@@ -76,7 +76,7 @@ local SUPPORTED_ADDONS = {
 	"Outfitter"..ColorizeVersion("4.2.6"),					-- 4.2.6
 	"PartyAbilityBars"..ColorizeVersion("2.4.3"),			-- 2.4.3
 	"PallyPower"..ColorizeVersion("2.01.00"),				-- 2.01.00
-	"Postal"..ColorizeVersion("2.1"),						-- 2.1
+	"Postal"..ColorizeVersion("2.1-r82138"),				-- 2.1-r82138
 	"QuestGuru"..ColorizeVersion("0.9.3"),					-- 0.9.3
 	"QuestHelper"..ColorizeVersion("0.59 & 0.95-Backport"),	-- 0.59
 	"Recount"..ColorizeVersion("r924"),						-- r924
