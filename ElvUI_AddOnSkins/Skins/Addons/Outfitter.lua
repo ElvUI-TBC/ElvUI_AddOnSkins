@@ -62,6 +62,7 @@ local function LoadSkin()
 			OutfitterQuickSlots.backdrop:Point("TOPLEFT", 4, -3)
 			OutfitterQuickSlots.backdrop:Point("BOTTOMRIGHT", -6, 7)
 		end
+		OutfitterQuickSlots:SetFrameStrata("DIALOG")
 	end
 	hooksecurefunc(Outfitter._QuickSlots, "Open", SkinQuickSlots)
 
