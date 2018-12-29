@@ -195,11 +195,59 @@ local function LoadSkin()
 	S:HandleButton(OutfitterNameOutfitDialogCancelButton)
 	S:HandleButton(OutfitterNameOutfitDialogDoneButton)
 
+	-- Choose Icon Dialog
+	OutfitterChooseIconDialog:StripTextures()
+	OutfitterChooseIconDialog:SetTemplate("Transparent")
+
+	S:HandleDropDownBox(OutfitterChooseIconDialogIconSetMenu)
+
+	OutfitterChooseIconDialogFilterEditBox:StripTextures()
+	S:HandleEditBox(OutfitterChooseIconDialogFilterEditBox)
+
+	S:HandleButton(OutfitterChooseIconDialogOKButton)
+	S:HandleButton(OutfitterChooseIconDialogCancelButton)
+
+	S:HandleScrollBar(OutfitterChooseIconDialogScrollFrameScrollBar)
+
+--[[
+	local function test()
+		for i = 1, 30 do
+			local button = _G["OutfitterChooseIconDialogButton"..i]
+			local icon = _G["OutfitterChooseIconDialogButton"..i.."Icon"]
+			local border = _G["OutfitterChooseIconDialogButton"..i.."Border"]
+			local normal = _G["OutfitterChooseIconDialogButton"..i.."NormalTexture"]
+
+			button:StripTextures()
+			button:SetTemplate("Default")
+			button:StyleButton(nil, true)
+
+			icon:SetInside()
+			icon:SetTexCoord(unpack(E.TexCoords))
+
+			normal:SetAlpha(0)
+			border:SetAlpha(0)
+		end
+	end
+	hooksecurefunc(Outfitter.OutfitBar._ChooseIconDialog, "UpdateIcons", test)
+]]
+
 	-- Outfiter Bar
+	local function SkinSettingsDialog()
+		OutfitBarSettingsDialog:SetTemplate("Transparent")
+
+		for i = 1, 3 do
+			local slider = _G["OutfitBarSettingsDialogSlider"..i]
+			local check = _G["OutfitBarSettingsDialogCheckbuttom"..i]
+
+			S:HandleSliderFrame(slider)
+			S:HandleCheckBox(check)
+		end
+	end
+	hooksecurefunc(Outfitter.OutfitBar._SettingsDialog, "Construct", SkinSettingsDialog)
+
 	local function SkinBars()
 		for i = 1, 2 do
 			local bar = _G["OutfitterOutfitBar"..i]
-
 			if bar then
 				bar:StripTextures()
 
@@ -236,6 +284,19 @@ local function LoadSkin()
 
 						button.isSkinned = true
 					end
+				end
+
+				Outfitter.OutfitBar["DragBar"..i]:StripTextures()
+
+				if not Outfitter.OutfitBar["DragBar"..i].isSkinned then
+					Outfitter.OutfitBar["DragBar"..i]:CreateBackdrop("Default", true)
+					Outfitter.OutfitBar["DragBar"..i].backdrop:Point("TOPLEFT", 0, -2)
+					Outfitter.OutfitBar["DragBar"..i].backdrop:Point("BOTTOMRIGHT", 0, 6)
+					Outfitter.OutfitBar["DragBar"..i]:SetHitRectInsets(0, 0, 2, 6)
+					Outfitter.OutfitBar["DragBar"..i]:HookScript2("OnEnter", S.SetModifiedBackdrop)
+					Outfitter.OutfitBar["DragBar"..i]:HookScript2("OnLeave", S.SetOriginalBackdrop)
+
+					Outfitter.OutfitBar["DragBar"..i].isSkinned = true
 				end
 			end
 		end
