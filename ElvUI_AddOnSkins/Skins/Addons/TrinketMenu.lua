@@ -28,6 +28,7 @@ local function LoadSkin()
 	for i = 0, 1 do
 		local item = _G["TrinketMenu_Trinket"..i]
 		local icon = _G["TrinketMenu_Trinket"..i.."Icon"]
+		local queue = _G["TrinketMenu_Trinket"..i.."Queue"]
 		local cooldown = _G["TrinketMenu_Trinket"..i.."Cooldown"]
 
 		item:StripTextures()
@@ -37,6 +38,9 @@ local function LoadSkin()
 
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetInside()
+
+		queue:SetTexCoord(unpack(E.TexCoords))
+		queue:Point("TOPLEFT", 3, -3)
 
 		E:RegisterCooldown(cooldown)
 
