@@ -12,6 +12,7 @@ local function LoadSkin()
 	TrinketMenu_MainFrame:CreateBackdrop("Transparent")
 	TrinketMenu_MainFrame.backdrop:Point("TOPLEFT", 5, -5)
 	TrinketMenu_MainFrame.backdrop:Point("BOTTOMRIGHT", -5, 5)
+	TrinketMenu_MainFrame:SetClampedToScreen(true)
 
 	TrinketMenu_MainResizeButton:SetNormalTexture("")
 
@@ -20,6 +21,7 @@ local function LoadSkin()
 	TrinketMenu_MenuFrame:CreateBackdrop("Transparent")
 	TrinketMenu_MenuFrame.backdrop:Point("TOPLEFT", 5, -5)
 	TrinketMenu_MenuFrame.backdrop:Point("BOTTOMRIGHT", -5, 5)
+	TrinketMenu_MenuFrame:SetClampedToScreen(true)
 
 	TrinketMenu_MenuResizeButton:SetNormalTexture("")
 
