@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
 local unpack = unpack
 
@@ -66,8 +67,8 @@ local function LoadSkin()
 		return target
 	end)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
 end
 
 S:AddCallbackForAddon("Talented", "Talented", LoadSkin)

@@ -48,48 +48,48 @@ local addonList = {
 	"ZOMGBuffs",
 }
 
-local function ColorizeVersion(version)
-	return format(" |cffff7d0a%s|r", version)
+local function ColorizeVersion(name, version)
+	return format("%s |cffff7d0a%s|r", name, version)
 end
 local SUPPORTED_ADDONS_STRING = ""
 
 local SUPPORTED_ADDONS = {
-	"AckisRecipeList"..ColorizeVersion("r8.9.2"),			-- r8.9.2
-	"AddonControlPanel"..ColorizeVersion("2.4.3"),			-- 2.4.3
-	"AdvancedTradeSkillWindow"..ColorizeVersion("0.6.9"),	-- 0.6.9
-	"Atlas"..ColorizeVersion("1.12.0"),						-- 1.12.0
-	"AtlasLoot"..ColorizeVersion("4.06.04"),				-- 4.06.04
-	"Auctionator"..ColorizeVersion("1.1.1"),				-- 1.1.1
-	"BindPad"..ColorizeVersion("1.8.6"),					-- 1.8.6
-	"BlackList"..ColorizeVersion("1.2.3"),					-- 1.2.3
-	"BugSack"..ColorizeVersion("2.3.0.70977"),				-- 2.3.0.70977
-	"BuyEmAll"..ColorizeVersion("2.8"),						-- 2.8
-	"CallToArms"..ColorizeVersion("r13"),					-- r13
-	"Cartographer"..ColorizeVersion("2.2"),					-- 2.2
-	"Cartographer 3.0"..ColorizeVersion("0.9.1"),			-- 0.9.1
-	"Clique"..ColorizeVersion("102"),						-- 102
-	"DeadlyBossMods"..ColorizeVersion("1.25"),				-- 1.25
-	"Doom_CooldownPulse"..ColorizeVersion("1.1.3"),			-- 1.1.3
-	"EqCompare"..ColorizeVersion("1.4 r71243"),				-- 1.4 r71243
-	"Factionizer"..ColorizeVersion("20400.7"),				-- 20400.7
-	"FishingBuddy"..ColorizeVersion("0.9.4m"),				-- 0.9.4m
-	"FlightMap"..ColorizeVersion("2.4-1"),					-- 2.4-1
-	"MoveAnything"..ColorizeVersion("2.66"),				-- 2.66
-	"Omen"..ColorizeVersion("2.0.4"),						-- 2.0.4
-	"Outfitter"..ColorizeVersion("4.2.6"),					-- 4.2.6
-	"PartyAbilityBars"..ColorizeVersion("2.4.3"),			-- 2.4.3
-	"PallyPower"..ColorizeVersion("2.01.00"),				-- 2.01.00
-	"Postal"..ColorizeVersion("2.1-r82138"),				-- 2.1-r82138
-	"QuestGuru"..ColorizeVersion("0.9.3"),					-- 0.9.3
-	"QuestHelper"..ColorizeVersion("0.59 & 0.95-Backport"),	-- 0.59
-	"Recount"..ColorizeVersion("r924"),						-- r924
-	"Skillet"..ColorizeVersion("1.10 r81029.6"),			-- 1.10 r81029.6
-	"Spy"..ColorizeVersion("1.0-Backport"),					-- 1.0
-	"Talented"..ColorizeVersion("r291"),					-- r291
-	"TellMeWhen"..ColorizeVersion("1.0"),					-- 1.0
-	"TotemTimers"..ColorizeVersion("8.1d"),					-- 8.1d
-	"TrinketMenu"..ColorizeVersion("3.71"),					-- 3.71
-	"ZOMGBuffs"..ColorizeVersion("r18"),					-- r18
+	ColorizeVersion("AckisRecipeList",			"r8.9.2"),
+	ColorizeVersion("AddonControlPanel",		"2.4.3"),
+	ColorizeVersion("AdvancedTradeSkillWindow", "0.6.9"),
+	ColorizeVersion("Atlas",					"1.12.0"),
+	ColorizeVersion("AtlasLoot",				"4.06.04"),
+	ColorizeVersion("Auctionator",				"1.1.1"),
+	ColorizeVersion("BindPad",					"1.8.6"),
+	ColorizeVersion("BlackList",				"1.2.3"),
+	ColorizeVersion("BugSack",					"2.3.0.70977"),
+	ColorizeVersion("BuyEmAll",					"2.8"),
+	ColorizeVersion("CallToArms",				"r13"),
+	ColorizeVersion("Cartographer",				"2.2"),
+	ColorizeVersion("Cartographer 3.0",			"0.9.1"),
+	ColorizeVersion("Clique",					"102"),
+	ColorizeVersion("DeadlyBossMods",			"1.25"),
+	ColorizeVersion("Doom_CooldownPulse",		"1.1.3"),
+	ColorizeVersion("EqCompare",				"1.4 r71243"),
+	ColorizeVersion("Factionizer",				"20400.7"),
+	ColorizeVersion("FishingBuddy",				"0.9.4m"),
+	ColorizeVersion("FlightMap",				"2.4-1"),
+	ColorizeVersion("MoveAnything",				"2.66"),
+	ColorizeVersion("Omen",						"2.0.4"),
+	ColorizeVersion("Outfitter",				"4.2.6"),
+	ColorizeVersion("PartyAbilityBars",			"2.4.3"),
+	ColorizeVersion("PallyPower",				"2.01.00"),
+	ColorizeVersion("Postal",					"2.1-r82138"),
+	ColorizeVersion("QuestGuru",				"0.9.3"),
+	ColorizeVersion("QuestHelper",				"0.59 & 0.95-Backport"),
+	ColorizeVersion("Recount",					"r924"),
+	ColorizeVersion("Skillet",					"1.10 r81029.6"),
+	ColorizeVersion("Spy",						"1.0-Backport"),
+	ColorizeVersion("Talented",					"r291"),
+	ColorizeVersion("TellMeWhen",				"1.0"),
+	ColorizeVersion("TotemTimers",				"8.1d"),
+	ColorizeVersion("TrinketMenu",				"3.71"),
+	ColorizeVersion("ZOMGBuffs",				"r18"),
 }
 for _, supportedAddOn in pairs(SUPPORTED_ADDONS) do
 	SUPPORTED_ADDONS_STRING = SUPPORTED_ADDONS_STRING.."\n"..supportedAddOn

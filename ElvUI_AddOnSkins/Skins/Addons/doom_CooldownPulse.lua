@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
 -- Doom_CooldownPulse 1.1.3
 
@@ -8,7 +9,7 @@ local select, unpack = select, unpack
 local function LoadSkin()
 	if not E.private.addOnSkins.Doom_CooldownPulse then return end
 
-	local frame = E:GetModule("AddOnSkins"):FindFrameByPoint("CENTER", UIParent, "BOTTOMLEFT", DCP_Saved.x, DCP_Saved.y)
+	local frame = AS:FindFrameByPoint("CENTER", UIParent, "BOTTOMLEFT", DCP_Saved.x, DCP_Saved.y)
 	if not frame then return end
 
 	Doom_CooldownPulse = frame

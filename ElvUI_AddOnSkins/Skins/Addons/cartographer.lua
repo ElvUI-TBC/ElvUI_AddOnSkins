@@ -93,6 +93,7 @@ local function LockButtonSkin()
 				end
 			end
 		end
+		CartographerLookNFeelNonOverlayHolder:CreateBackdrop()
 	end)
 
 	if E.global.general.smallerWorldMap then
@@ -179,9 +180,9 @@ local function LoadSkin()
 	S:HandleButton(CartographerGoToButton)
 	S:HandleButton(CartographerOptionsButton)
 
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Tablet-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("LibRockConfig-1.0")
+	AS:SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("Tablet-2.0")
+	AS:SkinLibrary("LibRockConfig-1.0")
 
 	if not AS:IsAddonExist("Cartographer_LookNFeel") then
 		LockButtonSkin()

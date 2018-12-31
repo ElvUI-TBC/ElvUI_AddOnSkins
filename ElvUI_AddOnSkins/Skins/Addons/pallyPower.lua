@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
 local _G = _G
 local unpack = unpack
@@ -58,8 +59,8 @@ local function LoadSkin()
 		end
 	end
 
-	E:GetModule("AddOnSkins"):SkinLibrary("AceAddon-2.0")
-	E:GetModule("AddOnSkins"):SkinLibrary("Dewdrop-2.0")
+	AS:SkinLibrary("AceAddon-2.0")
+	AS:SkinLibrary("Dewdrop-2.0")
 end
 
 S:AddCallbackForAddon("PallyPower", "PallyPower", LoadSkin)
