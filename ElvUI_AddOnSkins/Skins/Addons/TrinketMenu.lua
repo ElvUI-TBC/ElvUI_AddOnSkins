@@ -16,33 +16,17 @@ local function LoadSkin()
 
 	TrinketMenu_MainResizeButton:SetNormalTexture("")
 
-	-- Menu frame
-	TrinketMenu_MenuFrame:StripTextures()
-	TrinketMenu_MenuFrame:CreateBackdrop("Transparent")
-	TrinketMenu_MenuFrame.backdrop:Point("TOPLEFT", 5, -5)
-	TrinketMenu_MenuFrame.backdrop:Point("BOTTOMRIGHT", -5, 5)
-	TrinketMenu_MenuFrame:SetClampedToScreen(true)
-
-	TrinketMenu_MenuResizeButton:SetNormalTexture("")
-
 	for i = 0, 1 do
 		local item = _G["TrinketMenu_Trinket"..i]
 		local icon = _G["TrinketMenu_Trinket"..i.."Icon"]
 		local queue = _G["TrinketMenu_Trinket"..i.."Queue"]
+		local timer = _G["TrinketMenu_Trinket"..i.."Time"]
 		local cooldown = _G["TrinketMenu_Trinket"..i.."Cooldown"]
 
 		item:StripTextures()
 		item:SetTemplate()
 		item:StyleButton()
 		item:SetBackdropColor(0, 0, 0, 0)
-
-		icon:SetTexCoord(unpack(E.TexCoords))
-		icon:SetInside()
-
-		queue:SetTexCoord(unpack(E.TexCoords))
-		queue:Point("TOPLEFT", 3, -3)
-
-		E:RegisterCooldown(cooldown)
 
 		item:HookScript2("OnUpdate", function(self)
 			local link = i == 0 and GetInventoryItemLink("player", 13) or GetInventoryItemLink("player", 14)
@@ -53,11 +37,31 @@ local function LoadSkin()
 				self:SetBackdropBorderColor(GetItemQualityColor(quality))
 			end
 		end)
+
+		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:SetInside()
+
+		queue:SetTexCoord(unpack(E.TexCoords))
+		queue:Point("TOPLEFT", 3, -3)
+
+		timer:Kill()
+
+		E:RegisterCooldown(cooldown)
 	end
+
+	-- Menu frame
+	TrinketMenu_MenuFrame:StripTextures()
+	TrinketMenu_MenuFrame:CreateBackdrop("Transparent")
+	TrinketMenu_MenuFrame.backdrop:Point("TOPLEFT", 5, -5)
+	TrinketMenu_MenuFrame.backdrop:Point("BOTTOMRIGHT", -5, 5)
+	TrinketMenu_MenuFrame:SetClampedToScreen(true)
+
+	TrinketMenu_MenuResizeButton:SetNormalTexture("")
 
 	for i = 1, 30 do
 		local item = _G["TrinketMenu_Menu"..i]
 		local icon = _G["TrinketMenu_Menu"..i.."Icon"]
+		local timer = _G["TrinketMenu_Menu"..i.."Time"]
 		local cooldown = _G["TrinketMenu_Menu"..i.."Cooldown"]
 
 		item:StripTextures()
@@ -65,8 +69,20 @@ local function LoadSkin()
 		item:StyleButton()
 		item:SetBackdropColor(0, 0, 0, 0)
 
+		item:HookScript2("OnUpdate", function(self)
+			local link = TrinketMenu.BaggedTrinkets[i].id
+
+			if link then
+				local quality = select(3, GetItemInfo(link))
+
+				self:SetBackdropBorderColor(GetItemQualityColor(quality))
+			end
+		end)
+
 		icon:SetTexCoord(unpack(E.TexCoords))
 		icon:SetInside()
+
+		timer:Kill()
 
 		E:RegisterCooldown(cooldown)
 	end
