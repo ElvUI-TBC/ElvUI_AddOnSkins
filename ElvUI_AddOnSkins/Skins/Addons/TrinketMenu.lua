@@ -1,5 +1,6 @@
 local E, L, V, P, G = unpack(ElvUI)
 local S = E:GetModule("Skins")
+local AS = E:GetModule("AddOnSkins")
 
 local _G = _G
 local pairs, unpack = pairs, unpack
@@ -168,19 +169,18 @@ local function LoadSkin()
 		item.backdrop:SetOutside(icon)
 
 		icon:SetTexCoord(unpack(E.TexCoords))
+		icon:Point("TOPLEFT", 1, -1)
 
 		highlight:SetTexture(1, 1, 1, 0.3)
 		highlight:SetInside()
 	end
 
-	S:HandleNextPrevButton(TrinketMenu_MoveUp)
-	S:SquareButton_SetIcon(TrinketMenu_MoveUp, "UP")
-
-	S:HandleNextPrevButton(TrinketMenu_MoveDown)
-	S:SquareButton_SetIcon(TrinketMenu_MoveDown, "DOWN")
-
-	S:HandleNextPrevButton(TrinketMenu_Delete)
-	S:SquareButton_SetIcon(TrinketMenu_Delete, "DELETE")
+	AS:HandleSquareButton(TrinketMenu_Profiles, "FILE")
+	AS:HandleSquareButton(TrinketMenu_MoveUp, "UP")
+	AS:HandleSquareButton(TrinketMenu_MoveTop, "TOP")
+	AS:HandleSquareButton(TrinketMenu_MoveDown, "DOWN")
+	AS:HandleSquareButton(TrinketMenu_MoveBottom, "BOTTOM")
+	AS:HandleSquareButton(TrinketMenu_Delete, "CLOSE")
 
 	TrinketMenu_ProfilesFrame:StripTextures()
 

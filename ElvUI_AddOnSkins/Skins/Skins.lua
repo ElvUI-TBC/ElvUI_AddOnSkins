@@ -4,6 +4,71 @@ local S = E:GetModule("Skins")
 
 local select = select
 
+AS.SQUARE_BUTTON_TEXCOORDS = {
+	["HELP"]	= {0, 0.125, 0, 0.125};
+	["TOP"]		= {0, 0.125, 0.125, 0.25};
+	["BOTTOM"]	= {0, 0.125, 0.25, 0.375};
+	["FILE"]	= {0, 0.125, 0.375, 0.5};
+	["LOCK"]	= {0, 0.125, 0.5, 0.625};
+	["UNLOCK"]	= {0, 0.125, 0.625, 0.750};
+	["CLOSE"]	= {0.125, 0.25, 0, 0.125};
+	["UP"]		= {0.125, 0.25, 0.125, 0.25};
+	["DOWN"]	= {0.125, 0.25, 0.25, 0.375};
+	["PLUS"]	= {0.125, 0.25, 0.375, 0.5};
+	["MINUS"]	= {0.125, 0.25, 0.5, 0.625};
+}
+
+function AS:HandleSquareButton(button, name, iconSize, noTemplate)
+	button:StripTextures()
+	button:SetNormalTexture("")
+	button:SetPushedTexture("")
+	button:SetHighlightTexture("")
+	button:SetDisabledTexture("")
+
+	if not button.icon then
+		button.icon = button:CreateTexture(nil, "ARTWORK")
+		button.icon:Size(iconSize or 18)
+		button.icon:Point("CENTER")
+		button.icon:SetTexture([[Interface\AddOns\ElvUI_AddOnSkins\media\SquareButtons]])
+
+		button:SetScript("OnMouseDown", function(self)
+			if button:IsEnabled() == 1 then
+				self.icon:Point("CENTER", -1, -1)
+			end
+		end)
+
+		button:SetScript("OnMouseUp", function(self)
+			self.icon:Point("CENTER", 0, 0)
+		end)
+
+		hooksecurefunc(button, "Disable", function(self)
+			SetDesaturation(self.icon, true)
+			self.icon:SetAlpha(0.5)
+		end)
+
+		hooksecurefunc(button, "Enable", function(self)
+			SetDesaturation(self.icon, false)
+			self.icon:SetAlpha(1.0)
+		end)
+
+		if button:IsEnabled() == 0 then
+			SetDesaturation(button.icon, true)
+			button.icon:SetAlpha(0.5)
+		end
+
+		local coords = AS.SQUARE_BUTTON_TEXCOORDS[strupper(name)]
+		if coords then
+			button.icon:SetTexCoord(coords[1], coords[2], coords[3], coords[4])
+		end
+	end
+
+	if not noTemplate then
+		button:SetTemplate("Default", true)
+		button:HookScript2("OnEnter", S.SetModifiedBackdrop)
+		button:HookScript2("OnLeave", S.SetOriginalBackdrop)
+	end
+end
+
 function AS:Desaturate(frame, point)
 	for i = 1, frame:GetNumRegions() do
 		local region = select(i, frame:GetRegions())
