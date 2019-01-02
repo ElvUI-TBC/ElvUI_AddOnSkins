@@ -10,12 +10,15 @@ AS.SQUARE_BUTTON_TEXCOORDS = {
 	["BOTTOM"]	= {0, 0.125, 0.25, 0.375};
 	["FILE"]	= {0, 0.125, 0.375, 0.5};
 	["LOCK"]	= {0, 0.125, 0.5, 0.625};
-	["UNLOCK"]	= {0, 0.125, 0.625, 0.750};
 	["CLOSE"]	= {0.125, 0.25, 0, 0.125};
 	["UP"]		= {0.125, 0.25, 0.125, 0.25};
 	["DOWN"]	= {0.125, 0.25, 0.25, 0.375};
 	["PLUS"]	= {0.125, 0.25, 0.375, 0.5};
 	["MINUS"]	= {0.125, 0.25, 0.5, 0.625};
+	["GEAR"]	= {0.25, 0.375, 0, 0.125};
+	["MARK"]	= {0.25, 0.375, 0.125, 0.25};
+	["STOP"]	= {0.25, 0.375, 0.25, 0.375};
+	["PAUSE"]	= {0.25, 0.375, 0.375, 0.5};
 }
 
 function AS:HandleSquareButton(button, name, iconSize, noTemplate)
@@ -27,7 +30,7 @@ function AS:HandleSquareButton(button, name, iconSize, noTemplate)
 
 	if not button.icon then
 		button.icon = button:CreateTexture(nil, "ARTWORK")
-		button.icon:Size(iconSize or 18)
+		button.icon:Size(iconSize or 24)
 		button.icon:Point("CENTER")
 		button.icon:SetTexture([[Interface\AddOns\ElvUI_AddOnSkins\media\SquareButtons]])
 
