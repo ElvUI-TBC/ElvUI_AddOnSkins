@@ -14,8 +14,8 @@ local function SkinDewdrop2()
 	local frame, button
 	local i = 1
 
-	while _G["Dewdrop20Level" .. i] do
-		frame = _G["Dewdrop20Level" .. i]
+	while _G["Dewdrop20Level"..i] do
+		frame = _G["Dewdrop20Level"..i]
 
 		if not frame.isSkinned then
 			frame:SetTemplate("Transparent")
@@ -34,7 +34,7 @@ local function SkinDewdrop2()
 	while _G["Dewdrop20Button"..i] do
 		button = _G["Dewdrop20Button"..i]
 
-		button.text:SetFont(E.media.normFont, 12)
+		button.text:SetFont(E.media.normFont, E.db.general.fontSize)
 
 		if not button.isHook then
 			button.highlight:SetTexture(1, 1, 1, 0.3)
@@ -82,8 +82,8 @@ local function SkinTablet2(lib)
 			local frame
 			local i = 1
 
-			while _G["Tablet20DetachedFrame" .. i] do
-				frame = _G["Tablet20DetachedFrame" .. i]
+			while _G["Tablet20DetachedFrame"..i] do
+				frame = _G["Tablet20DetachedFrame"..i]
 
 				if not frame.isSkinned then
 					frame:SetTemplate("Transparent")

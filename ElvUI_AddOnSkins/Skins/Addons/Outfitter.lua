@@ -263,13 +263,13 @@ local function LoadSkin()
 					local normal = _G["OutfitterOutfitBar"..i.."Button"..j.."NormalTexture"]
 
 					if button and not button.isSkinned then
-						button:CreateBackdrop()
+						button:SetTemplate()
 						button:StyleButton()
 						button:GetHighlightTexture():SetInside(button.backdrop)
 						button:GetPushedTexture():SetInside(button.backdrop)
 
 						icon:SetTexCoord(unpack(E.TexCoords))
-						icon:SetInside(button.backdrop)
+						icon:SetInside(button)
 
 						normal:SetAlpha(0)
 
@@ -278,7 +278,7 @@ local function LoadSkin()
 							if region:GetObjectType() == "Texture" and region:GetTexture() == "Interface\\Addons\\Outfitter\\Textures\\IconButtonHighlight" then
 								region:SetTexture(1, 1, 1, 0.3)
 								region:SetVertexColor(1, 1, 1)
-								region:SetInside(button.backdrop)
+								region:SetInside(button)
 							end
 						end
 

@@ -89,10 +89,10 @@ local function LoadSkin()
 		icon:SetInside(item.bg)
 		icon:SetParent(item.bg)
 
-		unsafe:SetTexture(1, 0, 0, 0.4)
+		unsafe:SetTexture(1, 0, 0, 0.5)
 		unsafe:SetInside(item.bg)
 		unsafe:SetParent(item.bg)
-		unsafe:SetDrawLayer("ARTWORK")
+		unsafe:SetDrawLayer("OVERLAY")
 
 		menuItem:CreateBackdrop("Default")
 		menuItem.backdrop:SetOutside(menuIcon)
