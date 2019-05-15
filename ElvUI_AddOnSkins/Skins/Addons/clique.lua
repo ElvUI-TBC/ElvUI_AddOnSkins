@@ -28,6 +28,24 @@ local function LoadSkin()
 		frame.titleBar:Point("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
 	end
 
+	local function SkinCheckBox(entry)
+		-- Re-skin the checkbox.
+		S:HandleCheckBox(entry)
+
+		-- Fix the gray, square backdrop so that it isn't super-wide anymore.
+		entry.backdrop:Point("TOPLEFT", 6, -4)
+		entry.backdrop:Point("BOTTOMRIGHT", -4, 3)
+		entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0)
+
+		-- Disable the ability to change textures on the checkbox. This is important,
+		-- because "Clique:TextListScrollUpdate()" will attempt to constantly set
+		-- textures based on list-type, which would show up as stretched artifacts.
+		entry.SetNormalTexture = E.noop
+		entry.SetHighlightTexture = E.noop
+		entry.SetCheckedTexture = E.noop
+		entry.SetBackdropBorderColor = E.noop
+	end
+
 	hooksecurefunc(Clique, "CreateOptionsFrame", function()
 		SkinFrame(CliqueFrame)
 
@@ -69,10 +87,7 @@ local function LoadSkin()
 		for i = 1, 12 do
 			local entry = _G["CliqueTextList"..i]
 
-			S:HandleCheckBox(entry)
-			entry.backdrop:Point("TOPLEFT", 6, -4)
-			entry.backdrop:Point("BOTTOMRIGHT", -4, 3)
-			entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0)
+			SkinCheckBox(entry)
 		end
 
 		CliqueTextListScroll:StripTextures()
