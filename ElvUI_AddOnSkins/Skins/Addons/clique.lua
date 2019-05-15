@@ -6,7 +6,9 @@ local select, unpack = select, unpack
 
 local hooksecurefunc = hooksecurefunc
 
--- Clique v 102
+-- Supports:
+-- Clique r102
+-- Clique Enhanced v143.1 (https://github.com/VideoPlayerCode/CliqueEnhancedTBC)
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Clique then return end
@@ -26,6 +28,46 @@ local function LoadSkin()
 		frame.titleBar:Height(20)
 		frame.titleBar:Point("TOPLEFT", frame, "TOPLEFT", 0, 0)
 		frame.titleBar:Point("TOPRIGHT", frame, "TOPRIGHT", 0, 0)
+	end
+
+	local function SkinCheckBox(entry)
+		-- Re-skin the checkbox.
+		S:HandleCheckBox(entry)
+
+		-- Fix the gray, square backdrop so that it isn't super-wide anymore.
+		entry.backdrop:Point("TOPLEFT", 6, -4)
+		entry.backdrop:Point("BOTTOMRIGHT", -4, 3)
+		entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0)
+
+		-- Disable the ability to change textures on the checkbox. This is important,
+		-- because "Clique:TextListScrollUpdate()" will attempt to constantly set
+		-- textures based on list-type, which would show up as stretched artifacts.
+		entry.SetNormalTexture = E.noop
+		entry.SetHighlightTexture = E.noop
+		entry.SetCheckedTexture = E.noop
+		entry.SetBackdropBorderColor = E.noop
+	end
+
+	local function SkinCloseButton(btn)
+		S:HandleCloseButton(btn)
+		btn:Size(32)
+		btn:Point("TOPRIGHT", 5, 5)
+	end
+
+	if Clique.ShowBindings then -- Clique Enhanced
+		hooksecurefunc(Clique, "ShowBindings", function()
+			if CliqueTooltip and not CliqueTooltip.isSkinned then
+				CliqueTooltip:SetTemplate("Transparent")
+				CliqueTooltip.SetBackdropBorderColor = E.noop -- Prevent color reverting OnHide...
+				CliqueTooltip.SetBackdropColor = E.noop -- ...
+
+				if CliqueTooltip.close then
+					SkinCloseButton(CliqueTooltip.close)
+				end
+
+				CliqueTooltip.isSkinned = true
+			end
+		end)
 	end
 
 	hooksecurefunc(Clique, "CreateOptionsFrame", function()
@@ -69,32 +111,48 @@ local function LoadSkin()
 		for i = 1, 12 do
 			local entry = _G["CliqueTextList"..i]
 
-			S:HandleCheckBox(entry)
-			entry.backdrop:Point("TOPLEFT", 6, -4)
-			entry.backdrop:Point("BOTTOMRIGHT", -4, 3)
-			entry.backdrop:Point("TOPRIGHT", entry.name, "TOPLEFT", -3, 0)
+			SkinCheckBox(entry)
 		end
 
 		CliqueTextListScroll:StripTextures()
 		S:HandleScrollBar(CliqueTextListScrollScrollBar)
 
+		if CliqueOptionsFrame then -- Clique Enhanced
+			SkinFrame(CliqueOptionsFrame)
+			CliqueOptionsFrame:SetWidth(CliqueOptionsFrame:GetWidth() + 10) -- Fit ElvUI's enlarged checkboxes.
+
+			SkinCloseButton(CliqueOptionsButtonClose)
+
+			for i,entry in ipairs({ CliqueOptionsFrame:GetChildren() }) do
+				if entry and entry:IsObjectType("CheckButton") and strfind(entry:GetName() or "", "^CliqueOptions") then
+					SkinCheckBox(entry)
+				end
+			end
+		end
+
 		S:HandleDropDownBox(CliqueDropDown, 170)
 		CliqueDropDown:Point("TOPRIGHT", -1, -25)
 
-		S:HandleCloseButton(CliqueButtonClose)
-		CliqueButtonClose:Size(32)
-		CliqueButtonClose:Point("TOPRIGHT", 5, 5)
+		SkinCloseButton(CliqueButtonClose)
 
 		S:HandleButton(CliqueButtonCustom)
+		if CliqueButtonFrames then -- Clique Enhanced
+			S:HandleButton(CliqueButtonFrames)
+		end
+		if CliqueButtonPreview then -- Clique Enhanced
+			S:HandleButton(CliqueButtonPreview)
+		end
 		S:HandleButton(CliqueButtonMax)
 		S:HandleButton(CliqueButtonProfiles)
 		S:HandleButton(CliqueButtonOptions)
 		S:HandleButton(CliqueButtonDelete)
 		S:HandleButton(CliqueButtonEdit)
 
-		S:HandleCloseButton(CliqueTextButtonClose)
-		CliqueTextButtonClose:Size(32)
-		CliqueTextButtonClose:Point("TOPRIGHT", 5, 5)
+		SkinCloseButton(CliqueTextButtonClose)
+
+		if CliqueIconSelectButtonClose then -- Clique Enhanced
+			SkinCloseButton(CliqueIconSelectButtonClose)
+		end
 
 		S:HandleButton(CliqueButtonDeleteProfile)
 		S:HandleButton(CliqueButtonSetProfile)
