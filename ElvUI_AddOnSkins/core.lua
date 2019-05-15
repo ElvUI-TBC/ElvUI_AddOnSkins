@@ -67,7 +67,7 @@ local SUPPORTED_ADDONS = {
 	ColorizeVersion("CallToArms",				"r13"),
 	ColorizeVersion("Cartographer",				"2.2"),
 	ColorizeVersion("Cartographer 3.0",			"0.9.1"),
-	ColorizeVersion("Clique",					"102"),
+	ColorizeVersion("Clique",					"r102 & Clique Enhanced v143.1"),
 	ColorizeVersion("DeadlyBossMods",			"1.25"),
 	ColorizeVersion("Doom_CooldownPulse",		"1.1.3"),
 	ColorizeVersion("EqCompare",				"1.4 r71243"),

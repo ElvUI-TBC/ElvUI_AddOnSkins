@@ -6,7 +6,9 @@ local select, unpack = select, unpack
 
 local hooksecurefunc = hooksecurefunc
 
--- Clique v 102
+-- Supports:
+-- Clique r102
+-- Clique Enhanced v143.1 (https://github.com/VideoPlayerCode/CliqueEnhancedTBC)
 
 local function LoadSkin()
 	if not E.private.addOnSkins.Clique then return end
@@ -44,6 +46,28 @@ local function LoadSkin()
 		entry.SetHighlightTexture = E.noop
 		entry.SetCheckedTexture = E.noop
 		entry.SetBackdropBorderColor = E.noop
+	end
+
+	local function SkinCloseButton(btn)
+		S:HandleCloseButton(btn)
+		btn:Size(32)
+		btn:Point("TOPRIGHT", 5, 5)
+	end
+
+	if Clique.ShowBindings then -- Clique Enhanced
+		hooksecurefunc(Clique, "ShowBindings", function()
+			if CliqueTooltip and not CliqueTooltip.isSkinned then
+				CliqueTooltip:SetTemplate("Transparent")
+				CliqueTooltip.SetBackdropBorderColor = E.noop -- Prevent color reverting OnHide...
+				CliqueTooltip.SetBackdropColor = E.noop -- ...
+
+				if CliqueTooltip.close then
+					SkinCloseButton(CliqueTooltip.close)
+				end
+
+				CliqueTooltip.isSkinned = true
+			end
+		end)
 	end
 
 	hooksecurefunc(Clique, "CreateOptionsFrame", function()
@@ -93,23 +117,42 @@ local function LoadSkin()
 		CliqueTextListScroll:StripTextures()
 		S:HandleScrollBar(CliqueTextListScrollScrollBar)
 
+		if CliqueOptionsFrame then -- Clique Enhanced
+			SkinFrame(CliqueOptionsFrame)
+			CliqueOptionsFrame:SetWidth(CliqueOptionsFrame:GetWidth() + 10) -- Fit ElvUI's enlarged checkboxes.
+
+			SkinCloseButton(CliqueOptionsButtonClose)
+
+			for i,entry in ipairs({ CliqueOptionsFrame:GetChildren() }) do
+				if entry and entry:IsObjectType("CheckButton") and strfind(entry:GetName() or "", "^CliqueOptions") then
+					SkinCheckBox(entry)
+				end
+			end
+		end
+
 		S:HandleDropDownBox(CliqueDropDown, 170)
 		CliqueDropDown:Point("TOPRIGHT", -1, -25)
 
-		S:HandleCloseButton(CliqueButtonClose)
-		CliqueButtonClose:Size(32)
-		CliqueButtonClose:Point("TOPRIGHT", 5, 5)
+		SkinCloseButton(CliqueButtonClose)
 
 		S:HandleButton(CliqueButtonCustom)
+		if CliqueButtonFrames then -- Clique Enhanced
+			S:HandleButton(CliqueButtonFrames)
+		end
+		if CliqueButtonPreview then -- Clique Enhanced
+			S:HandleButton(CliqueButtonPreview)
+		end
 		S:HandleButton(CliqueButtonMax)
 		S:HandleButton(CliqueButtonProfiles)
 		S:HandleButton(CliqueButtonOptions)
 		S:HandleButton(CliqueButtonDelete)
 		S:HandleButton(CliqueButtonEdit)
 
-		S:HandleCloseButton(CliqueTextButtonClose)
-		CliqueTextButtonClose:Size(32)
-		CliqueTextButtonClose:Point("TOPRIGHT", 5, 5)
+		SkinCloseButton(CliqueTextButtonClose)
+
+		if CliqueIconSelectButtonClose then -- Clique Enhanced
+			SkinCloseButton(CliqueIconSelectButtonClose)
+		end
 
 		S:HandleButton(CliqueButtonDeleteProfile)
 		S:HandleButton(CliqueButtonSetProfile)
