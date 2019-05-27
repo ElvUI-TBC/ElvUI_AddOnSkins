@@ -32,6 +32,7 @@
 	<Script file="spy.lua"/>
 	<Script file="talented.lua"/>
 	<Script file="tellMeWhen.lua"/>
+	<Script file="TinyBook.lua"/>
 	<Script file="totemTimers.lua"/>
 	<Script file="TrinketMenu.lua"/>
 	<Script file="ZOMGBuffs.lua"/>

@@ -35,6 +35,7 @@ V.addOnSkins = {
 	Spy = true,
 	Talented = true,
 	TellMeWhen = true,
+	TinyBook = true,
 	TotemTimers = true,
 	TrinketMenu = true,
 	ZOMGBuffs = true,
